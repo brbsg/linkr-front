@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #333333;
+    color: #B7B7B7;
+    font-family: 'Lato', sans-serif;
+    
+}
+
+image {
+    height: 44px;
+    width: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.logo {
+    font-family: 'Passion One', cursive;
+}
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: none;
+    align-items: center;
+}
+
+div, nav {
+    background: #171717;
+}
+
+div:not(#root) {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 20px;
+    border-radius: 16px;
+}
+
+div div:not(#root > div) {
+    border: 1px solid #4D4D4D
+}
+
+input, button {
+    border-radius: 5px;
+}
+
+button {
+    border: none;
+    background: #1877F2;
+    color: #FFFFFF;
+}

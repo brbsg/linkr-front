@@ -13,7 +13,6 @@ export default function Logout() {
   const [clicked, setClicked] = useState(false);
 
   let dropdownRef = useRef();
-  console.log(dropdownRef)
 
   useEffect(() => {
     let handler = (e) => {

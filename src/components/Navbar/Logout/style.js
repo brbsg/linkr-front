@@ -5,7 +5,7 @@ export const Dropdown = styled.div`
   flex-direction: column;
 
   position: fixed;
-  top: 10px;
+  top: 15px;
   right: -10px;
 
   padding-right: 20px;

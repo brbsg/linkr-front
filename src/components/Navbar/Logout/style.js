@@ -8,12 +8,17 @@ export const Dropdown = styled.div`
   top: 15px;
   right: -10px;
 
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
 
 
   button {
     margin-top: 20px;
     margin-bottom: 20px;
+
+    margin: none;
+    background: none;
+
+    font-weight: 700;
   }
 `;

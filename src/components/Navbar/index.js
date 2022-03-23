@@ -1,20 +1,9 @@
-import { useState, useEffect } from 'react'
-
-import { IoIosArrowDown } from 'react-icons/io'
-import { IoIosArrowUp } from 'react-icons/io'
-
-import userPicture from '../../assets/raymond.png'
-
+import Logout from './Logout'
 export default function Navbar() {
-    const [clicked, clickedState] = useState(false)
-
     return(
         <nav>
         <p className="logo">linkr</p>
-        <span>
-        {clicked ? <IoIosArrowUp /> : <IoIosArrowDown />}
-        <img src={userPicture} />
-        </span>
+        <Logout />
         </nav>
     )
 }

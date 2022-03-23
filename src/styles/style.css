@@ -64,13 +64,12 @@ div:not(#root) {
   flex-direction: column;
   gap: 20px;
 
-  padding: 20px;
   border-radius: 16px;
 }
 
-div div:not(#root > div) {
+/*div div:not(#root > div) {
   border: 1px solid #4d4d4d;
-}
+}*/
 
 input,
 button {

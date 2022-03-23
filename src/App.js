@@ -8,7 +8,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Timeline />
+          <Route path='/timeline' element={<Timeline />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

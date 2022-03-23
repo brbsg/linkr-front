@@ -5,8 +5,15 @@ export const Dropdown = styled.div`
   flex-direction: column;
 
   position: fixed;
-  top: 0px;
+  top: 10px;
   right: -10px;
 
-  padding: 20px
+  padding-right: 20px;
+  padding-left: 20px;
+
+
+  button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 `;

@@ -36,7 +36,7 @@ h1 {
 #root {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  /* gap: 16px; */
   background: none;
   align-items: center;
 }
@@ -59,13 +59,13 @@ nav {
   background: #171717;
 }
 
-div:not(#root) {
+/* div:not(#root) {
   display: flex;
   flex-direction: column;
   gap: 20px;
 
   border-radius: 16px;
-}
+} */
 
 /*div div:not(#root > div) {
   border: 1px solid #4d4d4d;

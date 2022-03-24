@@ -11,28 +11,48 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-image {
+img {
   height: 44px;
   width: 44px;
   border-radius: 50%;
   object-fit: cover;
 }
 
+span {
+  display: flex;
+  align-items: center;
+}
+
 .logo {
   font-family: 'Passion One', cursive;
+  font-size: 49px;
+  font-weight: 700;
 }
 
 h1 {
   font-family: 'Oswald', sans-serif;
 }
 
-/* #root {
+#root {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  /* gap: 16px; */
   background: none;
   align-items: center;
-} */
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: fixed;
+
+  width: 100%;
+  height: 72px;
+
+  padding: 10px;
+}
 
 div,
 nav {
@@ -40,17 +60,16 @@ nav {
 }
 
 /* div:not(#root) {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
-    padding: 20px;
-    border-radius: 16px;
-}
-
-div div:not(#root > div) {
-    border: 1px solid #4D4D4D
+  border-radius: 16px;
 } */
+
+/*div div:not(#root > div) {
+  border: 1px solid #4d4d4d;
+}*/
 
 input,
 button {

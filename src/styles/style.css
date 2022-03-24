@@ -35,7 +35,7 @@ h1 {
     align-items: center;
 }
 
-div, nav {
+/* div, nav {
     background: #171717;
 }
 
@@ -50,7 +50,7 @@ div:not(#root) {
 
 div div:not(#root > div) {
     border: 1px solid #4D4D4D
-}
+} */
 
 input, button {
     border-radius: 5px;

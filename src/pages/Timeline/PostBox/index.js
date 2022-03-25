@@ -7,17 +7,15 @@ import MetaLink from "./MetaLink";
 export default function Posts() {
   const [posts, setPosts] = useState([]);
   const [reload, setReload] = useState(false);
-  const { token } = useAuth;
-
-  // setInterval(() => {
-  //   setReload(!reload);
-  // }, 10000);
+  const { token } = useAuth();
 
   useEffect(() => {
     const promise = api.getPosts(token);
     promise.then(({ data }) => {
+      console.log(data);
       setPosts(data);
     });
+
     promise.catch(() => {
       return (
         <PostsContainer>
@@ -28,7 +26,7 @@ export default function Posts() {
         </PostsContainer>
       );
     });
-  }, [reload]);
+  }, []);
 
   if (!posts) {
     return (
@@ -47,12 +45,12 @@ export default function Posts() {
   return (
     <PostsContainer>
       {posts.map((post) => (
-        <PostBox>
+        <PostBox key={post.id}>
           <NavBox>
             <img src={"user.image"} alt="perfil-user" />
           </NavBox>
           <ContentBox>
-            <h2>{post.userName}</h2>
+            <h2>{post.name}</h2>
             <h3>{post.text}</h3>
             <MetaLink
               url={post.link}

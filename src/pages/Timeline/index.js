@@ -33,6 +33,7 @@ export default function Timeline() {
       <Navbar />
       <ContainerPublications>
         <TitlePage>timeline</TitlePage>
+
         <PublishBlock>
           <UserBlock>
             <img src={`user.img`} alt="user-perfil" />
@@ -59,6 +60,7 @@ export default function Timeline() {
             </button>
           </FormBlock>
         </PublishBlock>
+
         <Posts />
       </ContainerPublications>
     </>

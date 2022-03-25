@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
 import api from '../services/api';
 
 export default function FormSignUp() {
@@ -24,48 +23,60 @@ export default function FormSignUp() {
     e.preventDefault();
 
     const user = { ...formData };
-    setButtonDisable(true);
 
-    await api.createUser(user);
-    navigate('/timeline')
+    try {
+      setButtonDisable(true);
+      await api.createUser(user);
+      navigate('/');
+      return;
+    } catch (error) {
+      // console.log(error.message);
+      // console.log(error.response.status);
+      if (error.response.status === 409) {
+        alert('E-mail já cadastrado');
+      } else {
+        alert('Erro, tente novamente');
+      }
+      setButtonDisable(false);
+    }
   }
 
   return (
     <Container onSubmit={handleSubmit}>
       <Input
-        placeholder="e-mail"
-        type="email"
+        placeholder='e-mail'
+        type='email'
         onChange={(e) => handleChange(e)}
-        name="email"
+        name='email'
         value={formData.email}
         required
       />
       <Input
-        placeholder="password"
-        type="password"
+        placeholder='password'
+        type='password'
         onChange={(e) => handleChange(e)}
-        name="password"
+        name='password'
         value={formData.password}
         required
       />
       <Input
-        placeholder="username"
-        type="text"
+        placeholder='username'
+        type='text'
         onChange={(e) => handleChange(e)}
-        name="username"
+        name='username'
         value={formData.username}
         required
       />
       <Input
-        placeholder="picture url"
-        type="url"
+        placeholder='picture url'
+        type='url'
         onChange={(e) => handleChange(e)}
-        name="pictureUrl"
+        name='pictureUrl'
         value={formData.pictureUrl}
         required
       />
       <Button disabled={buttonDisable}>Sign Up</Button>
-      <StyledLink to="/">Switch back to login</StyledLink>
+      <StyledLink to='/'>Switch back to login</StyledLink>
     </Container>
   );
 }

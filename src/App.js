@@ -1,17 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import SignIn from "./pages/SignIn/SignIn";
+import Signin from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp";
+import Timeline from "./pages/Timeline";
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <BrowserRouter>
         <Routes>
-          <Route path="/" element={<SignIn />} />
+          <Route path="/" element={<Signin />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/timeline" element={<Timeline />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </AuthProvider>
   );
 }

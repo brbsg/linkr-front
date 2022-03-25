@@ -4,7 +4,7 @@ import FormSignIn from "../../components/FormSignIn";
 import FormSignUp from "../../components/FormSignUp";
 import Logo from "../../components/Logo";
 
-function SignUp() {
+export default function Signin() {
   return (
     <Container>
       <Logo />
@@ -19,5 +19,3 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
 `;
-
-export default SignUp;

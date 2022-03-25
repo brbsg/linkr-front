@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import React from 'react';
+import styled from "styled-components";
+import React from "react";
 
 export default function Logo() {
   return (
@@ -23,12 +23,13 @@ const Container = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex: 2;
+  background-color: black;
 
   padding: 10%;
 `;
 
 const LogoMain = styled.h1`
-  font-family: 'Passion One';
+  font-family: "Passion One";
   font-size: 106px;
   font-style: normal;
   font-weight: 700;
@@ -40,7 +41,7 @@ const LogoMain = styled.h1`
 `;
 
 const LogoText = styled.h2`
-  font-family: 'Oswald';
+  font-family: "Oswald";
   font-size: 43px;
   font-style: normal;
   font-weight: 700;

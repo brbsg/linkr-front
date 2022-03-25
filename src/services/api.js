@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// const BASE_URL = 'https://git.heroku.com/linkr-back-csgg.git';
+// const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const BASE_URL = "http://localhost:5000";
 
 function createConfig(token) {
@@ -13,8 +13,15 @@ function sendPost(body, token){
   return promise;
 }
 
+function getPosts(token){
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/timeline/posts`, {}, config);
+  return promise;
+}
+
 const api = {
-  sendPost
+  sendPost,
+  getPosts
 };
 
 export default api;

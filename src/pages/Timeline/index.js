@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
+import Posts from "./PostBox";
 
 export default function Timeline() {
   const [postForm, setPostForm] = useState({link: "", text: ""});
@@ -28,9 +29,9 @@ export default function Timeline() {
 
   return (
     <>
-    <Container>
-        <TitlePage>Timeline</TitlePage>
-        <ContainerPublishBlock>
+    <ContainerPublications>
+        <TitlePage>timeline</TitlePage>
+        <PublishBlock>
         <UserBlock>
             <img src={`user.img`} alt="user-perfil" />
         </UserBlock>
@@ -55,13 +56,15 @@ export default function Timeline() {
               {isLoading? "Publishing...": "Publish"}
             </button> 
         </FormBlock>
-        </ContainerPublishBlock>
-    </Container>
+        </PublishBlock>
+        <Posts />
+    </ContainerPublications>
     </>
   );
 }
 
-const Container = styled.div`
+const ContainerPublications = styled.div`
+  width: 610px;
 `;
 
 const TitlePage = styled.h1`
@@ -71,8 +74,8 @@ const TitlePage = styled.h1`
   font-family: 'Oswald';
 `;
 
-const ContainerPublishBlock = styled.div`
-  width: 610px;
+const PublishBlock = styled.div`
+  width: 100%;
   height: 209px;
   padding: 17px;
   
@@ -116,9 +119,18 @@ const FormBlock = styled.form`
   button{
     width: 112px;
     height: 31px;
+    
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    
+    color: #FFFFFF;
+    
     display: flex;
     justify-content: center;
-
+    align-items: center;
+    
     background: #1877F2;
     border-radius: 5px;
   }

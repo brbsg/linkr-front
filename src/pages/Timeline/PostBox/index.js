@@ -9,9 +9,9 @@ export default function Posts() {
   const [reload, setReload] = useState(false);
   const { token } = useAuth;
 
-  setInterval(() => {
+  /*setInterval(() => {
     setReload(!reload);
-  }, 10000);
+  }, 10000);*/
 
   useEffect(() => {
     const promise = api.getPosts(token);
@@ -28,7 +28,7 @@ export default function Posts() {
         </PostsContainer>
       );
     });
-  }, [reload]);
+  }, []);
 
   if (!posts) {
     return (

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const BASE_URL = 'https://git.heroku.com/linkr-back-csgg.git';
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000"
 
 function loginUser(body) {
   const response = axios.post(`${BASE_URL}/sign-in`, body);

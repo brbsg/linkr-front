@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import api from '../services/api';
+
 export default function FormSignUp() {
   const [formData, setFormData] = useState({
     email: '',
@@ -22,8 +24,10 @@ export default function FormSignUp() {
     e.preventDefault();
 
     const user = { ...formData };
-
     setButtonDisable(true);
+
+    await api.createUser(user);
+    navigate('/timeline')
   }
 
   return (

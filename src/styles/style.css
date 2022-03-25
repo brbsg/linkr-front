@@ -41,6 +41,11 @@ h1 {
   align-items: center;
 }
 
+nav {
+  background: #171717;
+  z-index: 1;
+}
+
 /* div, nav {
     background: #171717;
 }

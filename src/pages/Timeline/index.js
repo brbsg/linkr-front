@@ -2,8 +2,9 @@ import { useState } from "react";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
-import Posts from "./PostBox";
+import Posts from "./Posts";
 import Navbar from "../../components/Navbar";
+import Trendings from "./Trendings";
 
 export default function Timeline() {
   const [postForm, setPostForm] = useState({link: "", text: ""});
@@ -31,49 +32,61 @@ export default function Timeline() {
   return (
     <>
     <Navbar />
-    <ContainerPublications>
-        <TitlePage>timeline</TitlePage>
-        <PublishBlock>
-        <UserBlock>
-            <img src={`user.img`} alt="user-perfil" />
-        </UserBlock>
-        <FormBlock onSubmit={handlePost}>
-            <h2>What are you going to share today?</h2>
-            <LinkInput 
-            placeholder="http://"
-            type="text"
-            onChange={handleChange}
-            name="link"
-            value={postForm.link}
-            required
-            />
-            <DescriptionInput 
-            placeholder="Awesome article about #javascript"
-            type="text"
-            onChange={handleChange}
-            name="text"
-            value={postForm.text}
-            />
-            <button type="submit" disabled={isLoading}>
-              {isLoading? "Publishing...": "Publish"}
-            </button> 
-        </FormBlock>
-        </PublishBlock>
-        <Posts />
-    </ContainerPublications>
+    <TitlePage>timeline</TitlePage>
+    <Container>
+      <ContainerPublications>
+          <PublishBlock>
+          <UserBlock>
+              <img src={`user.img`} alt="user-perfil" />
+          </UserBlock>
+          <FormBlock onSubmit={handlePost}>
+              <h2>What are you going to share today?</h2>
+              <LinkInput 
+                placeholder="http://"
+                type="text"
+                onChange={handleChange}
+                name="link"
+                value={postForm.link}
+                required
+              />
+              <DescriptionInput 
+                placeholder="Awesome article about #javascript"
+                type="text"
+                onChange={handleChange}
+                name="text"
+                value={postForm.text}
+              />
+              <button type="submit" disabled={isLoading}>
+                {isLoading? "Publishing...": "Publish"}
+              </button> 
+          </FormBlock>
+          </PublishBlock>
+          <Posts />
+      </ContainerPublications>
+    <Trendings />
+    </Container>
     </>
   );
 }
 
-const ContainerPublications = styled.div`
-  width: 610px;
-`;
-
 const TitlePage = styled.h1`
+  width: 936px;
   padding-top: 78px;
   padding-bottom: 43px;
   
   font-family: 'Oswald';
+  color: #FFFFFF;
+
+  align-self: left;
+`;
+
+const Container = styled.div`
+  display: flex;
+  gap: 25px;
+`;
+
+const ContainerPublications = styled.div`
+  width: 610px;
 `;
 
 const PublishBlock = styled.div`

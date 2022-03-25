@@ -23,10 +23,17 @@ function getPosts(token){
   return promise;
 }
 
+function getHashtags(token){
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/trendings`, {}, config);
+  return promise;
+}
+
 const api = {
   createUser,
   sendPost,
-  getPosts
+  getPosts,
+  getHashtags
 };
 
 export default api;

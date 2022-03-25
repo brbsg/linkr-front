@@ -5,13 +5,13 @@ import styled from "styled-components";
 import MetaLink from "./MetaLink";
 
 export default function Posts(){
-    const [posts, setPosts] = useState({});
-    const [reload, setReload] = useState(false);
+    const [posts, setPosts] = useState(null);
+    // const [reload, setReload] = useState(false);
     const {token} = useAuth;
 
-    setInterval(()=>{
-        setReload(!reload);
-    }, 10000);
+    // setInterval(()=>{
+    //     setReload(!reload);
+    // }, 10000);
 
     useEffect(()=>{
         const promise = api.getPosts(token);
@@ -25,7 +25,7 @@ export default function Posts(){
                 </PostsContainer>
             );
         })
-    }, [reload]);
+    }, []);
 
     if(!posts){
         return(
@@ -47,7 +47,7 @@ export default function Posts(){
             {posts.map((post)=>
             <PostBox>
                 <NavBox>
-                    <img src={"user.image"} alt="perfil-user"/>
+                    <img src={post.image} alt="perfil-user"/>
                 </NavBox>
                 <ContentBox>
                     <h2>{post.userName}</h2>
@@ -93,7 +93,7 @@ const NavBox = styled.div`
     
     display: flex;
     flex-direction: column;
-    gap
+    gap: 19px;
 `;
 
 const ContentBox = styled.div`

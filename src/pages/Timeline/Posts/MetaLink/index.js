@@ -10,7 +10,7 @@ export default function MetaLink({url, title, description, image}){
                 <h4>{description}</h4>
                 <h5>{url}</h5>
             </BlockText>
-            <img src={image} alt="Link image" />
+            <img src={image} alt="link post visual" />
         </LinkBlock>
     );
 }

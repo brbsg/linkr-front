@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import FormSignIn from "../../components/FormSignIn";
-
-import FormSignUp from "../../components/FormSignUp";
 import Logo from "../../components/Logo";
 
 export default function Signin() {

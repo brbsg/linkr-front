@@ -6,61 +6,61 @@ import Posts from "./PostBox";
 import Navbar from "../../components/Navbar";
 
 export default function Timeline() {
-  const [postForm, setPostForm] = useState({link: "", text: ""});
+  const [postForm, setPostForm] = useState({ link: "", text: "" });
   const [isLoading, setIsLoading] = useState(false);
-  const {token} = useAuth();
+  const { token } = useAuth();
 
   function handleChange(e) {
     setPostForm({ ...postForm, [e.target.name]: e.target.value });
   }
 
-  function handlePost(event){
+  function handlePost(event) {
     event.preventDefault();
 
     setIsLoading(true);
     let promise = api.sendPost(postForm, token);
-    promise.then(()=>{
+    promise.then(() => {
       setIsLoading(false);
     });
-    promise.catch(()=>{
+    promise.catch(() => {
       alert("Houve um erro ao publicar seu link");
       setIsLoading(false);
-    })
+    });
   }
 
   return (
     <>
-    <Navbar />
-    <ContainerPublications>
+      <Navbar />
+      <ContainerPublications>
         <TitlePage>timeline</TitlePage>
         <PublishBlock>
-        <UserBlock>
+          <UserBlock>
             <img src={`user.img`} alt="user-perfil" />
-        </UserBlock>
-        <FormBlock onSubmit={handlePost}>
+          </UserBlock>
+          <FormBlock onSubmit={handlePost}>
             <h2>What are you going to share today?</h2>
-            <LinkInput 
-            placeholder="http://"
-            type="text"
-            onChange={handleChange}
-            name="link"
-            value={postForm.link}
-            required
+            <LinkInput
+              placeholder="http://"
+              type="text"
+              onChange={handleChange}
+              name="link"
+              value={postForm.link}
+              required
             />
-            <DescriptionInput 
-            placeholder="Awesome article about #javascript"
-            type="text"
-            onChange={handleChange}
-            name="text"
-            value={postForm.text}
+            <DescriptionInput
+              placeholder="Awesome article about #javascript"
+              type="text"
+              onChange={handleChange}
+              name="text"
+              value={postForm.text}
             />
             <button type="submit" disabled={isLoading}>
-              {isLoading? "Publishing...": "Publish"}
-            </button> 
-        </FormBlock>
+              {isLoading ? "Publishing..." : "Publish"}
+            </button>
+          </FormBlock>
         </PublishBlock>
         <Posts />
-    </ContainerPublications>
+      </ContainerPublications>
     </>
   );
 }
@@ -72,26 +72,26 @@ const ContainerPublications = styled.div`
 const TitlePage = styled.h1`
   padding-top: 78px;
   padding-bottom: 43px;
-  
-  font-family: 'Oswald';
+
+  font-family: "Oswald";
 `;
 
 const PublishBlock = styled.div`
   width: 100%;
   height: 209px;
   padding: 17px;
-  
+
   display: flex;
   gap: 18px;
-  
-  background: #FFFFFF;
+
+  background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 `;
 
 const UserBlock = styled.div`
   width: 50px;
-  img{
+  img {
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
@@ -106,11 +106,11 @@ const FormBlock = styled.form`
   align-items: flex-end;
   gap: 5px;
 
-  h2{
+  h2 {
     width: 100%;
     height: 40px;
 
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 300;
     font-size: 20px;
@@ -118,22 +118,22 @@ const FormBlock = styled.form`
 
     color: #707070;
   }
-  button{
+  button {
     width: 112px;
     height: 31px;
-    
-    font-family: 'Lato';
+
+    font-family: "Lato";
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
-    
-    color: #FFFFFF;
-    
+
+    color: #ffffff;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    background: #1877F2;
+
+    background: #1877f2;
     border-radius: 5px;
   }
 `;
@@ -144,8 +144,8 @@ const LinkInput = styled.input`
   height: 30px;
   padding: 8px 12px;
 
-  ::placeholder{
-    font-family: 'Lato';
+  ::placeholder {
+    font-family: "Lato";
     font-style: normal;
     font-weight: 300;
     font-size: 15px;
@@ -154,7 +154,7 @@ const LinkInput = styled.input`
     color: #949494;
   }
 
-  background: #EFEFEF;
+  background: #efefef;
   border-radius: 5px;
   box-sizing: border-box;
 `;
@@ -164,9 +164,9 @@ const DescriptionInput = styled.input`
   width: 100%;
   height: 66px;
   padding: 8px 12px;
-  
-  ::placeholder{
-    font-family: 'Lato';
+
+  ::placeholder {
+    font-family: "Lato";
     font-style: normal;
     font-weight: 300;
     font-size: 15px;
@@ -175,7 +175,7 @@ const DescriptionInput = styled.input`
     color: #949494;
   }
 
-  background: #EFEFEF;
+  background: #efefef;
   border-radius: 5px;
   box-sizing: border-box;
 `;

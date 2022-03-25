@@ -1,7 +1,6 @@
-import styled from 'styled-components';
-
-import FormSignUp from '../../components/FormSignUp';
-import Logo from '../../components/Logo';
+import styled from "styled-components";
+import FormSignUp from "../../components/FormSignUp";
+import Logo from "../../components/Logo";
 
 function SignUp() {
   return (

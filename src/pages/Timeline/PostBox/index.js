@@ -5,7 +5,7 @@ import styled from "styled-components";
 import MetaLink from "./MetaLink";
 
 export default function Posts(){
-    const [posts, setPosts] = useState({});
+    const [posts, setPosts] = useState([]);
     const [reload, setReload] = useState(false);
     const {token} = useAuth;
 
@@ -28,6 +28,7 @@ export default function Posts(){
     }, [reload]);
 
     if(!posts){
+        console.log('loading')
         return(
             <PostsContainer>
                 <h1>Loading</h1>

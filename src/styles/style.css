@@ -83,3 +83,11 @@ button {
   background: #1877f2;
   color: #ffffff;
 }
+
+a {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+}

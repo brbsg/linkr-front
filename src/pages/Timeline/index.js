@@ -3,6 +3,7 @@ import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
 import Posts from "./PostBox";
+import Navbar from "../../components/Navbar";
 
 export default function Timeline() {
   const [postForm, setPostForm] = useState({link: "", text: ""});
@@ -29,6 +30,7 @@ export default function Timeline() {
 
   return (
     <>
+    <Navbar />
     <ContainerPublications>
         <TitlePage>timeline</TitlePage>
         <PublishBlock>

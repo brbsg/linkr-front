@@ -1,10 +1,14 @@
 import axios from "axios";
 
-// const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-const BASE_URL = "http://localhost:5000";
+// const BASE_URL = 'https://git.heroku.com/linkr-back-csgg.git';
+const BASE_URL = 'http://localhost:5000';
 
 function createConfig(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
+}
+
+async function createUser(user) {
+  await axios.post(`${BASE_URL}/sign-up`, user);
 }
 
 function sendPost(body, token){
@@ -20,6 +24,7 @@ function getPosts(token){
 }
 
 const api = {
+  createUser,
   sendPost,
   getPosts
 };

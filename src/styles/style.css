@@ -41,6 +41,9 @@ h1 {
   align-items: center;
 }
 
+/* div, nav {
+    background: #171717;
+}
 nav {
   display: flex;
   align-items: center;
@@ -54,10 +57,9 @@ nav {
   padding: 10px;
 }
 
-div,
-nav {
-  background: #171717;
-}
+div div:not(#root > div) {
+    border: 1px solid #4D4D4D
+} */
 
 /* div:not(#root) {
   display: flex;

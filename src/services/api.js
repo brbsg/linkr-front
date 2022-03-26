@@ -35,12 +35,26 @@ function getUser(token) {
   return promise;
 }
 
+function toggleLike(body, token) {
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/like`, body, config)
+  return promise;
+}
+
+function getLikes(body, token) {
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/likes`, body, config)
+  return promise;
+}
+
 const api = {
   loginUser,
   createUser,
   sendPost,
   getPosts,
-  getUser
+  getUser,
+  toggleLike,
+  getLikes
 };
 
 export default api;

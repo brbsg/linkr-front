@@ -1,21 +1,33 @@
-import { useEffect, useState } from "react";
-import api from "../../../services/api";
-import useAuth from "../../../hooks/useAuth";
-import styled from "styled-components";
-import MetaLink from "./MetaLink";
+import { useEffect, useState } from 'react';
+import api from '../../../services/api';
+import useAuth from '../../../hooks/useAuth';
+import styled from 'styled-components';
+import MetaLink from './MetaLink';
 
-import Like from "../../../components/Like";
+import Like from '../../../components/Like';
+
+import ReactModal from 'react-modal';
+import { IoTrash } from 'react-icons/io5';
+
+ReactModal.setAppElement('#root');
 
 export default function Posts() {
   const [posts, setPosts] = useState(null);
   const [reload, setReload] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const { token } = useAuth();
+
+  function handleOpenModal() {
+    setModalIsOpen(!modalIsOpen);
+  }
+
+  function confirmDelete(id) {}
 
   useEffect(() => {
     const promise = api.getPosts(token);
     promise.then(({ data }) => {
       setPosts(data);
-  });
+    });
 
     promise.catch(() => {
       return (
@@ -34,7 +46,8 @@ export default function Posts() {
       <PostsContainer>
         <h1>Loading</h1>
       </PostsContainer>
-    );}
+    );
+  }
   if (posts.length === 0) {
     return (
       <PostsContainer>
@@ -47,9 +60,14 @@ export default function Posts() {
     <PostsContainer>
       {posts.map((post) => (
         <PostBox key={post.id}>
+          {post.deleteOption === true && (
+            <TrashCan onClick={handleOpenModal}>
+              <IoTrash color='white' />
+            </TrashCan>
+          )}
           <NavBox>
-            <img src={post.image} alt="perfil-user" />
-            <Like postId={post.id} token={token}/>
+            <img src={post.image} alt='perfil-user' />
+            <Like postId={post.id} token={token} />
           </NavBox>
           <ContentBox>
             <h2>{post.name}</h2>
@@ -61,6 +79,11 @@ export default function Posts() {
               title={post.linkTitle}
             />
           </ContentBox>
+          <ReactModal isOpen={modalIsOpen} onRequestClose={handleOpenModal}>
+            <h2>TESTE MODAL</h2>
+            <button onClick={handleOpenModal}>Não</button>
+            <button onClick={() => confirmDelete(post.id)}>Deletar</button>
+          </ReactModal>
         </PostBox>
       ))}
     </PostsContainer>
@@ -78,6 +101,8 @@ const PostsContainer = styled.div`
 `;
 
 const PostBox = styled.div`
+  position: relative;
+
   width: 100%;
   padding: 21px 20px;
 
@@ -91,10 +116,10 @@ const PostBox = styled.div`
 
 const NavBox = styled.div`
   width: 50px;
-  img{
-      width: 50px;
-      height: 50px;
-      border-radius: 26.5px;
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 26.5px;
   }
   display: flex;
   flex-direction: column;
@@ -107,7 +132,7 @@ const ContentBox = styled.div`
   flex-direction: column;
   gap: 7px;
   h2 {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
@@ -116,12 +141,22 @@ const ContentBox = styled.div`
     color: #ffffff;
   }
   h3 {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
     line-height: 20px;
 
     color: #b7b7b7;
+  }
+`;
+
+const TrashCan = styled.div`
+  position: absolute;
+  top: 22px;
+  right: 23px;
+
+  :hover {
+    cursor: pointer;
   }
 `;

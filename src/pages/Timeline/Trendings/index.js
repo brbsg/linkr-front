@@ -20,17 +20,27 @@ export default function Trendings(){
           setHashtags(data);
       }).catch((error)=>{
           console.log(error);
-          alert("Houve um erro ao carregar as #hashtags");
       });
-  }, [reload]);
+  }, []);
 
   if(!hashtags){
+    return (
+        <Trending>
+            <Title>trending</Title>
+            <Separador />
+            <Trends>
+                <Trend>Houve um erro ao carregar as #hashtags</Trend>
+            </Trends>
+        </Trending>
+      );
+  }
+  if(hashtags.length === 0){
     return (
       <Trending>
           <Title>trending</Title>
           <Separador />
           <Trends>
-              <Trend>Loading</Trend>
+              <Trend>There are no hashtags trending yet...</Trend>
           </Trends>
       </Trending>
     );

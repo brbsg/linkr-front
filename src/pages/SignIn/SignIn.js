@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import FormSignUp from "../../components/FormSignUp";
+import FormSignIn from "../../components/FormSignIn";
 import Logo from "../../components/Logo";
 
-function SignUp() {
+export default function Signin() {
   return (
     <Container>
       <Logo />
-      <FormSignUp />
+      <FormSignIn />
     </Container>
   );
 }
@@ -17,5 +17,3 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
 `;
-
-export default SignUp;

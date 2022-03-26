@@ -3,21 +3,19 @@ import api from "../../../services/api";
 import useAuth from "../../../hooks/useAuth";
 import styled from "styled-components";
 import MetaLink from "./MetaLink";
-
 import Like from "../../../components/Like";
 
-export default function Posts() {
+export default function Posts({reloadPosts}) {
   const [posts, setPosts] = useState(null);
-  const [reload, setReload] = useState(false);
   const { token } = useAuth();
+  console.log(reloadPosts);
 
-  useEffect(() => {
-    const promise = api.getPosts(token);
-    promise.then(({ data }) => {
-      setPosts(data);
-  });
-
-    promise.catch(() => {
+  async function loadPosts(){
+    const {data} = await api.getPosts(token);
+    console.log(data);
+    try {
+      setPosts(data)
+    } catch {
       return (
         <PostsContainer>
           <h1>
@@ -26,8 +24,10 @@ export default function Posts() {
           </h1>
         </PostsContainer>
       );
-    });
-  }, []);
+    }
+  }
+
+  useEffect( loadPosts, [reloadPosts]);
 
   if (!posts) {
     return (

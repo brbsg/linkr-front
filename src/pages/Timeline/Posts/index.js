@@ -7,7 +7,7 @@ import MetaLink from "./MetaLink";
 import Like from "../../../components/Like";
 
 export default function Posts() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [reload, setReload] = useState(false);
   const { token } = useAuth();
 
@@ -15,7 +15,7 @@ export default function Posts() {
     const promise = api.getPosts(token);
     promise.then(({ data }) => {
       setPosts(data);
-    });
+  });
 
     promise.catch(() => {
       return (
@@ -34,8 +34,8 @@ export default function Posts() {
       <PostsContainer>
         <h1>Loading</h1>
       </PostsContainer>
-    );
-  } else if (posts.length === 0) {
+    );}
+  if (posts.length === 0) {
     return (
       <PostsContainer>
         <h1>There are no posts yet</h1>
@@ -48,7 +48,7 @@ export default function Posts() {
       {posts.map((post) => (
         <PostBox key={post.id}>
           <NavBox>
-            <img src={"user.image"} alt="perfil-user" />
+            <img src={post.image} alt="perfil-user" />
             <Like postId={post.id} token={token}/>
           </NavBox>
           <ContentBox>
@@ -91,14 +91,14 @@ const PostBox = styled.div`
 
 const NavBox = styled.div`
   width: 50px;
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
+  img{
+      width: 50px;
+      height: 50px;
+      border-radius: 26.5px;
   }
-
   display: flex;
   flex-direction: column;
+  gap: 19px;
 `;
 
 const ContentBox = styled.div`

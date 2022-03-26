@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
-import Posts from "./PostBox";
+import Posts from "./Posts";
 import Navbar from "../../components/Navbar";
+import Trendings from "./Trendings";
 
 export default function Timeline() {
   const [postForm, setPostForm] = useState({ link: "", text: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [userPicture, setUserPicture] = useState('')
   const { token } = useAuth();
+
+  useEffect(() => getUserPicture(), [])
+  function getUserPicture() {
+    const promise = api.getUser(token);
+    promise.then(({ data }) => setUserPicture(data))
+  }
 
   function handleChange(e) {
     setPostForm({ ...postForm, [e.target.name]: e.target.value });
@@ -30,52 +38,62 @@ export default function Timeline() {
 
   return (
     <>
-      <Navbar />
+    <Navbar />
+    <TitlePage>timeline</TitlePage>
+    <Container>
       <ContainerPublications>
-        <TitlePage>timeline</TitlePage>
-
-        <PublishBlock>
+          <PublishBlock>
           <UserBlock>
-            <img src={`user.img`} alt="user-perfil" />
+              <img src={userPicture} alt="user-perfil" />
           </UserBlock>
           <FormBlock onSubmit={handlePost}>
-            <h2>What are you going to share today?</h2>
-            <LinkInput
-              placeholder="http://"
-              type="text"
-              onChange={handleChange}
-              name="link"
-              value={postForm.link}
-              required
-            />
-            <DescriptionInput
-              placeholder="Awesome article about #javascript"
-              type="text"
-              onChange={handleChange}
-              name="text"
-              value={postForm.text}
-            />
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? "Publishing..." : "Publish"}
-            </button>
+              <h2>What are you going to share today?</h2>
+              <LinkInput 
+                placeholder="http://"
+                type="text"
+                onChange={handleChange}
+                name="link"
+                value={postForm.link}
+                required
+              />
+              <DescriptionInput 
+                placeholder="Awesome article about #javascript"
+                type="text"
+                onChange={handleChange}
+                name="text"
+                value={postForm.text}
+              />
+              <button type="submit" disabled={isLoading}>
+                {isLoading? "Publishing...": "Publish"}
+              </button> 
           </FormBlock>
-        </PublishBlock>
-
-        <Posts />
+          </PublishBlock>
+          <Posts />
       </ContainerPublications>
+    <Trendings />
+    </Container>
     </>
   );
 }
 
-const ContainerPublications = styled.div`
-  width: 610px;
-`;
-
 const TitlePage = styled.h1`
+  width: 936px;
   padding-top: 78px;
   padding-bottom: 43px;
+  
+  font-family: 'Oswald';
+  color: #FFFFFF;
 
-  font-family: "Oswald";
+  align-self: left;
+`;
+
+const Container = styled.div`
+  display: flex;
+  gap: 25px;
+`;
+
+const ContainerPublications = styled.div`
+  width: 610px;
 `;
 
 const PublishBlock = styled.div`

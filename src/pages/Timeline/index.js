@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
@@ -9,7 +9,14 @@ import Trendings from "./Trendings";
 export default function Timeline() {
   const [postForm, setPostForm] = useState({ link: "", text: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [userPicture, setUserPicture] = useState('')
   const { token } = useAuth();
+
+  useEffect(() => getUserPicture(), [])
+  function getUserPicture() {
+    const promise = api.getUser(token);
+    promise.then(({ data }) => setUserPicture(data))
+  }
 
   function handleChange(e) {
     setPostForm({ ...postForm, [e.target.name]: e.target.value });
@@ -37,7 +44,7 @@ export default function Timeline() {
       <ContainerPublications>
           <PublishBlock>
           <UserBlock>
-              <img src={`user.img`} alt="user-perfil" />
+              <img src={userPicture} alt="user-perfil" />
           </UserBlock>
           <FormBlock onSubmit={handlePost}>
               <h2>What are you going to share today?</h2>

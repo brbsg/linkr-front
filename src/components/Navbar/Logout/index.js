@@ -1,18 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoIosArrowUp } from 'react-icons/io';
 
 import { Dropdown } from './style';
-import userPicture from '../../../assets/raymond.png';
 
+import api from '../../../services/api';
+
+import AuthContext from '../../../contexts/AuthContext';
 
 export default function Logout() {
   const navigate = useNavigate();
+
+  const { token } = useContext(AuthContext);
+
   const [clicked, setClicked] = useState(false);
+  const [userPicture, setUserPicture] = useState('')
 
   let dropdownRef = useRef();
+
+  useEffect(() => getUserPicture(), [])
 
   useEffect(() => {
     let handler = (e) => {
@@ -26,8 +34,12 @@ export default function Logout() {
   }
   });
 
+  function getUserPicture() {
+    const promise = api.getUser(token);
+    promise.then(({ data }) => setUserPicture(data))
+  }
+
   function handleLogout() {
-        //remover token do usuario do localstorage
       localStorage.removeItem("auth-token-linkr")
         navigate('/')
   }

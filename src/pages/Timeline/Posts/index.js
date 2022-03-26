@@ -4,6 +4,8 @@ import useAuth from "../../../hooks/useAuth";
 import styled from "styled-components";
 import MetaLink from "./MetaLink";
 
+import Like from "../../../components/Like";
+
 export default function Posts() {
   const [posts, setPosts] = useState(null);
   const [reload, setReload] = useState(false);
@@ -47,6 +49,7 @@ export default function Posts() {
         <PostBox key={post.id}>
           <NavBox>
             <img src={post.image} alt="perfil-user" />
+            <Like postId={post.id} token={token}/>
           </NavBox>
           <ContentBox>
             <h2>{post.name}</h2>

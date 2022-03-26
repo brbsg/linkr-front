@@ -19,19 +19,37 @@ async function createUser(user) {
 
 function sendPost(body, token) {
   const config = createConfig(token);
-  const promise = axios.post(`${BASE_URL}/timeline/publish`, body, config);
+  const promise = axios.post(`${BASE_URL}/timeline`, body, config);
   return promise;
 }
 
 function getPosts(token) {
   const config = createConfig(token);
-  const promise = axios.post(`${BASE_URL}/timeline/posts`, {}, config);
+  const promise = axios.get(`${BASE_URL}/timeline`, config);
   return promise;
 }
 
 function getHashtags(token){
   const config = createConfig(token);
-  const promise = axios.post(`${BASE_URL}/trendings`, {}, config);
+  const promise = axios.get(`${BASE_URL}/trendings`, config);
+  return promise;
+}
+
+function getUser(token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/user`, config)
+  return promise;
+}
+
+function toggleLike(body, token) {
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/like`, body, config)
+  return promise;
+}
+
+function getLikes(body, token) {
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/likes`, body, config)
   return promise;
 }
 
@@ -40,7 +58,10 @@ const api = {
   createUser,
   sendPost,
   getPosts,
-  getHashtags
+  getHashtags,
+  getUser,
+  toggleLike,
+  getLikes
 };
 
 export default api;

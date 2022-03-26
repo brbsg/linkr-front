@@ -4,15 +4,24 @@ import useAuth from '../../../hooks/useAuth';
 import styled from 'styled-components';
 import MetaLink from './MetaLink';
 
-import { Modal } from 'react-modal';
+import Like from '../../../components/Like';
+
+import ReactModal from 'react-modal';
 import { IoTrash } from 'react-icons/io5';
 
-import Like from '../../../components/Like';
+ReactModal.setAppElement('#root');
 
 export default function Posts() {
   const [posts, setPosts] = useState(null);
   const [reload, setReload] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const { token } = useAuth();
+
+  function handleOpenModal() {
+    setModalIsOpen(!modalIsOpen);
+  }
+
+  function confirmDelete(id) {}
 
   useEffect(() => {
     const promise = api.getPosts(token);
@@ -52,7 +61,7 @@ export default function Posts() {
       {posts.map((post) => (
         <PostBox key={post.id}>
           {post.deleteOption === true && (
-            <TrashCan>
+            <TrashCan onClick={handleOpenModal}>
               <IoTrash color='white' />
             </TrashCan>
           )}
@@ -70,6 +79,11 @@ export default function Posts() {
               title={post.linkTitle}
             />
           </ContentBox>
+          <ReactModal isOpen={modalIsOpen} onRequestClose={handleOpenModal}>
+            <h2>TESTE MODAL</h2>
+            <button onClick={handleOpenModal}>Não</button>
+            <button onClick={() => confirmDelete(post.id)}>Deletar</button>
+          </ReactModal>
         </PostBox>
       ))}
     </PostsContainer>

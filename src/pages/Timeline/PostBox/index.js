@@ -14,7 +14,6 @@ export default function Posts() {
   useEffect(() => {
     const promise = api.getPosts(token);
     promise.then(({ data }) => {
-      console.log(data);
       setPosts(data);
     });
 
@@ -50,7 +49,7 @@ export default function Posts() {
         <PostBox key={post.id}>
           <NavBox>
             <img src={"user.image"} alt="perfil-user" />
-            <Like />
+            <Like postId={post.id} token={token}/>
           </NavBox>
           <ContentBox>
             <h2>{post.name}</h2>

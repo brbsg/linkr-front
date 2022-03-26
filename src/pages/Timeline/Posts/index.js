@@ -12,7 +12,6 @@ export default function Posts() {
   useEffect(() => {
     const promise = api.getPosts(token);
     promise.then(({ data }) => {
-      console.log(data);
       setPosts(data);
   });
 

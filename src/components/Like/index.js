@@ -10,7 +10,7 @@ export default function Like(props) {
   //achar lib pro balaozinho
   return (
     <>
-    <a data-tip='ninguém curtiu isso' onClick={() => setLiked(!liked)}>
+    <a data-tip='Ninguém curtiu isso. Que peninha.' onClick={() => setLiked(!liked)}>
       {liked ? <IoHeart color='red' /> : <IoHeartOutline />}
       <p>{props.likes} likes</p>
     </a>

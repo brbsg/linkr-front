@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
 // const BASE_URL = 'https://git.heroku.com/linkr-back-csgg.git';
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
+
+function createConfig(token) {
+  return { headers: { Authorization: `Bearer ${token}` } };
+}
 
 function loginUser(body) {
   const response = axios.post(`${BASE_URL}/sign-in`, body);
 
   return response;
-}
-
-function createConfig(token) {
-  return { headers: { Authorization: `Bearer ${token}` } };
 }
 
 async function createUser(user) {
@@ -58,6 +58,13 @@ function deletePost(id) {
   return promise;
 }
 
+function validateToken(token) {
+  const config = createConfig(token);
+  const response = axios.get(`${BASE_URL}/validate-token`, config);
+
+  return response;
+}
+
 const api = {
   loginUser,
   createUser,
@@ -68,6 +75,7 @@ const api = {
   toggleLike,
   getLikes,
   deletePost,
+  validateToken,
 };
 
 export default api;

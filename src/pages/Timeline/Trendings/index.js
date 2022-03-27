@@ -4,44 +4,46 @@ import styled from "styled-components";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../services/api";
 
-export default function Trendings(){
+export default function Trendings() {
   const navigate = useNavigate();
   const [hashtags, setHashtags] = useState(null);
   const [reload, setReload] = useState(false);
-  const {token} = useAuth;
-  
-//   setInterval(()=>{
-//       setReload(!reload);
-//   }, 10000);
+  const { token } = useAuth();
 
-  useEffect(()=>{
-      const promise = api.getHashtags(token);
-      promise.then(({data})=>{
-          setHashtags(data);
-      }).catch((error)=>{
-          console.log(error);
+  //   setInterval(()=>{
+  //       setReload(!reload);
+  //   }, 10000);
+
+  useEffect(() => {
+    const promise = api.getHashtags(token);
+    promise
+      .then(({ data }) => {
+        setHashtags(data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
 
-  if(!hashtags){
-    return (
-        <Trending>
-            <Title>trending</Title>
-            <Separador />
-            <Trends>
-                <Trend>Houve um erro ao carregar as #hashtags</Trend>
-            </Trends>
-        </Trending>
-      );
-  }
-  if(hashtags.length === 0){
+  if (!hashtags) {
     return (
       <Trending>
-          <Title>trending</Title>
-          <Separador />
-          <Trends>
-              <Trend>There are no hashtags trending yet...</Trend>
-          </Trends>
+        <Title>trending</Title>
+        <Separador />
+        <Trends>
+          <Trend>Houve um erro ao carregar as #hashtags</Trend>
+        </Trends>
+      </Trending>
+    );
+  }
+  if (hashtags.length === 0) {
+    return (
+      <Trending>
+        <Title>trending</Title>
+        <Separador />
+        <Trends>
+          <Trend>There are no hashtags trending yet...</Trend>
+        </Trends>
       </Trending>
     );
   }
@@ -51,11 +53,11 @@ export default function Trendings(){
       <Title>trending</Title>
       <Separador />
       <Trends>
-          {hashtags.map((hashtag)=>{
-            <Trend onClick={navigate(`/hashtag/${hashtag.id}`)}>
-              {`# ${hashtag.name}`}
-            </Trend>
-          })}
+        {hashtags.map((hashtag) => {
+          <Trend onClick={navigate(`/hashtag/${hashtag.id}`)}>
+            {`# ${hashtag.name}`}
+          </Trend>;
+        })}
       </Trends>
     </Trending>
   );
@@ -64,15 +66,15 @@ export default function Trendings(){
 const Trending = styled.div`
   width: 301px;
   height: 100%;
-  
-  h1{
-    font-family: 'Oswald';
+
+  h1 {
+    font-family: "Oswald";
     font-style: normal;
     font-weight: 700;
     font-size: 27px;
     line-height: 40px;
 
-    color: #FFFFFF;
+    color: #ffffff;
   }
 
   background: #171717;
@@ -86,13 +88,13 @@ const Separador = styled.div`
 
 const Title = styled.div`
   padding: 9px 16px 12px;
-  font-family: 'Oswald';
+  font-family: "Oswald";
   font-style: normal;
   font-weight: 700;
   font-size: 27px;
   line-height: 40px;
 
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 const Trends = styled.div`
@@ -104,12 +106,12 @@ const Trends = styled.div`
 `;
 
 const Trend = styled.div`
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 700;
   font-size: 19px;
   line-height: 23px;
   letter-spacing: 0.05em;
-  
-  color: #FFFFFF;
-`
+
+  color: #ffffff;
+`;

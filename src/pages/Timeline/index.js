@@ -10,13 +10,13 @@ export default function Timeline() {
   const [postForm, setPostForm] = useState({ link: "", text: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [reloadPosts, setReloadPosts] = useState(false);
-  const [userPicture, setUserPicture] = useState('')
+  const [userPicture, setUserPicture] = useState("");
   const { token } = useAuth();
 
-  useEffect(() => getUserPicture(), [])
+  useEffect(() => getUserPicture(), []);
   function getUserPicture() {
     const promise = api.getUser(token);
-    promise.then(({ data }) => setUserPicture(data))
+    promise.then(({ data }) => setUserPicture(data));
   }
 
   function handleChange(e) {
@@ -27,28 +27,31 @@ export default function Timeline() {
     event.preventDefault();
     setIsLoading(true);
     let promise = api.sendPost(postForm, token);
-    promise.then(() => {
-      setIsLoading(false);
-      setReloadPosts(!reloadPosts);
-    }).catch(() => {
-      alert("Houve um erro ao publicar seu link");
-      setIsLoading(false);
-    });
+    promise
+      .then(() => {
+        setIsLoading(false);
+        setReloadPosts(!reloadPosts);
+      })
+      .catch(() => {
+        alert("Houve um erro ao publicar seu link");
+        setIsLoading(false);
+      });
   }
 
   return (
     <>
-    <Navbar />
-    <TitlePage>timeline</TitlePage>
-    <Container>
-      <ContainerPublications>
+      <Navbar />
+      <TitlePage>timeline</TitlePage>
+      <Container>
+        <ContainerPublications>
           <PublishBlock>
-          <UserBlock>
+            <UserBlock>
               <img src={userPicture} alt="user-perfil" />
-          </UserBlock>
-          <FormBlock onSubmit={handlePost}>
+            </UserBlock>
+
+            <FormBlock onSubmit={handlePost}>
               <h2>What are you going to share today?</h2>
-              <LinkInput 
+              <LinkInput
                 placeholder="http://"
                 type="text"
                 onChange={handleChange}
@@ -56,22 +59,25 @@ export default function Timeline() {
                 value={postForm.link}
                 required
               />
-              <DescriptionInput 
+
+              <DescriptionInput
                 placeholder="Awesome article about #javascript"
                 type="text"
                 onChange={handleChange}
                 name="text"
                 value={postForm.text}
               />
+
               <button type="submit" disabled={isLoading}>
-                {isLoading? "Publishing...": "Publish"}
-              </button> 
-          </FormBlock>
+                {isLoading ? "Publishing..." : "Publish"}
+              </button>
+            </FormBlock>
           </PublishBlock>
-          <Posts reloadPosts={reloadPosts}/>
-      </ContainerPublications>
-    <Trendings />
-    </Container>
+          <Posts reloadPosts={reloadPosts} />
+        </ContainerPublications>
+
+        <Trendings />
+      </Container>
     </>
   );
 }
@@ -80,9 +86,9 @@ const TitlePage = styled.h1`
   width: 936px;
   padding-top: 78px;
   padding-bottom: 43px;
-  
-  font-family: 'Oswald';
-  color: #FFFFFF;
+
+  font-family: "Oswald";
+  color: #ffffff;
 
   align-self: left;
 `;
@@ -176,7 +182,7 @@ const LinkInput = styled.input`
   ::placeholder {
     font-family: "Lato";
     font-style: normal;
-    font-weight: ;
+    font-weight: 500;
     font-size: 15px;
     line-height: 18px;
 

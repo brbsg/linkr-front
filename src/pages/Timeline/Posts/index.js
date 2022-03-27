@@ -16,7 +16,6 @@ export default function Posts({reloadPosts}) {
   const [reloadByDelete, setReloadByDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuth();
-  console.log(reloadPosts);
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);

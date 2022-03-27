@@ -73,6 +73,7 @@ const api = {
   getUser,
   toggleLike,
   getLikes,
+  getUserLikes,
   deletePost,
 };
 

@@ -11,14 +11,27 @@ export default function Like(props) {
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
   const [likers, setLikers] = useState([])
+  const [userLikes, setUserLikes] = useState([])
 
   useEffect(() => getLikeData(), [])
+  useEffect(() => getLikedByUser(), [])
+
+  function getLikedByUser() {
+    const promise = api.getUserLikes(props.token);
+    promise.then(({ data }) => {
+      setUserLikes(data);
+    })
+  }
 
   function getLikeData() {
     const promise = api.getLikes({postId: props.postId}, props.token)
     promise.then(({ data }) => {
       setLikers(data.users)
       setLikes(data.count)
+
+      if (userLikes.filter((item) => item.postId == props.postId)) {
+        setLiked(true)
+      }
       }
     )
   }
@@ -49,6 +62,9 @@ export default function Like(props) {
             `You and ${likers[0].user}`
             :
             `${likers[0].user}`
+      :
+      liked?
+      `You`
       :
       'Ninguém curtiu isso. Que peninha.'
     } 

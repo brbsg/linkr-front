@@ -9,6 +9,7 @@ import Trendings from "./Trendings";
 export default function Timeline() {
   const [postForm, setPostForm] = useState({ link: "", text: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [reloadPosts, setReloadPosts] = useState(false);
   const [userPicture, setUserPicture] = useState('')
   const { token } = useAuth();
 
@@ -24,13 +25,12 @@ export default function Timeline() {
 
   function handlePost(event) {
     event.preventDefault();
-
     setIsLoading(true);
     let promise = api.sendPost(postForm, token);
     promise.then(() => {
       setIsLoading(false);
-    });
-    promise.catch(() => {
+      setReloadPosts(!reloadPosts);
+    }).catch(() => {
       alert("Houve um erro ao publicar seu link");
       setIsLoading(false);
     });
@@ -68,7 +68,7 @@ export default function Timeline() {
               </button> 
           </FormBlock>
           </PublishBlock>
-          <Posts />
+          <Posts reloadPosts={reloadPosts}/>
       </ContainerPublications>
     <Trendings />
     </Container>
@@ -107,12 +107,13 @@ const PublishBlock = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
+  box-sizing: border-box;
 `;
 
 const UserBlock = styled.div`
   width: 50px;
   img {
-    width: 50px;
+    width: 50px !important;
     height: 50px;
     border-radius: 26.5px;
   }
@@ -164,10 +165,18 @@ const LinkInput = styled.input`
   height: 30px;
   padding: 8px 12px;
 
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #000000;
+
   ::placeholder {
     font-family: "Lato";
     font-style: normal;
-    font-weight: 300;
+    font-weight: ;
     font-size: 15px;
     line-height: 18px;
 
@@ -184,6 +193,14 @@ const DescriptionInput = styled.input`
   width: 100%;
   height: 66px;
   padding: 8px 12px;
+
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #000000;
 
   ::placeholder {
     font-family: "Lato";

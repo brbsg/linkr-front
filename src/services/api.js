@@ -54,7 +54,7 @@ function getLikes(body, token) {
 }
 
 function deletePost(id) {
-  const promise = axios.delete(`${BASE_URL}/timeline/:${id}`);
+  const promise = axios.delete(`${BASE_URL}/timeline/${id}`);
   return promise;
 }
 

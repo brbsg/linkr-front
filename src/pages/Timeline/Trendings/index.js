@@ -63,6 +63,7 @@ export default function Trendings(){
 
 const Trending = styled.div`
   width: 301px;
+  height: 100%;
   
   h1{
     font-family: 'Oswald';

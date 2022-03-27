@@ -3,43 +3,56 @@ import api from '../../../services/api';
 import useAuth from '../../../hooks/useAuth';
 import styled from 'styled-components';
 import MetaLink from './MetaLink';
-
 import Like from '../../../components/Like';
-
 import ReactModal from 'react-modal';
 import { IoTrash } from 'react-icons/io5';
 
 ReactModal.setAppElement('#root');
 
-export default function Posts() {
+export default function Posts({reloadPosts}) {
   const [posts, setPosts] = useState(null);
-  const [reload, setReload] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [postId, setPostId] = useState(null);
+  const [reloadByDelete, setReloadByDelete] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuth();
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
   }
 
-  function confirmDelete(id) {}
+  function confirmDelete(id) {
+    console.log(id);
+    setIsLoading(true);
+    const promise = api.deletePost(id);
+    promise.then(()=>{
+      setIsLoading(false);
+      handleOpenModal();
+      setReloadByDelete(!reloadByDelete)
+    }).catch(()=>{
+      handleOpenModal();
+      setIsLoading(false);
+      alert("Could not delete this post.")
+    })
+  }
 
-  useEffect(() => {
-    const promise = api.getPosts(token);
-    promise.then(({ data }) => {
-      setPosts(data);
-    });
-
-    promise.catch(() => {
+  async function loadPosts(){
+    const {data} = await api.getPosts(token);
+    console.log(data);
+    try {
+      setPosts(data)
+    } catch {
       return (
         <PostsContainer>
           <h1>
-            An error occured while trying to fetch the posts, please refresh the
-            page
+            An error occured while trying to fetch the posts, please refresh the page
           </h1>
         </PostsContainer>
       );
-    });
-  }, []);
+    }
+  }
+
+  useEffect( loadPosts, [reloadPosts, reloadByDelete]);
 
   if (!posts) {
     return (
@@ -61,7 +74,7 @@ export default function Posts() {
       {posts.map((post) => (
         <PostBox key={post.id}>
           {post.deleteOption === true && (
-            <TrashCan onClick={handleOpenModal}>
+            <TrashCan onClick={()=>{handleOpenModal(); setPostId(post.id);}}>
               <IoTrash color='white' />
             </TrashCan>
           )}
@@ -80,9 +93,13 @@ export default function Posts() {
             />
           </ContentBox>
           <ReactModal isOpen={modalIsOpen} onRequestClose={handleOpenModal}>
-            <h2>TESTE MODAL</h2>
-            <button onClick={handleOpenModal}>Não</button>
-            <button onClick={() => confirmDelete(post.id)}>Deletar</button>
+            <h2>Are you sure you want to delete this post?</h2>
+            <button onClick={handleOpenModal}>
+              No, go back
+            </button>
+            <button onClick={() => confirmDelete(postId)}>
+              {isLoading? "Loading..." : "Yes, delete it"}
+            </button>
           </ReactModal>
         </PostBox>
       ))}

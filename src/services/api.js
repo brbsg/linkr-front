@@ -65,6 +65,14 @@ function validateToken(token) {
   return response;
 }
 
+function getUserPosts(token, params) {
+  const config = createConfig(token);
+
+  const response = axios.get(`${BASE_URL}/users/${params}`, config);
+
+  return response;
+}
+
 const api = {
   loginUser,
   createUser,
@@ -76,6 +84,7 @@ const api = {
   getLikes,
   deletePost,
   validateToken,
+  getUserPosts,
 };
 
 export default api;

@@ -50,7 +50,7 @@ export default function Like(props) {
             :
             `${likers[0].user}`
       :
-      'Ningém curtiu isso. Que peninha.'
+      'Ninguém curtiu isso. Que peninha.'
     } 
     onClick={() => setLiked(!liked)}>
       {liked ? <IoHeart color='red' /> : <IoHeartOutline />}

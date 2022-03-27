@@ -47,6 +47,12 @@ function getLikes(body, token) {
   return promise;
 }
 
+function getUserLikes(token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/likes`, config)
+  return promise;
+}
+
 const api = {
   loginUser,
   createUser,

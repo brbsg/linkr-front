@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 // const BASE_URL = 'https://git.heroku.com/linkr-back-csgg.git';
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000"
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
 
 function loginUser(body) {
   const response = axios.post(`${BASE_URL}/sign-in`, body);
@@ -29,7 +29,7 @@ function getPosts(token) {
   return promise;
 }
 
-function getHashtags(token){
+function getHashtags(token) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/trendings`, config);
   return promise;
@@ -37,19 +37,24 @@ function getHashtags(token){
 
 function getUser(token) {
   const config = createConfig(token);
-  const promise = axios.get(`${BASE_URL}/user`, config)
+  const promise = axios.get(`${BASE_URL}/user`, config);
   return promise;
 }
 
 function toggleLike(body, token) {
   const config = createConfig(token);
-  const promise = axios.post(`${BASE_URL}/like`, body, config)
+  const promise = axios.post(`${BASE_URL}/like`, body, config);
   return promise;
 }
 
 function getLikes(body, token) {
   const config = createConfig(token);
-  const promise = axios.post(`${BASE_URL}/likes`, body, config)
+  const promise = axios.post(`${BASE_URL}/likes`, body, config);
+  return promise;
+}
+
+function deletePost(id) {
+  const promise = axios.delete(`${BASE_URL}/timeline/${id}`);
   return promise;
 }
 
@@ -61,7 +66,8 @@ const api = {
   getHashtags,
   getUser,
   toggleLike,
-  getLikes
+  getLikes,
+  deletePost,
 };
 
 export default api;

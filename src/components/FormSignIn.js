@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useAuth from "../hooks/useAuth";
@@ -10,11 +10,17 @@ export default function FormSignIn() {
     password: "",
   });
 
-  const { persistToken } = useAuth();
+  const { token, persistToken } = useAuth();
 
   const [buttonDisable, setButtonDisable] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(token){
+      navigate("/timeline");
+    };
+  }, []);
 
   function handleChange({ target }) {
     setFormData({ ...formData, [target.name]: target.value });

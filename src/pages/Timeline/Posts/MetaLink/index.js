@@ -10,7 +10,7 @@ export default function MetaLink({ url, title, description, image }) {
         <h4>{description}</h4>
         <h5>{url}</h5>
       </BlockText>
-      <img src={image} alt="Link image" />
+      <img src={image} alt="link post visual" />
     </LinkBlock>
   );
 }
@@ -37,8 +37,12 @@ const LinkBlock = styled.div`
 `;
 
 const BlockText = styled.div`
-  width: 338px;
+  width: 100%;
   padding: 24px 19px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   box-sizing: border-box;
 
@@ -52,6 +56,7 @@ const BlockText = styled.div`
     color: #cecece;
   }
   h4 {
+
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;
@@ -61,6 +66,9 @@ const BlockText = styled.div`
     color: #9b9595;
   }
   h5 {
+    margin: 0;
+    padding: 0;
+
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;

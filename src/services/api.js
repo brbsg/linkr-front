@@ -58,6 +58,12 @@ function deletePost(id) {
   return promise;
 }
 
+function getUserLikes(token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/likes`, config)
+  return promise;
+}
+
 const api = {
   loginUser,
   createUser,
@@ -67,6 +73,7 @@ const api = {
   getUser,
   toggleLike,
   getLikes,
+  getUserLikes,
   deletePost,
 };
 

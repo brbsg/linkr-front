@@ -42,6 +42,17 @@ h1 {
 }
 
 nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: fixed;
+
+  width: 100%;
+  height: 72px;
+
+  padding: 10px;
+
   background: #171717;
   z-index: 1;
 }

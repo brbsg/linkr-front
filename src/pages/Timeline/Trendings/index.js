@@ -50,7 +50,7 @@ export default function Trendings({reloadPostsTrend}){
       <Trends>
           {
             hashtags.map((hashtag)=>
-              <Trend onClick={()=>{navigate(`/hashtag/${hashtag.id}`)}} key={hashtag.id}>
+              <Trend onClick={()=>{navigate(`/hashtag/${hashtag.name}`)}} key={hashtag.id}>
                 {`# ${hashtag.name}`}
               </Trend>
             )

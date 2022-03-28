@@ -176,7 +176,6 @@ export default function Posts({ reloadPosts }) {
 
 const PostsContainer = styled.div`
   width: 100%;
-  padding-top: 29px;
 
   display: flex;
   flex-direction: column;
@@ -196,6 +195,13 @@ const PostBox = styled.div`
   background: #171717;
   border-radius: 16px;
   box-sizing: border-box;
+
+  @media (max-width: 630px){
+    border-radius: 0px;
+  }
+  @media (max-width: 550px){
+    padding: 9px 15px;
+  }
 `;
 
 const NavBox = styled.div`
@@ -233,6 +239,17 @@ const ContentBox = styled.div`
 
     color: #b7b7b7;
   }
+
+  @media (max-width: 550px){
+    h2{
+      font-size: 17px;
+      line-height: 20px;
+    }
+    h3{
+      font-size: 15px;
+      line-height: 18px;
+    }
+  }
 `;
 
 const TrashCan = styled.div`
@@ -242,6 +259,10 @@ const TrashCan = styled.div`
 
   :hover {
     cursor: pointer;
+  }
+  @media (max-width: 550px) {
+    top: 9px;
+    right: 15px;
   }
 `;
 

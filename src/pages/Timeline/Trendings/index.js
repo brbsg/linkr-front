@@ -31,6 +31,17 @@ export default function Trendings() {
         <Title>trending</Title>
         <Separador />
         <Trends>
+          <Trend>Could not load trending #hashtags</Trend>
+        </Trends>
+      </Trending>
+    );
+  }
+  if (hashtags.length === 0) {
+    return (
+      <Trending>
+        <Title>trending</Title>
+        <Separador />
+        <Trends>
           <Trend>Houve um erro ao carregar as #hashtags</Trend>
         </Trends>
       </Trending>
@@ -79,6 +90,10 @@ const Trending = styled.div`
 
   background: #171717;
   border-radius: 16px;
+
+  @media (max-width: 945px) {
+    display: none;
+  }
 `;
 
 const Separador = styled.div`

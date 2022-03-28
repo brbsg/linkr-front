@@ -35,22 +35,18 @@ export default function Timeline() {
       alert("Houve um erro ao publicar seu link");
       setIsLoading(false);
     });
-    setPostForm({...postForm, hashtags: []});
-    console.log(postForm);
+    setPostForm({ link: "", text: "", hashtags: []});
   }
 
   function macthHashtags(){
     let str = postForm.text;
-    console.log(str);
     let regex = /\B(\#[a-zA-Z)-9]+\b)(?!;)/gi
     let hashArr = str.match(regex);
-    console.log(hashArr);
+
     hashArr.forEach((element)=>{
       const nameHashtag = element.replace("#", "");
       setPostForm({...postForm, hashtags: postForm.hashtags.push(nameHashtag)});
     })
-    
-    console.log(postForm);
   }
 
 

@@ -7,6 +7,8 @@ import Like from '../../../components/Like';
 import ReactModal from 'react-modal';
 import { IoTrash } from 'react-icons/io5';
 import { TiPencil } from 'react-icons/ti';
+import ReactHashtag from '@mdnm/react-hashtag';
+import { useNavigate } from 'react-router-dom';
 
 ReactModal.setAppElement('#root');
 
@@ -21,6 +23,7 @@ export default function Posts({ reloadPosts }) {
   const [newText, setNewText] = useState('');
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -151,7 +154,15 @@ export default function Posts({ reloadPosts }) {
                 onKeyDown={(e) => handlerKey(e)}
               />
             ) : (
-              <h3>{post.text}</h3>
+              <h3>
+                <ReactHashtag
+                  onHashtagClick={(hashtag) =>
+                    navigate(`/hashtag/${hashtag.substring(1).toLowerCase()}`)
+                  }
+                >
+                  {post.text}
+                </ReactHashtag>
+              </h3>
             )}
             <MetaLink
               url={post.link}
@@ -205,10 +216,10 @@ const PostBox = styled.div`
   border-radius: 16px;
   box-sizing: border-box;
 
-  @media (max-width: 630px){
+  @media (max-width: 630px) {
     border-radius: 0px;
   }
-  @media (max-width: 550px){
+  @media (max-width: 550px) {
     padding: 9px 15px;
   }
 `;
@@ -249,12 +260,12 @@ const ContentBox = styled.div`
     color: #b7b7b7;
   }
 
-  @media (max-width: 550px){
-    h2{
+  @media (max-width: 550px) {
+    h2 {
       font-size: 17px;
       line-height: 20px;
     }
-    h3{
+    h3 {
       font-size: 15px;
       line-height: 18px;
     }

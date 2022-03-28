@@ -29,7 +29,7 @@ export default function Trendings(){
             <Title>trending</Title>
             <Separador />
             <Trends>
-                <Trend>Houve um erro ao carregar as #hashtags</Trend>
+                <Trend>Could not load trending #hashtags</Trend>
             </Trends>
         </Trending>
       );
@@ -77,6 +77,10 @@ const Trending = styled.div`
 
   background: #171717;
   border-radius: 16px;
+
+  @media (max-width: 945px){
+    display: none;
+  }
 `;
 
 const Separador = styled.div`

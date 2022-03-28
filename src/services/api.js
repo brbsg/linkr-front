@@ -71,6 +71,8 @@ function getUserPosts(token, params) {
   const response = axios.get(`${BASE_URL}/users/${params}`, config);
 
   return response;
+}
+
 function editPost(id, editedText) {
   const newText = { newText: editedText };
   const promise = axios.put(`${BASE_URL}/timeline/${id}`, newText);
@@ -112,7 +114,6 @@ const api = {
   searchUsers,
   getUserName,
   editPost,
-}
-
+};
 
 export default api;

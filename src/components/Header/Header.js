@@ -30,7 +30,11 @@ export default function Header() {
 
   return (
     <Container>
-      <p className="logo" onClick={() => navigate("/")}>
+      <p
+        className="logo"
+        style={{ cursor: "pointer" }}
+        onClick={() => navigate("/")}
+      >
         linkr
       </p>
 

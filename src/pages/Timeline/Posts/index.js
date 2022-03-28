@@ -7,6 +7,7 @@ import Like from "../../../components/Like";
 import ReactModal from "react-modal";
 import { IoTrash } from "react-icons/io5";
 import { TiPencil } from "react-icons/ti";
+import { useNavigate } from "react-router-dom";
 
 ReactModal.setAppElement("#root");
 

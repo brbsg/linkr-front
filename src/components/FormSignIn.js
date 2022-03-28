@@ -10,17 +10,11 @@ export default function FormSignIn() {
     password: "",
   });
 
-  const { token, persistToken } = useAuth();
+  const { persistToken } = useAuth();
 
   const [buttonDisable, setButtonDisable] = useState(false);
 
   const navigate = useNavigate();
-
-  useEffect(()=>{
-    if(token){
-      navigate("/timeline");
-    };
-  }, []);
 
   function handleChange({ target }) {
     setFormData({ ...formData, [target.name]: target.value });

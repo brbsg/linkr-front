@@ -3,34 +3,32 @@ import { useParams } from "react-router-dom";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
-import Posts from './Posts'
-import Navbar from "../../components/Navbar";
-import Trendings from '../../pages/Timeline/Trendings';
+import Posts from "./Posts";
+import Trendings from "../../pages/Timeline/Trendings";
 
 export default function Hashtag() {
   const [isLoading, setIsLoading] = useState(false);
   const [reloadPosts, setReloadPosts] = useState(false);
-  const [userPicture, setUserPicture] = useState('')
+  const [userPicture, setUserPicture] = useState("");
   const { token } = useAuth();
 
   const hashtag = useParams().hashtag;
 
-  useEffect(() => getUserPicture(), [])
+  useEffect(() => getUserPicture(), []);
   function getUserPicture() {
     const promise = api.getUser(token);
-    promise.then(({ data }) => setUserPicture(data))
+    promise.then(({ data }) => setUserPicture(data));
   }
 
   return (
     <>
-    <Navbar />
-    <TitlePage>#{hashtag}</TitlePage>
-    <Container>
-      <ContainerPublications>
-          <Posts reloadPosts={reloadPosts} hashtag={hashtag}/>
-      </ContainerPublications>
-    <Trendings />
-    </Container>
+      <TitlePage>#{hashtag}</TitlePage>
+      <Container>
+        <ContainerPublications>
+          <Posts reloadPosts={reloadPosts} hashtag={hashtag} />
+        </ContainerPublications>
+        <Trendings />
+      </Container>
     </>
   );
 }
@@ -39,9 +37,9 @@ const TitlePage = styled.h1`
   width: 936px;
   padding-top: 78px;
   padding-bottom: 43px;
-  
-  font-family: 'Oswald';
-  color: #FFFFFF;
+
+  font-family: "Oswald";
+  color: #ffffff;
 
   align-self: left;
 `;
@@ -135,7 +133,7 @@ const LinkInput = styled.input`
   ::placeholder {
     font-family: "Lato";
     font-style: normal;
-    font-weight: ;
+    font-weight: 500;
     font-size: 15px;
     line-height: 18px;
 

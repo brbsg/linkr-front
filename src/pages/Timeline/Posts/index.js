@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
-import api from "../../../services/api";
-import useAuth from "../../../hooks/useAuth";
-import styled from "styled-components";
-import MetaLink from "./MetaLink";
-import Like from "../../../components/Like";
-import ReactModal from "react-modal";
-import { IoTrash } from "react-icons/io5";
-import { TiPencil } from "react-icons/ti";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import api from '../../../services/api';
+import useAuth from '../../../hooks/useAuth';
+import styled from 'styled-components';
+import MetaLink from './MetaLink';
+import Like from '../../../components/Like';
+import ReactModal from 'react-modal';
+import { IoTrash } from 'react-icons/io5';
+import { TiPencil } from 'react-icons/ti';
+import ReactHashtag from '@mdnm/react-hashtag';
+import { useNavigate } from 'react-router-dom';
 
-ReactModal.setAppElement("#root");
+ReactModal.setAppElement('#root');
 
 export default function Posts({ reloadPostsTrend }) {
   const [posts, setPosts] = useState(null);
@@ -19,10 +20,9 @@ export default function Posts({ reloadPostsTrend }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [newText, setNewText] = useState("");
+  const [newText, setNewText] = useState('');
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
-
   const navigate = useNavigate();
 
   function handleOpenModal() {
@@ -42,7 +42,7 @@ export default function Posts({ reloadPostsTrend }) {
       .catch(() => {
         handleOpenModal();
         setIsLoading(false);
-        alert("Could not delete this post.");
+        alert('Could not delete this post.');
       });
   }
 
@@ -54,28 +54,28 @@ export default function Posts({ reloadPostsTrend }) {
       // right: 0,
       // bottom: 0,
       // backgroundColor: 'rgba(255, 255, 255, 0.75)',
-      backgroundColor: "white",
-      opacity: "0.75",
+      backgroundColor: 'white',
+      opacity: '0.75',
     },
     content: {
-      width: "597px",
-      height: "262px",
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      backgroundColor: "#333333",
-      color: "#FFF",
-      border: "none",
-      borderRadius: "50px",
-      textAlign: "center",
-      padding: "auto",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      gap: "30px",
+      width: '597px',
+      height: '262px',
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: '#333333',
+      color: '#FFF',
+      border: 'none',
+      borderRadius: '50px',
+      textAlign: 'center',
+      padding: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      gap: '30px',
     },
   };
   console.log(newText);
@@ -112,7 +112,7 @@ export default function Posts({ reloadPostsTrend }) {
     promise.catch((error) => {
       console.log(error);
       setDisabled(false);
-      alert("Erro ao editar. Tente novamente mais tarde.");
+      alert('Erro ao editar. Tente novamente mais tarde.');
     });
   }
 
@@ -161,7 +161,7 @@ export default function Posts({ reloadPostsTrend }) {
           {post.delEditOption === true && (
             <>
               <EditIcon onClick={() => handleOpenEdit(post.text, post.id)}>
-                <TiPencil color="white" />
+                <TiPencil color='white' />
               </EditIcon>
               <TrashCan
                 onClick={() => {
@@ -169,16 +169,16 @@ export default function Posts({ reloadPostsTrend }) {
                   setPostId(post.id);
                 }}
               >
-                <IoTrash color="white" />
+                <IoTrash color='white' />
               </TrashCan>
             </>
           )}
           <NavBox>
             <img
               src={post.image}
-              alt="perfil-user"
+              alt='perfil-user'
               onClick={() => goToUserPage(post.userId)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
             />
             <Like postId={post.id} token={token} />
           </NavBox>
@@ -195,7 +195,15 @@ export default function Posts({ reloadPostsTrend }) {
                 onKeyDown={(e) => handlerKey(e)}
               />
             ) : (
-              <h3>{post.text}</h3>
+              <h3>
+                <ReactHashtag
+                  onHashtagClick={(hashtag) =>
+                    navigate(`/hashtag/${hashtag.substring(1).toLowerCase()}`)
+                  }
+                >
+                  {post.text}
+                </ReactHashtag>
+              </h3>
             )}
             <MetaLink
               url={post.link}
@@ -217,7 +225,7 @@ export default function Posts({ reloadPostsTrend }) {
             <div>
               <Button onClick={handleOpenModal}>No, go back</Button>
               <ButtonDelete onClick={() => confirmDelete(postId)}>
-                {isLoading ? "Loading..." : "Yes, delete it"}
+                {isLoading ? 'Loading...' : 'Yes, delete it'}
               </ButtonDelete>
             </div>
           </ReactModal>
@@ -275,7 +283,7 @@ const ContentBox = styled.div`
   flex-direction: column;
   gap: 7px;
   h2 {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
@@ -284,7 +292,7 @@ const ContentBox = styled.div`
     color: #ffffff;
   }
   h3 {
-    font-family: "Lato";
+    font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
@@ -343,7 +351,7 @@ const Button = styled.button`
   background-color: #fff;
   color: #1877f2;
 
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 21.8px;
@@ -358,7 +366,7 @@ const ButtonDelete = styled.button`
   background-color: #1877f2;
   color: #fff;
 
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 21.8px;
@@ -366,31 +374,31 @@ const ButtonDelete = styled.button`
 
 const customStyles = {
   overlay: {
-    position: "fixed",
+    position: 'fixed',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "#ffffff15",
+    backgroundColor: '#ffffff15',
   },
   content: {
-    width: "597px",
-    height: "262px",
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#333333",
-    color: "#FFF",
-    border: "none",
-    borderRadius: "50px",
-    textAlign: "center",
-    padding: "auto",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    gap: "30px",
+    width: '597px',
+    height: '262px',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#333333',
+    color: '#FFF',
+    border: 'none',
+    borderRadius: '50px',
+    textAlign: 'center',
+    padding: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    gap: '30px',
   },
 };

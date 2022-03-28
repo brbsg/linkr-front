@@ -65,16 +65,13 @@ export default function Trendings({ reloadPostsTrend }) {
       <Title>trending</Title>
       <Separador />
       <Trends>
-        {hashtags.map((hashtag) => (
-          <Trend
-            onClick={() => {
-              navigate(`/hashtag/${hashtag.id}`);
-            }}
-            key={hashtag.id}
-          >
-            {`# ${hashtag.name}`}
-          </Trend>
-        ))}
+          {
+            hashtags.map((hashtag)=>
+              <Trend onClick={()=>{navigate(`/hashtag/${hashtag.name}`)}} key={hashtag.id}>
+                {`# ${hashtag.name}`}
+              </Trend>
+            )
+          }
       </Trends>
     </Trending>
   );

@@ -7,7 +7,7 @@ import Navbar from "../../components/Navbar";
 import Trendings from "./Trendings";
 
 export default function Timeline() {
-  const [postForm, setPostForm] = useState({ link: "", text: "" });
+  const [postForm, setPostForm] = useState({ link: "", text: "", hashtags: [] });
   const [isLoading, setIsLoading] = useState(false);
   const [reloadPosts, setReloadPosts] = useState(false);
   const [userPicture, setUserPicture] = useState('')
@@ -25,6 +25,7 @@ export default function Timeline() {
 
   function handlePost(event) {
     event.preventDefault();
+    macthHashtags();
     setIsLoading(true);
     let promise = api.sendPost(postForm, token);
     promise.then(() => {
@@ -34,8 +35,23 @@ export default function Timeline() {
       alert("Houve um erro ao publicar seu link");
       setIsLoading(false);
     });
+    setPostForm({...postForm, hashtags: []});
+    console.log(postForm);
   }
 
+  function macthHashtags(){
+    let str = postForm.text;
+    console.log(str);
+    let regex = /\B(\#[a-zA-Z)-9]+\b)(?!;)/gi
+    let hashArr = str.match(regex);
+    console.log(hashArr);
+    hashArr.forEach((element)=>{
+      const nameHashtag = element.replace("#", "");
+      setPostForm({...postForm, hashtags: postForm.hashtags.push(nameHashtag)});
+    })
+    
+    console.log(postForm);
+  }
 
 
   return (

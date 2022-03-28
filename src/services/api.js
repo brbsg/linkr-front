@@ -58,9 +58,15 @@ function deletePost(id) {
   return promise;
 }
 
+function editPost(id, editedText) {
+  const newText = { newText: editedText };
+  const promise = axios.put(`${BASE_URL}/timeline/${id}`, newText);
+  return promise;
+}
+
 function getUserLikes(token) {
   const config = createConfig(token);
-  const promise = axios.get(`${BASE_URL}/likes`, config)
+  const promise = axios.get(`${BASE_URL}/likes`, config);
   return promise;
 }
 
@@ -75,6 +81,7 @@ const api = {
   getLikes,
   getUserLikes,
   deletePost,
+  editPost,
 };
 
 export default api;

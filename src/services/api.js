@@ -95,6 +95,10 @@ function searchUsers(token, body) {
 function getUserName(token, params) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/users-name/${params.id}`, config);
+}
+function getPostsByHashtag(token, hashtag) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`, config);
   return promise;
 }
 
@@ -114,6 +118,7 @@ const api = {
   searchUsers,
   getUserName,
   editPost,
+  getPostsByHashtag,
 };
 
 export default api;

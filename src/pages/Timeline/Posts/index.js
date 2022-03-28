@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 ReactModal.setAppElement("#root");
 
-export default function Posts({ reloadPosts }) {
+export default function Posts({ reloadPostsTrend }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
@@ -133,7 +133,7 @@ export default function Posts({ reloadPosts }) {
     }
   }
 
-  useEffect(loadPosts, [reloadPosts, reloadByDelEdit]);
+  useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit]);
 
   if (!posts) {
     return (
@@ -326,6 +326,11 @@ const EditIcon = styled.div`
 
   :hover {
     cursor: pointer;
+  }
+
+  @media (max-width: 550px) {
+    top: 9px;
+    right: 45px;
   }
 `;
 

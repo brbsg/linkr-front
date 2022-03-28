@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
-import Posts from "../../pages/Timeline/Posts";
+import Posts from "./Posts";
 import Trendings from "../../pages/Timeline/Trendings";
 
 export default function Hashtag() {
@@ -25,7 +25,7 @@ export default function Hashtag() {
       <TitlePage>#{hashtag}</TitlePage>
       <Container>
         <ContainerPublications>
-          <Posts reloadPosts={reloadPosts} />
+          <Posts reloadPosts={reloadPosts} hashtag={hashtag} />
         </ContainerPublications>
         <Trendings />
       </Container>

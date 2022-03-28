@@ -54,6 +54,8 @@ const BlockText = styled.div`
   box-sizing: border-box;
 
   h3 {
+    overflow: hidden;
+
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;
@@ -75,8 +77,10 @@ const BlockText = styled.div`
     color: #9b9595;
   }
   h5 {
+    height: 13px;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 
     font-family: "Lato";
     font-style: normal;

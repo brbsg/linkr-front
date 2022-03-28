@@ -9,7 +9,7 @@ import { IoTrash } from 'react-icons/io5';
 
 ReactModal.setAppElement('#root');
 
-export default function Posts({ reloadPosts }) {
+export default function Posts({ reloadPosts, hashtag}) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
@@ -72,7 +72,7 @@ export default function Posts({ reloadPosts }) {
   };
 
   async function loadPosts() {
-    const { data } = await api.getPosts(token);
+    const { data } = await api.getPostsByHashtag(token, hashtag);
     console.log(data);
     try {
       setPosts(data);

@@ -13,6 +13,7 @@ export default function Timeline() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [reloadPosts, setReloadPosts] = useState(false);
+  const [reloadPostsTrend, setReloadPostsTrend] = useState(false);
   const [userPicture, setUserPicture] = useState("");
   const { token } = useAuth();
 
@@ -34,7 +35,7 @@ export default function Timeline() {
     promise
       .then(() => {
         setIsLoading(false);
-        setReloadPosts(!reloadPosts);
+        setReloadPostsTrend(!reloadPostsTrend);
       })
       .catch(() => {
         alert("Houve um erro ao publicar seu link");
@@ -92,10 +93,9 @@ export default function Timeline() {
               </button>
             </FormBlock>
           </PublishBlock>
-
-          <Posts reloadPosts={reloadPosts} />
+          <Posts reloadPostsTrend={reloadPostsTrend} />
         </ContainerPublications>
-        <Trendings />
+        <Trendings reloadPostsTrend={reloadPostsTrend} />
       </Container>
     </>
   );

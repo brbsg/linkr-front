@@ -1,21 +1,25 @@
-import { useEffect, useState } from 'react';
-import api from '../../../services/api';
-import useAuth from '../../../hooks/useAuth';
-import styled from 'styled-components';
-import MetaLink from './MetaLink';
-import Like from '../../../components/Like';
-import ReactModal from 'react-modal';
-import { IoTrash } from 'react-icons/io5';
+import { useEffect, useState } from "react";
+import api from "../../../services/api";
+import useAuth from "../../../hooks/useAuth";
+import styled from "styled-components";
+import MetaLink from "./MetaLink";
+import Like from "../../../components/Like";
+import ReactModal from "react-modal";
+import { IoTrash } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
-ReactModal.setAppElement('#root');
+ReactModal.setAppElement("#root");
 
-export default function Posts({reloadPosts}) {
+export default function Posts({ reloadPosts }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
   const [reloadByDelete, setReloadByDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const { token } = useAuth();
+
+  const navigate = useNavigate();
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -25,34 +29,37 @@ export default function Posts({reloadPosts}) {
     console.log(id);
     setIsLoading(true);
     const promise = api.deletePost(id);
-    promise.then(()=>{
-      setIsLoading(false);
-      handleOpenModal();
-      setReloadByDelete(!reloadByDelete)
-    }).catch(()=>{
-      handleOpenModal();
-      setIsLoading(false);
-      alert("Could not delete this post.")
-    })
+    promise
+      .then(() => {
+        setIsLoading(false);
+        handleOpenModal();
+        setReloadByDelete(!reloadByDelete);
+      })
+      .catch(() => {
+        handleOpenModal();
+        setIsLoading(false);
+        alert("Could not delete this post.");
+      });
   }
 
-  async function loadPosts(){
-    const {data} = await api.getPosts(token);
+  async function loadPosts() {
+    const { data } = await api.getPosts(token);
     console.log(data);
     try {
-      setPosts(data)
+      setPosts(data);
     } catch {
       return (
         <PostsContainer>
           <h1>
-            An error occured while trying to fetch the posts, please refresh the page
+            An error occured while trying to fetch the posts, please refresh the
+            page
           </h1>
         </PostsContainer>
       );
     }
   }
 
-  useEffect( loadPosts, [reloadPosts, reloadByDelete]);
+  useEffect(loadPosts, [reloadPosts, reloadByDelete]);
 
   if (!posts) {
     return (
@@ -69,21 +76,40 @@ export default function Posts({reloadPosts}) {
     );
   }
 
+  function goToUserPage(userId) {
+    navigate(`/users/${userId}`);
+  }
+
   return (
     <PostsContainer>
       {posts.map((post) => (
         <PostBox key={post.id}>
           {post.deleteOption === true && (
-            <TrashCan onClick={()=>{handleOpenModal(); setPostId(post.id);}}>
-              <IoTrash color='white' />
+            <TrashCan
+              onClick={() => {
+                handleOpenModal();
+                setPostId(post.id);
+              }}
+            >
+              <IoTrash color="white" />
             </TrashCan>
           )}
           <NavBox>
-            <img src={post.image} alt='perfil-user' />
+            <img
+              src={post.image}
+              alt="perfil-user"
+              onClick={() => goToUserPage(post.userId)}
+              style={{ cursor: "pointer" }}
+            />
             <Like postId={post.id} token={token} />
           </NavBox>
           <ContentBox>
-            <h2>{post.name}</h2>
+            <h2
+              style={{ cursor: "pointer" }}
+              onClick={() => goToUserPage(post.userId)}
+            >
+              {post.name}{" "}
+            </h2>
             <h3>{post.text}</h3>
             <MetaLink
               url={post.link}
@@ -94,11 +120,9 @@ export default function Posts({reloadPosts}) {
           </ContentBox>
           <ReactModal isOpen={modalIsOpen} onRequestClose={handleOpenModal}>
             <h2>Are you sure you want to delete this post?</h2>
-            <button onClick={handleOpenModal}>
-              No, go back
-            </button>
+            <button onClick={handleOpenModal}>No, go back</button>
             <button onClick={() => confirmDelete(postId)}>
-              {isLoading? "Loading..." : "Yes, delete it"}
+              {isLoading ? "Loading..." : "Yes, delete it"}
             </button>
           </ReactModal>
         </PostBox>
@@ -149,7 +173,7 @@ const ContentBox = styled.div`
   flex-direction: column;
   gap: 7px;
   h2 {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
@@ -158,7 +182,7 @@ const ContentBox = styled.div`
     color: #ffffff;
   }
   h3 {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 17px;

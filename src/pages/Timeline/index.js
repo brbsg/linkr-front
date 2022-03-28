@@ -72,6 +72,7 @@ export default function Timeline() {
               </button>
             </FormBlock>
           </PublishBlock>
+
           <Posts reloadPosts={reloadPosts} />
         </ContainerPublications>
 

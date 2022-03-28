@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Dropdown = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
 
   position: fixed;
   top: 15px;

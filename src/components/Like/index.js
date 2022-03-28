@@ -15,10 +15,12 @@ export default function Like(props) {
 
   useEffect(() => getLikeData(), []);
   useEffect(() => getLikedByUser(), []);
+  useEffect(() => setLikedByUser(), [userLikes])
 
   function getLikedByUser() {
     const promise = api.getUserLikes(props.token);
     promise.then(({ data }) => {
+      console.log(data)
       setUserLikes(data);
     });
   }
@@ -28,11 +30,15 @@ export default function Like(props) {
     promise.then(({ data }) => {
       setLikers(data.users);
       setLikes(data.count);
-
-      if (userLikes.filter((item) => item.postId == props.postId)) {
-        setLiked(true);
-      }
+      console.log(userLikes)
     });
+  }
+
+  function setLikedByUser() {
+    console.log(userLikes);
+    if(userLikes.find((userLike) => userLike.postId === props.postId)) {
+      setLiked(true)
+    }
   }
 
   function handleClick() {

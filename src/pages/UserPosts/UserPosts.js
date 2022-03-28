@@ -3,7 +3,6 @@ import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
 import Posts from "./Posts";
-import Navbar from "../../components/Navbar";
 import Trendings from "./Trendings";
 import { useParams } from "react-router-dom";
 
@@ -27,8 +26,6 @@ export default function UserPosts() {
 
   return (
     <>
-      <Navbar />
-
       <TitlePage>
         <img src={userPicture} />
         {userName}'s posts

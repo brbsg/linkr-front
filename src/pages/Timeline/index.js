@@ -3,7 +3,6 @@ import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
 import Posts from "./Posts";
-import Navbar from "../../components/Navbar";
 import Trendings from "./Trendings";
 
 export default function Timeline() {
@@ -40,8 +39,8 @@ export default function Timeline() {
 
   return (
     <>
-      <Navbar />
       <TitlePage>timeline</TitlePage>
+
       <Container>
         <ContainerPublications>
           <PublishBlock>

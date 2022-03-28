@@ -1,8 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Dropdown = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 20px;
 
   position: fixed;
   top: 15px;
@@ -10,7 +11,6 @@ export const Dropdown = styled.div`
 
   padding-right: 30px;
   padding-left: 30px;
-
 
   button {
     margin-top: 20px;

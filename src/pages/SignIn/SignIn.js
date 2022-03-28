@@ -18,8 +18,6 @@ export default function Signin() {
       if (token) {
         const response = await api.validateToken(token);
 
-        console.log(response);
-
         navigate("/timeline");
       }
     } catch (error) {

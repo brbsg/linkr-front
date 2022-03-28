@@ -4,15 +4,10 @@ import styled from "styled-components";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../services/api";
 
-export default function Trendings(){
+export default function Trendings({reloadPostsTrend}){
   const navigate = useNavigate();
   const [hashtags, setHashtags] = useState(null);
-  const [reload, setReload] = useState(false);
-  const {token} = useAuth;
-  
-//   setInterval(()=>{
-//       setReload(!reload);
-//   }, 10000);
+  const {token} = useAuth();
 
   useEffect(()=>{
       const promise = api.getHashtags(token);
@@ -21,7 +16,9 @@ export default function Trendings(){
       }).catch((error)=>{
           console.log(error);
       });
-  }, []);
+  }, [reloadPostsTrend]);
+
+  console.log(hashtags);
 
   if(!hashtags){
     return (
@@ -51,11 +48,13 @@ export default function Trendings(){
       <Title>trending</Title>
       <Separador />
       <Trends>
-          {hashtags.map((hashtag)=>{
-            <Trend onClick={navigate(`/hashtag/${hashtag.id}`)}>
-              {`# ${hashtag.name}`}
-            </Trend>
-          })}
+          {
+            hashtags.map((hashtag)=>
+              <Trend onClick={()=>{navigate(`/hashtag/${hashtag.id}`)}} key={hashtag.id}>
+                {`# ${hashtag.name}`}
+              </Trend>
+            )
+          }
       </Trends>
     </Trending>
   );

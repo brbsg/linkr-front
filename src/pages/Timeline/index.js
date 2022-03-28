@@ -3,20 +3,24 @@ import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
 import Posts from "./Posts";
-import Navbar from "../../components/Navbar";
 import Trendings from "./Trendings";
 
 export default function Timeline() {
-  const [postForm, setPostForm] = useState({ link: "", text: "", hashtags: [] });
+  const [postForm, setPostForm] = useState({
+    link: "",
+    text: "",
+    hashtags: [],
+  });
   const [isLoading, setIsLoading] = useState(false);
+  const [reloadPosts, setReloadPosts] = useState(false);
   const [reloadPostsTrend, setReloadPostsTrend] = useState(false);
-  const [userPicture, setUserPicture] = useState('')
+  const [userPicture, setUserPicture] = useState("");
   const { token } = useAuth();
 
-  useEffect(() => getUserPicture(), [])
+  useEffect(() => getUserPicture(), []);
   function getUserPicture() {
     const promise = api.getUser(token);
-    promise.then(({ data }) => setUserPicture(data))
+    promise.then(({ data }) => setUserPicture(data));
   }
 
   function handleChange(e) {
@@ -28,39 +32,44 @@ export default function Timeline() {
     macthHashtags();
     setIsLoading(true);
     let promise = api.sendPost(postForm, token);
-    promise.then(() => {
-      setIsLoading(false);
-      setReloadPostsTrend(!reloadPostsTrend);
-    }).catch(() => {
-      alert("Houve um erro ao publicar seu link");
-      setIsLoading(false);
-    });
-    setPostForm({ link: "", text: "", hashtags: []});
+    promise
+      .then(() => {
+        setIsLoading(false);
+        setReloadPostsTrend(!reloadPostsTrend);
+      })
+      .catch(() => {
+        alert("Houve um erro ao publicar seu link");
+        setIsLoading(false);
+      });
+    setPostForm({ link: "", text: "", hashtags: [] });
   }
 
-  function macthHashtags(){
+  function macthHashtags() {
     let str = postForm.text;
-    let regex = /\B(\#[a-zA-Z)-9]+\b)(?!;)/gi
+    let regex = /\B(\#[a-zA-Z)-9]+\b)(?!;)/gi;
     let hashArr = str.match(regex);
 
-    hashArr.forEach((element)=>{
+    hashArr.forEach((element) => {
       const nameHashtag = element.replace("#", "");
-      setPostForm({...postForm, hashtags: postForm.hashtags.push(nameHashtag)});
-    })
+      setPostForm({
+        ...postForm,
+        hashtags: postForm.hashtags.push(nameHashtag),
+      });
+    });
   }
-
 
   return (
     <>
-    <Navbar />
-    <TitlePage>timeline</TitlePage>
-    <Container>
-      <ContainerPublications>
+      <TitlePage>timeline</TitlePage>
+
+      <Container>
+        <ContainerPublications>
           <PublishBlock>
-          <UserBlock>
+            <UserBlock>
               <img src={userPicture} alt="user-perfil" />
-          </UserBlock>
-          <FormBlock onSubmit={handlePost}>
+            </UserBlock>
+
+            <FormBlock onSubmit={handlePost}>
               <h2>What are you going to share today?</h2>
               <LinkInput
                 placeholder="http://"
@@ -70,22 +79,24 @@ export default function Timeline() {
                 value={postForm.link}
                 required
               />
-              <DescriptionInput 
+
+              <DescriptionInput
                 placeholder="Awesome article about #javascript"
                 type="text-area"
                 onChange={handleChange}
                 name="text"
                 value={postForm.text}
               />
+
               <button type="submit" disabled={isLoading}>
-                {isLoading? "Publishing...": "Publish"}
-              </button> 
-          </FormBlock>
+                {isLoading ? "Publishing..." : "Publish"}
+              </button>
+            </FormBlock>
           </PublishBlock>
-          <Posts reloadPostsTrend={reloadPostsTrend}/>
-      </ContainerPublications>
-      <Trendings reloadPostsTrend={reloadPostsTrend}/>
-    </Container>
+          <Posts reloadPostsTrend={reloadPostsTrend} />
+        </ContainerPublications>
+        <Trendings reloadPostsTrend={reloadPostsTrend} />
+      </Container>
     </>
   );
 }
@@ -94,27 +105,27 @@ const TitlePage = styled.h1`
   width: 936px;
   padding-top: 78px;
   padding-bottom: 43px;
-  
-  font-family: 'Oswald';
+
+  font-family: "Oswald";
   font-style: normal;
   font-weight: 700;
   font-size: 43px;
   line-height: 64px;
 
-  color: #FFFFFF;
+  color: #ffffff;
 
   align-self: left;
 
-  @media (max-width: 945px){
+  @media (max-width: 945px) {
     width: 610px;
   }
-  @media (max-width: 630px){
+  @media (max-width: 630px) {
     width: 100vw;
     padding-top: 91px;
     padding-bottom: 19px;
     padding-left: 17px;
   }
-  @media (max-width: 550px){
+  @media (max-width: 550px) {
     font-size: 33px;
     line-height: 49px;
   }
@@ -124,7 +135,7 @@ const Container = styled.div`
   display: flex;
   gap: 25px;
 
-  @media (max-width: 630px){
+  @media (max-width: 630px) {
     width: 100vw;
   }
 `;
@@ -132,7 +143,7 @@ const Container = styled.div`
 const ContainerPublications = styled.div`
   width: 610px;
 
-  @media (max-width: 630px){
+  @media (max-width: 630px) {
     width: 100%;
   }
 `;
@@ -151,10 +162,10 @@ const PublishBlock = styled.div`
   border-radius: 16px;
   box-sizing: border-box;
 
-  @media (max-width: 630px){
+  @media (max-width: 630px) {
     border-radius: 0px;
   }
-  @media (max-width: 550px){
+  @media (max-width: 550px) {
     height: 164px;
     padding: 12px;
   }
@@ -167,7 +178,7 @@ const UserBlock = styled.div`
     height: 50px;
     border-radius: 26.5px;
   }
-  @media (max-width: 420px){
+  @media (max-width: 420px) {
     display: none;
   }
 `;
@@ -211,19 +222,19 @@ const FormBlock = styled.form`
     border-radius: 5px;
   }
 
-  @media (max-width: 550px){
-    h2{
+  @media (max-width: 550px) {
+    h2 {
       font-size: 17px;
       line-height: 20px;
     }
-    button{
+    button {
       height: 22px;
       font-size: 13px;
       line-height: 16px;
     }
   }
-  @media (max-width: 420px){
-    h2{
+  @media (max-width: 420px) {
+    h2 {
       text-align: center;
     }
   }
@@ -288,7 +299,7 @@ const DescriptionInput = styled.input`
   border-radius: 5px;
   box-sizing: border-box;
 
-  @media (max-width: 420px){
+  @media (max-width: 420px) {
     height: 47px;
   }
 `;

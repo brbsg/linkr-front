@@ -4,9 +4,10 @@ import styled from "styled-components";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../services/api";
 
-export default function Trendings({ reloadPostsTrend }) {
+export default function Trendings() {
   const navigate = useNavigate();
   const [hashtags, setHashtags] = useState(null);
+  const [reload, setReload] = useState(false);
   const { token } = useAuth();
 
   //   setInterval(()=>{
@@ -22,22 +23,9 @@ export default function Trendings({ reloadPostsTrend }) {
       .catch((error) => {
         console.log(error);
       });
-  }, [reloadPostsTrend]);
-
-  console.log(hashtags);
+  }, []);
 
   if (!hashtags) {
-    return (
-      <Trending>
-        <Title>trending</Title>
-        <Separador />
-        <Trends>
-          <Trend>Could not load trending #hashtags</Trend>
-        </Trends>
-      </Trending>
-    );
-  }
-  if (hashtags.length === 0) {
     return (
       <Trending>
         <Title>trending</Title>
@@ -63,18 +51,15 @@ export default function Trendings({ reloadPostsTrend }) {
   return (
     <Trending>
       <Title>trending</Title>
+
       <Separador />
+
       <Trends>
-        {hashtags.map((hashtag) => (
-          <Trend
-            onClick={() => {
-              navigate(`/hashtag/${hashtag.id}`);
-            }}
-            key={hashtag.id}
-          >
+        {hashtags.map((hashtag) => {
+          <Trend onClick={() => navigate(`/hashtag/${hashtag.id}`)}>
             {`# ${hashtag.name}`}
-          </Trend>
-        ))}
+          </Trend>;
+        })}
       </Trends>
     </Trending>
   );
@@ -96,10 +81,6 @@ const Trending = styled.div`
 
   background: #171717;
   border-radius: 16px;
-
-  @media (max-width: 945px) {
-    display: none;
-  }
 `;
 
 const Separador = styled.div`

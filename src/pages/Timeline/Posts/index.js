@@ -9,7 +9,7 @@ import { IoTrash } from 'react-icons/io5';
 
 ReactModal.setAppElement('#root');
 
-export default function Posts({reloadPosts}) {
+export default function Posts({ reloadPosts }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
@@ -25,34 +25,70 @@ export default function Posts({reloadPosts}) {
     console.log(id);
     setIsLoading(true);
     const promise = api.deletePost(id);
-    promise.then(()=>{
-      setIsLoading(false);
-      handleOpenModal();
-      setReloadByDelete(!reloadByDelete)
-    }).catch(()=>{
-      handleOpenModal();
-      setIsLoading(false);
-      alert("Could not delete this post.")
-    })
+    promise
+      .then(() => {
+        setIsLoading(false);
+        handleOpenModal();
+        setReloadByDelete(!reloadByDelete);
+      })
+      .catch(() => {
+        handleOpenModal();
+        setIsLoading(false);
+        alert('Could not delete this post.');
+      });
   }
 
-  async function loadPosts(){
-    const {data} = await api.getPosts(token);
+  const customStyles = {
+    overlay: {
+      // position: 'fixed',
+      // top: 0,
+      // left: 0,
+      // right: 0,
+      // bottom: 0,
+      // backgroundColor: 'rgba(255, 255, 255, 0.75)',
+      backgroundColor: 'white',
+      opacity: '0.75',
+    },
+    content: {
+      width: '597px',
+      height: '262px',
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: '#333333',
+      color: '#FFF',
+      border: 'none',
+      borderRadius: '50px',
+      textAlign: 'center',
+      padding: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      gap: '30px',
+    },
+  };
+
+  async function loadPosts() {
+    const { data } = await api.getPosts(token);
     console.log(data);
     try {
-      setPosts(data)
+      setPosts(data);
     } catch {
       return (
         <PostsContainer>
           <h1>
-            An error occured while trying to fetch the posts, please refresh the page
+            An error occured while trying to fetch the posts, please refresh the
+            page
           </h1>
         </PostsContainer>
       );
     }
   }
 
-  useEffect( loadPosts, [reloadPosts, reloadByDelete]);
+  useEffect(loadPosts, [reloadPosts, reloadByDelete]);
 
   if (!posts) {
     return (
@@ -74,7 +110,12 @@ export default function Posts({reloadPosts}) {
       {posts.map((post) => (
         <PostBox key={post.id}>
           {post.deleteOption === true && (
-            <TrashCan onClick={()=>{handleOpenModal(); setPostId(post.id);}}>
+            <TrashCan
+              onClick={() => {
+                handleOpenModal();
+                setPostId(post.id);
+              }}
+            >
               <IoTrash color='white' />
             </TrashCan>
           )}
@@ -92,14 +133,22 @@ export default function Posts({reloadPosts}) {
               title={post.linkTitle}
             />
           </ContentBox>
-          <ReactModal isOpen={modalIsOpen} onRequestClose={handleOpenModal}>
-            <h2>Are you sure you want to delete this post?</h2>
-            <button onClick={handleOpenModal}>
-              No, go back
-            </button>
-            <button onClick={() => confirmDelete(postId)}>
-              {isLoading? "Loading..." : "Yes, delete it"}
-            </button>
+          <ReactModal
+            isOpen={modalIsOpen}
+            onRequestClose={handleOpenModal}
+            style={customStyles}
+          >
+            <h2>
+              Are you sure you want
+              <br />
+              to delete this post?
+            </h2>
+            <div>
+              <Button onClick={handleOpenModal}>No, go back</Button>
+              <ButtonDelete onClick={() => confirmDelete(postId)}>
+                {isLoading ? 'Loading...' : 'Yes, delete it'}
+              </ButtonDelete>
+            </div>
           </ReactModal>
         </PostBox>
       ))}
@@ -197,4 +246,34 @@ const TrashCan = styled.div`
     top: 9px;
     right: 15px;
   }
+`;
+
+const Button = styled.button`
+  width: 134px;
+  height: 37px;
+  border-radius: 5px;
+  margin: 0px 13px;
+
+  background-color: #fff;
+  color: #1877f2;
+
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21.8px;
+`;
+
+const ButtonDelete = styled.button`
+  width: 134px;
+  height: 37px;
+  border-radius: 5px;
+  margin: 0px 13px;
+
+  background-color: #1877f2;
+  color: #fff;
+
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21.8px;
 `;

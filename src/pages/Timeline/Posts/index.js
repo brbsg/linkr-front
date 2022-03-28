@@ -6,7 +6,7 @@ import MetaLink from "./MetaLink";
 import Like from "../../../components/Like";
 import ReactModal from "react-modal";
 import { IoTrash } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { TiPencil } from "react-icons/ti";
 
 ReactModal.setAppElement("#root");
 
@@ -14,9 +14,12 @@ export default function Posts({ reloadPosts }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
-  const [reloadByDelete, setReloadByDelete] = useState(false);
+  const [reloadByDelEdit, setReloadByDelEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [newText, setNewText] = useState("");
+  const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
 
   const navigate = useNavigate();
@@ -33,7 +36,7 @@ export default function Posts({ reloadPosts }) {
       .then(() => {
         setIsLoading(false);
         handleOpenModal();
-        setReloadByDelete(!reloadByDelete);
+        setReloadByDelEdit(!reloadByDelEdit);
       })
       .catch(() => {
         handleOpenModal();
@@ -74,6 +77,43 @@ export default function Posts({ reloadPosts }) {
       gap: "30px",
     },
   };
+  console.log(newText);
+
+  function handleOpenEdit(postText, id) {
+    setIsEditing(!isEditing);
+    setNewText(postText);
+    setPostId(id);
+  }
+
+  function handlerKey(e) {
+    if (e.keyCode === 13) {
+      setDisabled(true);
+      setIsAtivo(!isAtivo);
+      submitEditedPost(newText);
+    }
+
+    if (e.keyCode === 27) {
+      setDisabled(false);
+      setIsAtivo(!isAtivo);
+      setIsEditing(false);
+    }
+  }
+
+  function submitEditedPost(newText) {
+    const promise = api.editPost(postId, newText);
+    promise.then(() => {
+      setTimeout(() => {
+        setDisabled(false);
+        setIsEditing(false);
+        setReloadByDelEdit(!reloadByDelEdit);
+      }, 1500);
+    });
+    promise.catch((error) => {
+      console.log(error);
+      setDisabled(false);
+      alert("Erro ao editar. Tente novamente mais tarde.");
+    });
+  }
 
   async function loadPosts() {
     const { data } = await api.getPosts(token);
@@ -92,7 +132,7 @@ export default function Posts({ reloadPosts }) {
     }
   }
 
-  useEffect(loadPosts, [reloadPosts, reloadByDelete]);
+  useEffect(loadPosts, [reloadPosts, reloadByDelEdit]);
 
   if (!posts) {
     return (
@@ -117,15 +157,20 @@ export default function Posts({ reloadPosts }) {
     <PostsContainer>
       {posts.map((post) => (
         <PostBox key={post.id}>
-          {post.deleteOption === true && (
-            <TrashCan
-              onClick={() => {
-                handleOpenModal();
-                setPostId(post.id);
-              }}
-            >
-              <IoTrash color="white" />
-            </TrashCan>
+          {post.delEditOption === true && (
+            <>
+              <EditIcon onClick={() => handleOpenEdit(post.text, post.id)}>
+                <TiPencil color="white" />
+              </EditIcon>
+              <TrashCan
+                onClick={() => {
+                  handleOpenModal();
+                  setPostId(post.id);
+                }}
+              >
+                <IoTrash color="white" />
+              </TrashCan>
+            </>
           )}
           <NavBox>
             <img
@@ -137,13 +182,20 @@ export default function Posts({ reloadPosts }) {
             <Like postId={post.id} token={token} />
           </NavBox>
           <ContentBox>
-            <h2
-              style={{ cursor: "pointer" }}
-              onClick={() => goToUserPage(post.userId)}
-            >
-              {post.name}{" "}
-            </h2>
-            <h3>{post.text}</h3>
+            <h2>{post.name}</h2>
+            {isEditing && postId === post.id ? (
+              <input
+                autoFocus
+                onFocus={(e) => e.currentTarget.select()}
+                disabled={disabled}
+                ativo={isAtivo}
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+                onKeyDown={(e) => handlerKey(e)}
+              />
+            ) : (
+              <h3>{post.text}</h3>
+            )}
             <MetaLink
               url={post.link}
               description={post.linkDescription}
@@ -196,10 +248,10 @@ const PostBox = styled.div`
   border-radius: 16px;
   box-sizing: border-box;
 
-  @media (max-width: 630px){
+  @media (max-width: 630px) {
     border-radius: 0px;
   }
-  @media (max-width: 550px){
+  @media (max-width: 550px) {
     padding: 9px 15px;
   }
 `;
@@ -240,12 +292,12 @@ const ContentBox = styled.div`
     color: #b7b7b7;
   }
 
-  @media (max-width: 550px){
-    h2{
+  @media (max-width: 550px) {
+    h2 {
       font-size: 17px;
       line-height: 20px;
     }
-    h3{
+    h3 {
       font-size: 15px;
       line-height: 18px;
     }
@@ -263,6 +315,16 @@ const TrashCan = styled.div`
   @media (max-width: 550px) {
     top: 9px;
     right: 15px;
+  }
+`;
+
+const EditIcon = styled.div`
+  position: absolute;
+  top: 22px;
+  right: 50px;
+
+  :hover {
+    cursor: pointer;
   }
 `;
 
@@ -295,3 +357,34 @@ const ButtonDelete = styled.button`
   font-weight: 700;
   line-height: 21.8px;
 `;
+
+const customStyles = {
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#ffffff15",
+  },
+  content: {
+    width: "597px",
+    height: "262px",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#333333",
+    color: "#FFF",
+    border: "none",
+    borderRadius: "50px",
+    textAlign: "center",
+    padding: "auto",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: "30px",
+  },
+};

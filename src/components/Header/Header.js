@@ -28,13 +28,11 @@ export default function Header() {
     setInputValue(value);
   }
 
-  function goToUserPage(userId) {
-    navigate(`/users/${userId}`);
-  }
-
   return (
     <Container>
-      <p className="logo">linkr</p>
+      <p className="logo" onClick={() => navigate("/")}>
+        linkr
+      </p>
 
       <Input
         onChange={(e) => onInputChange(e.target.value)}
@@ -44,7 +42,7 @@ export default function Header() {
 
       <OpenInput style={{ display: hide ? "none" : "flex" }}>
         {searchUsers.map((user) => (
-          <UserIcon key={user.id} user={user} />
+          <UserIcon key={user.id} user={user} setHide={setHide} />
         ))}
       </OpenInput>
 

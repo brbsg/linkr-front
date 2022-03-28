@@ -2,11 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export default function UserIcon({ user }) {
+export default function UserIcon({ user, setHide }) {
   const navigate = useNavigate();
 
   return (
-    <Container onClick={() => navigate(`users/${user.id}`)}>
+    <Container onClick={() => navigate(`users/${user.id}`, setHide(true))}>
       <img src={user.image} />
 
       <p>{user.name}</p>

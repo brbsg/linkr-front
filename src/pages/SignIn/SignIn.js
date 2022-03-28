@@ -9,8 +9,6 @@ import api from "../../services/api";
 export default function Signin() {
   const { token } = useAuth();
 
-  console.log(token);
-
   const navigate = useNavigate();
 
   useEffect(async () => {

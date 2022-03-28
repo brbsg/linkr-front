@@ -65,7 +65,7 @@ export default function Trendings() {
       <Separador />
       <Trends>
         {hashtags.map((hashtag) => {
-          <Trend onClick={navigate(`/hashtag/${hashtag.id}`)}>
+          <Trend onClick={() => navigate(`/hashtag/${hashtag.id}`)}>
             {`# ${hashtag.name}`}
           </Trend>;
         })}

@@ -11,6 +11,9 @@ export const Dropdown = styled.div`
   padding-right: 30px;
   padding-left: 30px;
 
+  background: #171717;
+  border-radius: 10px;
+
 
   button {
     margin-top: 20px;

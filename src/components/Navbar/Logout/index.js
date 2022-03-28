@@ -48,7 +48,7 @@ export default function Logout() {
   return (
     <Dropdown ref={dropdownRef}>
       <span onClick={() => setClicked(!clicked)}>
-        {clicked ? <IoIosArrowUp /> : <IoIosArrowDown />}
+        {clicked ? <IoIosArrowUp size={50} /> : <IoIosArrowDown size={50} />}
         <img src={userPicture} />
       </span>
       {clicked ? <button onClick={() => handleLogout()}>Logout</button> : ''}

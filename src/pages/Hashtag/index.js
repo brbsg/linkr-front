@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
-import Posts from "./Posts";
+import Posts from "../../pages/Timeline/Posts";
 import Navbar from "../../components/Navbar";
-import Trendings from "./Trendings";
+import Trendings from '../../pages/Timeline/Trendings';
 
-export default function Timeline() {
-  const [postForm, setPostForm] = useState({ link: "", text: ""});
-  //const [hashtags, setHashtags] = useState([]);
+export default function Hashtag() {
   const [isLoading, setIsLoading] = useState(false);
   const [reloadPosts, setReloadPosts] = useState(false);
   const [userPicture, setUserPicture] = useState('')
   const { token } = useAuth();
+
+  const hashtag = useParams().hashtag;
 
   useEffect(() => getUserPicture(), [])
   function getUserPicture() {
@@ -20,55 +21,12 @@ export default function Timeline() {
     promise.then(({ data }) => setUserPicture(data))
   }
 
-  function handleChange(e) {
-    setPostForm({ ...postForm, [e.target.name]: e.target.value });
-  }
-
-  function handlePost(event) {
-    event.preventDefault();
-    setIsLoading(true);
-    let promise = api.sendPost(postForm, token);
-    promise.then(() => {
-      setIsLoading(false);
-      setReloadPosts(!reloadPosts);
-    }).catch(() => {
-      alert("Houve um erro ao publicar seu link");
-      setIsLoading(false);
-    });
-  }
-
   return (
     <>
     <Navbar />
-    <TitlePage>timeline</TitlePage>
+    <TitlePage>#{hashtag}</TitlePage>
     <Container>
       <ContainerPublications>
-          <PublishBlock>
-          <UserBlock>
-              <img src={userPicture} alt="user-perfil" />
-          </UserBlock>
-          <FormBlock onSubmit={handlePost}>
-              <h2>What are you going to share today?</h2>
-              <LinkInput 
-                placeholder="http://"
-                type="text"
-                onChange={handleChange}
-                name="link"
-                value={postForm.link}
-                required
-              />
-              <DescriptionInput 
-                placeholder="Awesome article about #javascript"
-                type="text"
-                onChange={handleChange}
-                name="text"
-                value={postForm.text}
-              />
-              <button type="submit" disabled={isLoading}>
-                {isLoading? "Publishing...": "Publish"}
-              </button> 
-          </FormBlock>
-          </PublishBlock>
           <Posts reloadPosts={reloadPosts}/>
       </ContainerPublications>
     <Trendings />

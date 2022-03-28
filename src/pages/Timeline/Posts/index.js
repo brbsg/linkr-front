@@ -14,7 +14,7 @@ export default function Posts({ reloadPosts }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
-  const [reloadByDelete, setReloadByDelete] = useState(false);
+  const [reloadByDelEdit, setReloadByDelEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -34,7 +34,7 @@ export default function Posts({ reloadPosts }) {
       .then(() => {
         setIsLoading(false);
         handleOpenModal();
-        setReloadByDelete(!reloadByDelete);
+        setReloadByDelEdit(!reloadByDelEdit);
       })
       .catch(() => {
         handleOpenModal();
@@ -71,9 +71,14 @@ export default function Posts({ reloadPosts }) {
       setTimeout(() => {
         setDisabled(false);
         setIsEditing(false);
-      }, 4000);
+        setReloadByDelEdit(!reloadByDelEdit);
+      }, 1500);
     });
-    promise.catch((error) => console.log(error));
+    promise.catch((error) => {
+      console.log(error);
+      setDisabled(false);
+      alert('Erro ao editar. Tente novamente mais tarde.');
+    });
   }
 
   async function loadPosts() {
@@ -93,7 +98,7 @@ export default function Posts({ reloadPosts }) {
     }
   }
 
-  useEffect(loadPosts, [reloadPosts, reloadByDelete]);
+  useEffect(loadPosts, [reloadPosts, reloadByDelEdit]);
 
   if (!posts) {
     return (

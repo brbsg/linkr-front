@@ -9,12 +9,13 @@ import { IoTrash } from "react-icons/io5";
 
 ReactModal.setAppElement("#root");
 
-export default function Posts({ reloadPosts, params, setUserName }) {
+export default function Posts({ reloadPosts, params }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
   const [reloadByDelete, setReloadByDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const { token } = useAuth();
 
   function handleOpenModal() {
@@ -44,7 +45,6 @@ export default function Posts({ reloadPosts, params, setUserName }) {
 
       console.log(data);
       setPosts(data);
-      setUserName(data[0].name);
     } catch {
       return (
         <PostsContainer>

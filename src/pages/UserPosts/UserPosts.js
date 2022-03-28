@@ -16,13 +16,19 @@ export default function UserPosts() {
   const params = useParams();
 
   useEffect(async () => {
-    getUserPicture();
+    try {
+      const { data } = await api.getUserName(token, params);
+      setUserName(data.name);
+      setUserPicture(data.image);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
-  function getUserPicture() {
-    const promise = api.getUser(token);
-    promise.then(({ data }) => setUserPicture(data));
-  }
+  // function getUserPicture() {
+  //   const promise = api.getUser(token);
+  //   promise.then(({ data }) => setUserPicture(data));
+  // }
 
   return (
     <>
@@ -33,11 +39,7 @@ export default function UserPosts() {
 
       <Container>
         <ContainerPublications>
-          <Posts
-            reloadPosts={reloadPosts}
-            params={params}
-            setUserName={setUserName}
-          />
+          <Posts reloadPosts={reloadPosts} params={params} />
         </ContainerPublications>
 
         <Trendings />

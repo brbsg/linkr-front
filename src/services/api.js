@@ -79,6 +79,19 @@ function getUserLikes(token) {
   return promise;
 }
 
+function searchUsers(token, body) {
+  const config = createConfig(token);
+  const response = axios.post(`${BASE_URL}/search-users`, body, config);
+
+  return response;
+}
+
+function getUserName(token, params) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/users-name/${params.id}`, config);
+  return promise;
+}
+
 const api = {
   loginUser,
   createUser,
@@ -92,6 +105,8 @@ const api = {
   deletePost,
   validateToken,
   getUserPosts,
+  searchUsers,
+  getUserName,
 };
 
 export default api;

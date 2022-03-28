@@ -1,9 +1,32 @@
 import Logout from "./Logout";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { DebounceInput } from "react-debounce-input";
+import api from "../../services/api";
+import useAuth from "../../hooks/useAuth";
+import UserIcon from "./UserIcon/UserIcon";
 
 export default function Header() {
   const navigate = useNavigate();
+
+  const [hide, setHide] = useState(true);
+  const [inputValue, setInputValue] = useState("");
+  const [searchUsers, setSearchUsers] = useState([]);
+
+  const { token } = useAuth();
+
+  async function onInputChange(value) {
+    let response;
+
+    if (value !== inputValue) {
+      response = await api.searchUsers(token, { search: value });
+    }
+
+    setSearchUsers(response.data);
+    setHide(false);
+    setInputValue(value);
+  }
 
   function goToUserPage(userId) {
     navigate(`/users/${userId}`);
@@ -13,13 +36,16 @@ export default function Header() {
     <Container>
       <p className="logo">linkr</p>
 
-      <Input></Input>
+      <Input
+        onChange={(e) => onInputChange(e.target.value)}
+        minLength={3}
+        debounceTimeout={300}
+      />
 
-      <OpenInput>
-        <button
-          onClick={() => goToUserPage(7)}
-          style={{ width: 20, height: 30 }}
-        ></button>
+      <OpenInput style={{ display: hide ? "none" : "flex" }}>
+        {searchUsers.map((user) => (
+          <UserIcon key={user.id} user={user} />
+        ))}
       </OpenInput>
 
       <div></div>
@@ -38,8 +64,9 @@ const Container = styled.nav`
   padding: 0 30px;
 `;
 
-const Input = styled.input`
-  margin: 0;
+const Input = styled(DebounceInput)`
+  all: unset;
+  box-sizing: border-box;
   border: 0;
   width: 563px;
   height: 50px;
@@ -47,6 +74,7 @@ const Input = styled.input`
   left: 0;
   right: 0;
   margin: 0 auto;
+  padding: 0 10px;
 
   background: #ffffff;
   border-radius: 8px;
@@ -54,16 +82,21 @@ const Input = styled.input`
 `;
 
 const OpenInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
   margin: 0;
   border: 0;
   width: 563px;
-  height: 100px;
   position: absolute;
   top: 40px;
   left: 0;
   right: 0;
   margin: 0 auto;
-  padding: 40px 15px;
+  padding: 0px 15px;
+  padding-bottom: 20px;
+  padding-top: 45px;
 
   background: #e7e7e7;
   border-radius: 8px;

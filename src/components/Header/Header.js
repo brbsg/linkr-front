@@ -30,7 +30,7 @@ export default function Header() {
     setInputValue(value);
   }
 
-  if ((location.pathname = "/")) return <></>;
+  if (location.pathname === "/") return <></>;
 
   return (
     <Container>

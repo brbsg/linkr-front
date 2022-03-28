@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Dropdown = styled.div`
   display: flex;
@@ -13,7 +13,6 @@ export const Dropdown = styled.div`
 
   background: #171717;
   border-radius: 10px;
-
 
   button {
     margin-top: 20px;

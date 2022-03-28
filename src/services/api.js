@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
 // const BASE_URL = 'https://git.heroku.com/linkr-back-csgg.git';
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
+
+function createConfig(token) {
+  return { headers: { Authorization: `Bearer ${token}` } };
+}
 
 function loginUser(body) {
   const response = axios.post(`${BASE_URL}/sign-in`, body);
 
   return response;
-}
-
-function createConfig(token) {
-  return { headers: { Authorization: `Bearer ${token}` } };
 }
 
 async function createUser(user) {
@@ -58,6 +58,21 @@ function deletePost(id) {
   return promise;
 }
 
+function validateToken(token) {
+  const config = createConfig(token);
+  const response = axios.get(`${BASE_URL}/validate-token`, config);
+
+  return response;
+}
+
+function getUserPosts(token, params) {
+  const config = createConfig(token);
+
+  const response = axios.get(`${BASE_URL}/users/${params}`, config);
+
+  return response;
+}
+
 function editPost(id, editedText) {
   const newText = { newText: editedText };
   const promise = axios.put(`${BASE_URL}/timeline/${id}`, newText);
@@ -67,6 +82,23 @@ function editPost(id, editedText) {
 function getUserLikes(token) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/likes`, config);
+  return promise;
+}
+
+function searchUsers(token, body) {
+  const config = createConfig(token);
+  const response = axios.post(`${BASE_URL}/search-users`, body, config);
+
+  return response;
+}
+
+function getUserName(token, params) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/users-name/${params.id}`, config);
+}
+function getPostsByHashtag(token, hashtag) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`, config);
   return promise;
 }
 
@@ -81,7 +113,12 @@ const api = {
   getLikes,
   getUserLikes,
   deletePost,
+  validateToken,
+  getUserPosts,
+  searchUsers,
+  getUserName,
   editPost,
+  getPostsByHashtag,
 };
 
 export default api;

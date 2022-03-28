@@ -34,13 +34,6 @@ const LinkBlock = styled.div`
     height: 100%;
     border-radius: 0px 10px 10px 0px;
   }
-
-  @media (max-width: 550px){
-    height: 115px;
-    img{
-      width: 95px;
-    }
-  }
 `;
 
 const BlockText = styled.div`
@@ -54,8 +47,6 @@ const BlockText = styled.div`
   box-sizing: border-box;
 
   h3 {
-    overflow: hidden;
-
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;
@@ -65,8 +56,6 @@ const BlockText = styled.div`
     color: #cecece;
   }
   h4 {
-    height: 44px;
-    overflow: hidden;
 
     font-family: "Lato";
     font-style: normal;
@@ -77,34 +66,16 @@ const BlockText = styled.div`
     color: #9b9595;
   }
   h5 {
-    height: 13px;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 11px;
     line-height: 13px;
-    word-break: break-word;
+    word-wrap: break-word;
 
     color: #cecece;
-  }
-
-  @media (max-width: 550px){
-    padding: 10px;
-    h3{
-      font-size: 11px;
-      line-height: 13px;
-    }
-    h4{
-      font-size: 9px;
-      line-height: 11px;
-    }
-    h5{
-      font-size: 9px;
-      line-height: 11px;
-    }
   }
 `;

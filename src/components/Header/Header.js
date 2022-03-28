@@ -1,6 +1,6 @@
 import Logout from "./Logout";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import api from "../../services/api";
@@ -9,6 +9,8 @@ import UserIcon from "./UserIcon/UserIcon";
 
 export default function Header() {
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const [hide, setHide] = useState(true);
   const [inputValue, setInputValue] = useState("");
@@ -27,6 +29,8 @@ export default function Header() {
     setHide(false);
     setInputValue(value);
   }
+
+  if ((location.pathname = "/")) return <></>;
 
   return (
     <Container>

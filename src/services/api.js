@@ -70,6 +70,12 @@ function getUserLikes(token) {
   return promise;
 }
 
+function getPostsByHashtag(token, hashtag) {
+  const config = createConfig(token)
+  const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`, config)
+  return promise;
+}
+
 const api = {
   loginUser,
   createUser,
@@ -82,6 +88,7 @@ const api = {
   getUserLikes,
   deletePost,
   editPost,
+  getPostsByHashtag
 };
 
 export default api;

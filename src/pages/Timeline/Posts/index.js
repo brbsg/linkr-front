@@ -42,6 +42,39 @@ export default function Posts({ reloadPosts }) {
       });
   }
 
+  const customStyles = {
+    overlay: {
+      // position: 'fixed',
+      // top: 0,
+      // left: 0,
+      // right: 0,
+      // bottom: 0,
+      // backgroundColor: 'rgba(255, 255, 255, 0.75)',
+      backgroundColor: "white",
+      opacity: "0.75",
+    },
+    content: {
+      width: "597px",
+      height: "262px",
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: "#333333",
+      color: "#FFF",
+      border: "none",
+      borderRadius: "50px",
+      textAlign: "center",
+      padding: "auto",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      gap: "30px",
+    },
+  };
+
   async function loadPosts() {
     const { data } = await api.getPosts(token);
     console.log(data);
@@ -118,12 +151,22 @@ export default function Posts({ reloadPosts }) {
               title={post.linkTitle}
             />
           </ContentBox>
-          <ReactModal isOpen={modalIsOpen} onRequestClose={handleOpenModal}>
-            <h2>Are you sure you want to delete this post?</h2>
-            <button onClick={handleOpenModal}>No, go back</button>
-            <button onClick={() => confirmDelete(postId)}>
-              {isLoading ? "Loading..." : "Yes, delete it"}
-            </button>
+          <ReactModal
+            isOpen={modalIsOpen}
+            onRequestClose={handleOpenModal}
+            style={customStyles}
+          >
+            <h2>
+              Are you sure you want
+              <br />
+              to delete this post?
+            </h2>
+            <div>
+              <Button onClick={handleOpenModal}>No, go back</Button>
+              <ButtonDelete onClick={() => confirmDelete(postId)}>
+                {isLoading ? "Loading..." : "Yes, delete it"}
+              </ButtonDelete>
+            </div>
           </ReactModal>
         </PostBox>
       ))}
@@ -200,4 +243,34 @@ const TrashCan = styled.div`
   :hover {
     cursor: pointer;
   }
+`;
+
+const Button = styled.button`
+  width: 134px;
+  height: 37px;
+  border-radius: 5px;
+  margin: 0px 13px;
+
+  background-color: #fff;
+  color: #1877f2;
+
+  font-family: "Lato", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21.8px;
+`;
+
+const ButtonDelete = styled.button`
+  width: 134px;
+  height: 37px;
+  border-radius: 5px;
+  margin: 0px 13px;
+
+  background-color: #1877f2;
+  color: #fff;
+
+  font-family: "Lato", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21.8px;
 `;

@@ -160,7 +160,7 @@ export default function Posts({ reloadPostsTrend }) {
         <PostBox key={post.id}>
           {post.delEditOption === true && (
             <>
-              <EditIcon onClick={() => handleOpenEdit(post.text, post.id)}>
+              <EditIcon onClick={() => handleOpenEdit(post.description, post.id)}>
                 <TiPencil color='white' />
               </EditIcon>
               <TrashCan
@@ -206,7 +206,7 @@ export default function Posts({ reloadPostsTrend }) {
                     navigate(`/hashtag/${hashtag.substring(1)}`)
                   }
                 >
-                  {post.text}
+                  {post.description}
                 </ReactHashtag>
               </h3>
             )}

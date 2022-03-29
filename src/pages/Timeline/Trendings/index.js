@@ -124,6 +124,10 @@ const Trends = styled.div`
 `;
 
 const Trend = styled.div`
+  :hover {
+    cursor: pointer;
+  }
+  
   font-family: "Lato";
   font-style: normal;
   font-weight: 700;

@@ -158,7 +158,6 @@ export default function Posts({ reloadPosts, hashtag}) {
 
 const PostsContainer = styled.div`
   width: 100%;
-  padding-top: 29px;
 
   display: flex;
   flex-direction: column;

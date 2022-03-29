@@ -24,8 +24,6 @@ export default function Trendings({ reloadPostsTrend }) {
       });
   }, [reloadPostsTrend]);
 
-  console.log(hashtags);
-
   if (!hashtags) {
     return (
       <Trending>

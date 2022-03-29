@@ -10,16 +10,31 @@ export default function UserPosts() {
   const [reloadPosts, setReloadPosts] = useState(false);
   const [userPicture, setUserPicture] = useState("");
   const [userName, setUserName] = useState("");
-
+  const [follower, setFollower] = useState(false);
+  const [disable, setDisable] = useState(false);
   const { token } = useAuth();
 
   const params = useParams();
+
+  function isFollower(){
+    const promise = api.verifyFollower(
+      params.id,
+      token
+    );
+    promise.then( ({ data })=>{
+      setFollower(data);
+    }).catch((error)=>{
+      console.log(error);
+      alert("Could not validate if user is Followed. Try later...");
+    })
+  }
 
   useEffect(async () => {
     try {
       const { data } = await api.getUserName(token, params);
       setUserName(data.name);
       setUserPicture(data.image);
+      isFollower();
     } catch (error) {
       console.log(error);
     }
@@ -30,6 +45,22 @@ export default function UserPosts() {
   //   promise.then(({ data }) => setUserPicture(data));
   // }
 
+  async function handleFollow(){
+    setDisable(!disable);
+    try {
+      const promise = await api.toggleFollow(
+        params.id,
+         token
+      );
+      setFollower(promise.data);
+      setDisable(!disable);
+    } catch (error) {
+      console.log(error);
+      alert("Could not Follow user. Try later...")
+      setDisable(!disable);
+    }
+  }
+
   return (
     <>
       <TitlePage>
@@ -37,7 +68,13 @@ export default function UserPosts() {
         <img src={userPicture} />
         {userName}'s posts
         </UserTitleContent>
-        <ButtonFriendly>Follow</ButtonFriendly>
+        <ButtonFriendly 
+          disable={disable} 
+          onClick={()=>{handleFollow()}} 
+          follower={follower}
+        >
+          {follower? "Unfollow": "Follow"}
+        </ButtonFriendly>
       </TitlePage>
 
       <Container>
@@ -88,9 +125,9 @@ const ButtonFriendly = styled.div`
   font-size: 14px;
   line-height: 17px;
 
-  color: #FFFFFF;
+  color: ${ (props) => props.follower? "#1877F2": "#FFFFFF"};
 
-  background: #1877F2;
+  background: ${ (props) => props.follower? "#FFFFFF": "#1877F2"};
   border-radius: 5px;
 `;
 

@@ -33,8 +33,11 @@ export default function UserPosts() {
   return (
     <>
       <TitlePage>
+        <UserTitleContent>
         <img src={userPicture} />
         {userName}'s posts
+        </UserTitleContent>
+        <ButtonFriendly>Follow</ButtonFriendly>
       </TitlePage>
 
       <Container>
@@ -48,23 +51,47 @@ export default function UserPosts() {
   );
 }
 
-const TitlePage = styled.h1`
-  display: flex;
+const TitlePage = styled.div`
   width: 936px;
   padding-top: 78px;
   padding-bottom: 43px;
-  align-items: center;
+  
+  display: flex;
+  justify-content: space-between;
+`;
+
+const UserTitleContent = styled.h1`
+  display: flex;
+  align-self: left;
 
   font-family: "Oswald";
   color: #ffffff;
-
-  align-self: left;
-
+  
   img {
     width: 60px;
     height: 60px;
     margin-right: 20px;
   }
+`;
+
+const ButtonFriendly = styled.div`
+  width: 112px;
+  height: 31px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #FFFFFF;
+
+  background: #1877F2;
+  border-radius: 5px;
 `;
 
 const Container = styled.div`

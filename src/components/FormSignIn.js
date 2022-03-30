@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useAuth from "../hooks/useAuth";
+import useUser from "../hooks/useUser";
 import api from "../services/api";
 
 export default function FormSignIn() {
@@ -11,6 +12,7 @@ export default function FormSignIn() {
   });
 
   const { persistToken } = useAuth();
+  const { persistUser } = useUser();
 
   const [buttonDisable, setButtonDisable] = useState(false);
 
@@ -29,7 +31,9 @@ export default function FormSignIn() {
       setButtonDisable(true);
       const { data } = await api.loginUser(user);
 
-      persistToken(data);
+      persistToken(data.token);
+      persistUser(data.user);
+      console.log(data);
 
       navigate("/timeline");
     } catch (error) {

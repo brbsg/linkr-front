@@ -3,12 +3,14 @@ import api from '../../../services/api';
 import useAuth from '../../../hooks/useAuth';
 import styled from 'styled-components';
 import MetaLink from './MetaLink';
-import Like from '../../../components/Like';
 import ReactModal from 'react-modal';
 import { IoTrash } from 'react-icons/io5';
 import { TiPencil } from 'react-icons/ti';
 import ReactHashtag from '@mdnm/react-hashtag';
 import { useNavigate } from 'react-router-dom';
+
+import InteractBar from '../../../components/InteractBar';
+import Comments from '../../../components/Comments'
 
 ReactModal.setAppElement('#root');
 
@@ -24,13 +26,13 @@ export default function Posts({ reloadPostsTrend }) {
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
   const navigate = useNavigate();
+  const [commentsOpen, setCommentsOpen] = useState(false)
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
   }
 
   function confirmDelete(id) {
-    console.log(id);
     setIsLoading(true);
     const promise = api.deletePost(id);
     promise
@@ -78,7 +80,6 @@ export default function Posts({ reloadPostsTrend }) {
       gap: '30px',
     },
   };
-  console.log(newText);
 
   function handleOpenEdit(postText, id) {
     setIsEditing(!isEditing);
@@ -118,7 +119,6 @@ export default function Posts({ reloadPostsTrend }) {
 
   async function loadPosts() {
     const { data } = await api.getPosts(token);
-    console.log(data);
     try {
       setPosts(data);
     } catch {
@@ -155,8 +155,10 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   return (
+    <>
     <PostsContainer>
       {posts.map((post) => (
+        <CommentsAndPostBox>
         <PostBox key={post.id}>
           {post.delEditOption === true && (
             <>
@@ -173,6 +175,7 @@ export default function Posts({ reloadPostsTrend }) {
               </TrashCan>
             </>
           )}
+
           <NavBox>
             <img
               src={post.image}
@@ -180,8 +183,13 @@ export default function Posts({ reloadPostsTrend }) {
               onClick={() => goToUserPage(post.userId)}
               style={{ cursor: 'pointer' }}
             />
-            <Like postId={post.id} token={token} />
+            <InteractBar 
+              post={post} 
+              token={token} 
+              commentsOpen={commentsOpen} 
+              setCommentsOpen={setCommentsOpen}/>
           </NavBox>
+
           <ContentBox>
             <h2>{post.name}</h2>
             {isEditing && postId === post.id ? (
@@ -235,8 +243,15 @@ export default function Posts({ reloadPostsTrend }) {
             </div>
           </ReactModal>
         </PostBox>
+        <Comments 
+          commentsOpen={commentsOpen} 
+          setCommentsOpen={setCommentsOpen}
+          post={post}
+          />
+        </CommentsAndPostBox >
       ))}
     </PostsContainer>
+    </>
   );
 }
 
@@ -415,3 +430,9 @@ const StyledHashtag = styled.span`
     cursor: pointer;
   }
 `;
+
+const CommentsAndPostBox = styled.div`
+  width: 100%;
+  border-radius: 16px;
+  background: #1E1E1E;
+`

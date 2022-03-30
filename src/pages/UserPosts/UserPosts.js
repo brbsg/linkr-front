@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Posts from "./Posts";
 import Trendings from "./Trendings";
 import { useParams } from "react-router-dom";
+import useUser from "../../hooks/useUser";
 
 export default function UserPosts() {
   const [reloadPosts, setReloadPosts] = useState(false);
@@ -13,6 +14,8 @@ export default function UserPosts() {
   const [follower, setFollower] = useState(false);
   const [disable, setDisable] = useState(false);
   const { token } = useAuth();
+  const { user } = useUser();
+  console.log(user);
 
   const params = useParams();
 
@@ -68,13 +71,18 @@ export default function UserPosts() {
         <img src={userPicture} />
         {userName}'s posts
         </UserTitleContent>
-        <ButtonFriendly 
+
+        {(user.id != params.id)?
+          <ButtonFriendly 
           disable={disable} 
           onClick={()=>{handleFollow()}} 
           follower={follower}
-        >
-          {follower? "Unfollow": "Follow"}
-        </ButtonFriendly>
+          >
+            {follower? "Unfollow": "Follow"}
+          </ButtonFriendly>
+        :
+          <></>
+        }
       </TitlePage>
 
       <Container>

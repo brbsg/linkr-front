@@ -43,6 +43,12 @@ export default function Timeline() {
     let str = postForm.description;
     let regex = /\B(\#[a-zA-Z)-9]+\b)(?!;)/gi;
     let hashArr = str.match(regex);
+    console.log(hashArr);
+
+    if(!hashArr){
+      setPostForm({ link: "", description: "", hashtags: [] });
+      return;
+    }
 
     hashArr.forEach((element) => {
       const nameHashtag = element.replace("#", "");

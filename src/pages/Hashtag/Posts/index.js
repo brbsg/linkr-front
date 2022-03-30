@@ -88,7 +88,7 @@ export default function Posts({ reloadPosts, hashtag}) {
     }
   }
 
-  useEffect(loadPosts, [reloadPosts, reloadByDelete]);
+  useEffect(loadPosts, [reloadPosts, reloadByDelete, hashtag]);
 
   if (!posts) {
     return (

@@ -31,6 +31,7 @@ export default function Header() {
   }
 
   if (location.pathname === "/") return <></>;
+  if (location.pathname === "/sign-up") return <></>;
 
   return (
     <Container>

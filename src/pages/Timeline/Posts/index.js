@@ -243,7 +243,11 @@ export default function Posts({ reloadPostsTrend }) {
             </div>
           </ReactModal>
         </PostBox>
-        <Comments commentsOpen={commentsOpen} setCommentsOpen={setCommentsOpen}/>
+        <Comments 
+          commentsOpen={commentsOpen} 
+          setCommentsOpen={setCommentsOpen}
+          post={post}
+          />
         </CommentsAndPostBox >
       ))}
     </PostsContainer>

@@ -35,7 +35,7 @@ export default function Hashtag() {
 
 const TitlePage = styled.h1`
   width: 936px;
-  padding-top: 78px;
+  padding-top: 125px;
   padding-bottom: 43px;
 
   font-family: "Oswald";

@@ -95,12 +95,25 @@ function searchUsers(token, body) {
 function getUserName(token, params) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/users-name/${params.id}`, config);
+  return promise;
 }
 function getPostsByHashtag(token, hashtag) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/hashtag/${hashtag}`, config);
   return promise;
 }
+
+function verifyFollower(id, token){
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/following/${id}`, config);
+  return promise;
+}
+
+function toggleFollow(id, token){
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/follow/${id}`, config);
+  return promise;
+};
 
 const api = {
   loginUser,
@@ -119,6 +132,8 @@ const api = {
   getUserName,
   editPost,
   getPostsByHashtag,
+  verifyFollower,
+  toggleFollow
 };
 
 export default api;

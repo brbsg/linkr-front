@@ -8,7 +8,7 @@ import Trendings from "./Trendings";
 export default function Timeline() {
   const [postForm, setPostForm] = useState({
     link: "",
-    text: "",
+    description: "",
     hashtags: [],
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -41,11 +41,11 @@ export default function Timeline() {
         alert("Houve um erro ao publicar seu link");
         setIsLoading(false);
       });
-    setPostForm({ link: "", text: "", hashtags: [] });
+    setPostForm({ link: "", description: "", hashtags: [] });
   }
 
   function macthHashtags() {
-    let str = postForm.text;
+    let str = postForm.description;
     let regex = /\B(\#[a-zA-Z)-9]+\b)(?!;)/gi;
     let hashArr = str.match(regex);
 
@@ -84,8 +84,8 @@ export default function Timeline() {
                 placeholder="Awesome article about #javascript"
                 type="text-area"
                 onChange={handleChange}
-                name="text"
-                value={postForm.text}
+                name="description"
+                value={postForm.description}
               />
 
               <button type="submit" disabled={isLoading}>
@@ -103,7 +103,7 @@ export default function Timeline() {
 
 const TitlePage = styled.h1`
   width: 936px;
-  padding-top: 78px;
+  padding-top: 125px;
   padding-bottom: 43px;
 
   font-family: "Oswald";

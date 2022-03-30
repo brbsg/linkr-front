@@ -160,7 +160,7 @@ export default function Posts({ reloadPostsTrend }) {
         <PostBox key={post.id}>
           {post.delEditOption === true && (
             <>
-              <EditIcon onClick={() => handleOpenEdit(post.text, post.id)}>
+              <EditIcon onClick={() => handleOpenEdit(post.description, post.id)}>
                 <TiPencil color='white' />
               </EditIcon>
               <TrashCan
@@ -197,11 +197,16 @@ export default function Posts({ reloadPostsTrend }) {
             ) : (
               <h3>
                 <ReactHashtag
+                  renderHashtag={(hashtagValue) => (
+                    <StyledHashtag href={`/search/${hashtagValue}`}>
+                      {hashtagValue}
+                    </StyledHashtag>
+                  )}
                   onHashtagClick={(hashtag) =>
-                    navigate(`/hashtag/${hashtag.substring(1).toLowerCase()}`)
+                    navigate(`/hashtag/${hashtag.substring(1)}`)
                   }
                 >
-                  {post.text}
+                  {post.description}
                 </ReactHashtag>
               </h3>
             )}
@@ -402,3 +407,11 @@ const customStyles = {
     gap: '30px',
   },
 };
+
+const StyledHashtag = styled.span`
+  font-weight: 900;
+
+  :hover {
+    cursor: pointer;
+  }
+`;

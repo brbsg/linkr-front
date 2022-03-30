@@ -5,8 +5,11 @@ import styled from "styled-components";
 import Posts from "./Posts";
 import Trendings from "./Trendings";
 import useUser from "../../hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 export default function Timeline() {
+  const navigate = useNavigate();
+
   const [postForm, setPostForm] = useState({
     link: "",
     description: "",
@@ -17,6 +20,12 @@ export default function Timeline() {
   const { token } = useAuth();
   const { user } = useUser();
 
+  console.log(user, token);
+  useEffect(() => {
+    if (!user || !token) {
+      navigate("/");
+    }
+  }, []);
 
   function handleChange(e) {
     setPostForm({ ...postForm, [e.target.name]: e.target.value });
@@ -45,7 +54,7 @@ export default function Timeline() {
     let hashArr = str.match(regex);
     console.log(hashArr);
 
-    if(!hashArr){
+    if (!hashArr) {
       setPostForm({ link: "", description: "", hashtags: [] });
       return;
     }
@@ -58,6 +67,8 @@ export default function Timeline() {
       });
     });
   }
+
+  if (!token || !user) return <></>;
 
   return (
     <>
@@ -94,6 +105,7 @@ export default function Timeline() {
               </button>
             </FormBlock>
           </PublishBlock>
+
           <Posts reloadPostsTrend={reloadPostsTrend} />
         </ContainerPublications>
         <Trendings reloadPostsTrend={reloadPostsTrend} />

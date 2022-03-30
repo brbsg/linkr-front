@@ -6,21 +6,24 @@ import SignUp from "./pages/SignUp";
 import Timeline from "./pages/Timeline";
 import UserPosts from "./pages/UserPosts/UserPosts";
 import Hashtag from "./pages/Hashtag";
+import { UserProvider } from "./contexts/UserContext";
 
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Header />
+      <UserProvider>
+        <BrowserRouter>
+          <Header />
 
-        <Routes>
-          <Route path="/" element={<Signin />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/timeline" element={<Timeline />} />
-          <Route path="/users/:id" element={<UserPosts />} />
-          <Route path="/hashtag/:hashtag" element={<Hashtag />} />
-        </Routes>
-      </BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Signin />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/timeline" element={<Timeline />} />
+            <Route path="/users/:id" element={<UserPosts />} />
+            <Route path="/hashtag/:hashtag" element={<Hashtag />} />
+          </Routes>
+        </BrowserRouter>
+      </UserProvider>
     </AuthProvider>
   );
 }

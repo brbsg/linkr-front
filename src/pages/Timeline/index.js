@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
 import Posts from "./Posts";
 import Trendings from "./Trendings";
+import useUser from "../../hooks/useUser";
 
 export default function Timeline() {
   const [postForm, setPostForm] = useState({
@@ -12,16 +13,10 @@ export default function Timeline() {
     hashtags: [],
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [reloadPosts, setReloadPosts] = useState(false);
   const [reloadPostsTrend, setReloadPostsTrend] = useState(false);
-  const [userPicture, setUserPicture] = useState("");
   const { token } = useAuth();
+  const { user } = useUser();
 
-  useEffect(() => getUserPicture(), []);
-  function getUserPicture() {
-    const promise = api.getUser(token);
-    promise.then(({ data }) => setUserPicture(data));
-  }
 
   function handleChange(e) {
     setPostForm({ ...postForm, [e.target.name]: e.target.value });
@@ -48,6 +43,12 @@ export default function Timeline() {
     let str = postForm.description;
     let regex = /\B(\#[a-zA-Z)-9]+\b)(?!;)/gi;
     let hashArr = str.match(regex);
+    console.log(hashArr);
+
+    if(!hashArr){
+      setPostForm({ link: "", description: "", hashtags: [] });
+      return;
+    }
 
     hashArr.forEach((element) => {
       const nameHashtag = element.replace("#", "");
@@ -66,7 +67,7 @@ export default function Timeline() {
         <ContainerPublications>
           <PublishBlock>
             <UserBlock>
-              <img src={userPicture} alt="user-perfil" />
+              <img src={user.image} alt="user-perfil" />
             </UserBlock>
 
             <FormBlock onSubmit={handlePost}>

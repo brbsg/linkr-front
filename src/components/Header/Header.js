@@ -21,17 +21,54 @@ export default function Header() {
   async function onInputChange(value) {
     let response;
 
-    if (value !== inputValue) {
-      response = await api.searchUsers(token, { search: value });
+    try {
+      if (value.length >= 3) {
+        setTimeout(async () => {
+          response = await api.searchUsers(token, { search: value });
+
+          setSearchUsers(response.data);
+        }, 100);
+      } else {
+        setTimeout(async () => {
+          response = await api.searchUsers(token, { search: "" });
+
+          setSearchUsers(response.data);
+          setInputValue(value);
+        }, 100);
+      }
+
+      setHide(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function onInputClick() {
+    let response;
+
+    if (hide === false) {
+      setHide(true);
+
+      return;
     }
 
-    setSearchUsers(response.data);
     setHide(false);
-    setInputValue(value);
+
+    try {
+      if (inputValue.length < 3) {
+        setTimeout(async () => {
+          response = await api.searchUsers(token, { search: "" });
+
+          setSearchUsers(response.data);
+        }, 100);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   if (location.pathname === "/") return <></>;
-
+  if (location.pathname === "/sign-up") return <></>;
   return (
     <Container>
       <p
@@ -46,6 +83,7 @@ export default function Header() {
         onChange={(e) => onInputChange(e.target.value)}
         minLength={3}
         debounceTimeout={300}
+        onClick={onInputClick}
       />
 
       <OpenInput style={{ display: hide ? "none" : "flex" }}>
@@ -70,7 +108,7 @@ const Container = styled.nav`
   padding: 0 30px;
 `;
 
-const Input = styled(DebounceInput)`
+const Input = styled.input`
   all: unset;
   box-sizing: border-box;
   border: 0;
@@ -95,6 +133,7 @@ const OpenInput = styled.div`
   margin: 0;
   border: 0;
   width: 563px;
+  max-height: 500px;
   position: absolute;
   top: 40px;
   left: 0;
@@ -103,6 +142,7 @@ const OpenInput = styled.div`
   padding: 0px 15px;
   padding-bottom: 20px;
   padding-top: 45px;
+  overflow: auto;
 
   background: #e7e7e7;
   border-radius: 8px;

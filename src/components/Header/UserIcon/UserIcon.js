@@ -10,6 +10,12 @@ export default function UserIcon({ user, setHide }) {
       <img src={user.image} />
 
       <p>{user.name}</p>
+
+      {user.hasOwnProperty("followedId") && (
+        <>
+          <span>&#9679;</span> <span>following</span>
+        </>
+      )}
     </Container>
   );
 }
@@ -30,5 +36,15 @@ export const Container = styled.div`
     /* identical to box height */
 
     color: #515151;
+  }
+
+  span {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 23px;
+
+    color: #c5c5c5;
   }
 `;

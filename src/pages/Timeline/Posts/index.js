@@ -3,12 +3,14 @@ import api from "../../../services/api";
 import useAuth from "../../../hooks/useAuth";
 import styled from "styled-components";
 import MetaLink from "./MetaLink";
-import Like from "../../../components/Like";
 import ReactModal from "react-modal";
 import { IoTrash } from "react-icons/io5";
 import { TiPencil } from "react-icons/ti";
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from "react-router-dom";
+
+import InteractBar from "../../../components/InteractBar";
+import Comments from "../../../components/Comments";
 
 ReactModal.setAppElement("#root");
 
@@ -24,13 +26,13 @@ export default function Posts({ reloadPostsTrend }) {
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
   const navigate = useNavigate();
+  const [commentsOpen, setCommentsOpen] = useState(false);
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
   }
 
   function confirmDelete(id) {
-    console.log(id);
     setIsLoading(true);
     const promise = api.deletePost(id);
     promise
@@ -117,7 +119,6 @@ export default function Posts({ reloadPostsTrend }) {
 
   async function loadPosts() {
     const { data } = await api.getPosts(token);
-    console.log(data);
     try {
       setPosts(data);
     } catch {
@@ -154,97 +155,111 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   return (
-    <PostsContainer>
-      {posts.map((post) => (
-        <PostBox key={post.id}>
-          {post.delEditOption === true && (
-            <>
-              <EditIcon
-                onClick={() => handleOpenEdit(post.description, post.id)}
-              >
-                <TiPencil color="white" />
-              </EditIcon>
-              <TrashCan
-                onClick={() => {
-                  handleOpenModal();
-                  setPostId(post.id);
-                }}
-              >
-                <IoTrash color="white" />
-              </TrashCan>
-            </>
-          )}
+    <>
+      <PostsContainer>
+        {posts.map((post) => (
+          <CommentsAndPostBox key={post.id}>
+            <PostBox>
+              {post.delEditOption === true && (
+                <>
+                  <EditIcon
+                    onClick={() => handleOpenEdit(post.description, post.id)}
+                  >
+                    <TiPencil color="white" />
+                  </EditIcon>
+                  <TrashCan
+                    onClick={() => {
+                      handleOpenModal();
+                      setPostId(post.id);
+                    }}
+                  >
+                    <IoTrash color="white" />
+                  </TrashCan>
+                </>
+              )}
 
-          <NavBox>
-            <img
-              src={post.image}
-              alt="perfil-user"
-              onClick={() => goToUserPage(post.userId)}
-              style={{ cursor: "pointer" }}
-            />
-            <Like postId={post.id} token={token} />
-          </NavBox>
+              <NavBox>
+                <img
+                  src={post.image}
+                  alt="perfil-user"
+                  onClick={() => goToUserPage(post.userId)}
+                  style={{ cursor: "pointer" }}
+                />
+                <InteractBar
+                  post={post}
+                  token={token}
+                  commentsOpen={commentsOpen}
+                  setCommentsOpen={setCommentsOpen}
+                />
+              </NavBox>
 
-          <ContentBox>
-            <h2>{post.name}</h2>
+              <ContentBox>
+                <h2>{post.name}</h2>
 
-            {isEditing && postId === post.id ? (
-              <input
-                autoFocus
-                onFocus={(e) => e.currentTarget.select()}
-                disabled={disabled}
-                ativo={isAtivo}
-                value={newText}
-                onChange={(e) => setNewText(e.target.value)}
-                onKeyDown={(e) => handlerKey(e)}
-              />
-            ) : (
-              <h3>
-                <ReactHashtag
-                  renderHashtag={(hashtagValue) => (
-                    <StyledHashtag
-                      key={hashtagValue}
-                      href={`/search/${hashtagValue}`}
+                {isEditing && postId === post.id ? (
+                  <input
+                    autoFocus
+                    onFocus={(e) => e.currentTarget.select()}
+                    disabled={disabled}
+                    ativo={isAtivo}
+                    value={newText}
+                    onChange={(e) => setNewText(e.target.value)}
+                    onKeyDown={(e) => handlerKey(e)}
+                  />
+                ) : (
+                  <h3>
+                    <ReactHashtag
+                      renderHashtag={(hashtagValue) => (
+                        <StyledHashtag
+                          key={hashtagValue}
+                          href={`/search/${hashtagValue}`}
+                        >
+                          {hashtagValue}
+                        </StyledHashtag>
+                      )}
+                      onHashtagClick={(hashtag) =>
+                        navigate(`/hashtag/${hashtag.substring(1)}`)
+                      }
                     >
-                      {hashtagValue}
-                    </StyledHashtag>
-                  )}
-                  onHashtagClick={(hashtag) =>
-                    navigate(`/hashtag/${hashtag.substring(1)}`)
-                  }
-                >
-                  {post.description}
-                </ReactHashtag>
-              </h3>
-            )}
-            <MetaLink
-              url={post.link}
-              description={post.linkDescription}
-              image={post.linkImage}
-              title={post.linkTitle}
-            />
-          </ContentBox>
+                      {post.description}
+                    </ReactHashtag>
+                  </h3>
+                )}
+                <MetaLink
+                  url={post.link}
+                  description={post.linkDescription}
+                  image={post.linkImage}
+                  title={post.linkTitle}
+                />
+              </ContentBox>
 
-          <ReactModal
-            isOpen={modalIsOpen}
-            onRequestClose={handleOpenModal}
-            style={customStyles}
-          >
-            <h2>
-              Are you sure you want
-              <br />
-              to delete this post?
-            </h2>
-            <div>
-              <Button onClick={handleOpenModal}>No, go back</Button>
-              <ButtonDelete onClick={() => confirmDelete(postId)}>
-                {isLoading ? "Loading..." : "Yes, delete it"}
-              </ButtonDelete>
-            </div>
-          </ReactModal>
-        </PostBox>
-      ))}
-    </PostsContainer>
+              <ReactModal
+                isOpen={modalIsOpen}
+                onRequestClose={handleOpenModal}
+                style={customStyles}
+              >
+                <h2>
+                  Are you sure you want
+                  <br />
+                  to delete this post?
+                </h2>
+                <div>
+                  <Button onClick={handleOpenModal}>No, go back</Button>
+                  <ButtonDelete onClick={() => confirmDelete(postId)}>
+                    {isLoading ? "Loading..." : "Yes, delete it"}
+                  </ButtonDelete>
+                </div>
+              </ReactModal>
+            </PostBox>
+            <Comments
+              commentsOpen={commentsOpen}
+              setCommentsOpen={setCommentsOpen}
+              post={post}
+            />
+          </CommentsAndPostBox>
+        ))}
+      </PostsContainer>
+    </>
   );
 }
 
@@ -422,4 +437,10 @@ const StyledHashtag = styled.span`
   :hover {
     cursor: pointer;
   }
+`;
+
+const CommentsAndPostBox = styled.div`
+  width: 100%;
+  border-radius: 16px;
+  background: #1e1e1e;
 `;

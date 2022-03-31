@@ -3,7 +3,6 @@ import api from "../../../services/api";
 import useAuth from "../../../hooks/useAuth";
 import styled from "styled-components";
 import MetaLink from "./MetaLink";
-import Like from "../../../components/Like";
 import ReactModal from "react-modal";
 import { IoTrash } from "react-icons/io5";
 
@@ -90,7 +89,6 @@ export default function Posts({ reloadPosts, params }) {
           )}
           <NavBox>
             <img src={post.image} alt="perfil-user" />
-            <Like postId={post.id} token={token} />
           </NavBox>
           <ContentBox>
             <h2>{post.name}</h2>

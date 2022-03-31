@@ -48,39 +48,6 @@ export default function Posts({ reloadPostsTrend }) {
       });
   }
 
-  const customStyles = {
-    overlay: {
-      // position: 'fixed',
-      // top: 0,
-      // left: 0,
-      // right: 0,
-      // bottom: 0,
-      // backgroundColor: 'rgba(255, 255, 255, 0.75)',
-      backgroundColor: "white",
-      opacity: "0.75",
-    },
-    content: {
-      width: "597px",
-      height: "262px",
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      backgroundColor: "#333333",
-      color: "#FFF",
-      border: "none",
-      borderRadius: "50px",
-      textAlign: "center",
-      padding: "auto",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      gap: "30px",
-    },
-  };
-
   function handleOpenEdit(postText, id) {
     setIsEditing(!isEditing);
     setNewText(postText);
@@ -119,6 +86,7 @@ export default function Posts({ reloadPostsTrend }) {
 
   async function loadPosts() {
     const { data } = await api.getPosts(token);
+    // console.log(data);
     try {
       setPosts(data);
     } catch {
@@ -134,7 +102,7 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit]);
-
+  // console.log(posts);
   if (!posts) {
     return (
       <PostsContainer>
@@ -142,10 +110,17 @@ export default function Posts({ reloadPostsTrend }) {
       </PostsContainer>
     );
   }
+  if (posts === "No friends") {
+    return (
+      <PostsContainer>
+        <h1>You don't follow anyone yet. Search for new friends!</h1>
+      </PostsContainer>
+    );
+  }
   if (posts.length === 0) {
     return (
       <PostsContainer>
-        <h1>There are no posts yet</h1>
+        <h1>No posts found from your friends</h1>
       </PostsContainer>
     );
   }
@@ -158,8 +133,8 @@ export default function Posts({ reloadPostsTrend }) {
     <>
       <PostsContainer>
         {posts.map((post) => (
-          <CommentsAndPostBox key={post.id}>
-            <PostBox>
+          <CommentsAndPostBox>
+            <PostBox key={post.id}>
               {post.delEditOption === true && (
                 <>
                   <EditIcon
@@ -195,7 +170,6 @@ export default function Posts({ reloadPostsTrend }) {
 
               <ContentBox>
                 <h2>{post.name}</h2>
-
                 {isEditing && postId === post.id ? (
                   <input
                     autoFocus
@@ -232,7 +206,6 @@ export default function Posts({ reloadPostsTrend }) {
                   title={post.linkTitle}
                 />
               </ContentBox>
-
               <ReactModal
                 isOpen={modalIsOpen}
                 onRequestClose={handleOpenModal}

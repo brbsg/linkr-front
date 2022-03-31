@@ -23,6 +23,12 @@ function sendPost(body, token) {
   return promise;
 }
 
+function rePost(id, token){
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/timeline/${id}`, {}, config);
+  return promise;
+}
+
 function getPosts(token) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/timeline`, config);
@@ -119,6 +125,7 @@ const api = {
   loginUser,
   createUser,
   sendPost,
+  rePost,
   getPosts,
   getHashtags,
   getUser,

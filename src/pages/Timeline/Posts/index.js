@@ -7,6 +7,7 @@ import Like from '../../../components/Like';
 import ReactModal from 'react-modal';
 import { IoTrash } from 'react-icons/io5';
 import { TiPencil } from 'react-icons/ti';
+import { FaShare } from 'react-icons/fa';
 import ReactHashtag from '@mdnm/react-hashtag';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,6 +16,7 @@ ReactModal.setAppElement('#root');
 export default function Posts({ reloadPostsTrend }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [rePostModalIsOpen, setRePostModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
   const [reloadByDelEdit, setReloadByDelEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +29,9 @@ export default function Posts({ reloadPostsTrend }) {
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
+  }
+  function handleOpenRePostModal() {
+    setRePostModalIsOpen(!rePostModalIsOpen);
   }
 
   function confirmDelete(id) {
@@ -44,6 +49,27 @@ export default function Posts({ reloadPostsTrend }) {
         setIsLoading(false);
         alert('Could not delete this post.');
       });
+  }
+
+  function confirmRePost(id){
+    setDisabled(true);
+    setIsLoading(true);
+    
+    const promise = api.rePost(id, token);
+    promise.then(() => {
+      setTimeout(() => {
+        handleOpenRePostModal();
+        setDisabled(false);
+        setIsLoading(false);
+        setReloadByDelEdit(!reloadByDelEdit);
+      }, 1500);
+    });
+    promise.catch((error) => {
+      console.log(error);
+      setDisabled(false);
+      setIsLoading(false);
+      alert('Could not share this post. Try later...');
+    });
   }
 
   const customStyles = {
@@ -95,8 +121,7 @@ export default function Posts({ reloadPostsTrend }) {
 
     if (e.keyCode === 27) {
       setDisabled(false);
-      setIsAtivo(!isAtivo);
-      setIsEditing(false);
+      setIsAtivo(!isAtivo)
     }
   }
 
@@ -181,6 +206,14 @@ export default function Posts({ reloadPostsTrend }) {
               style={{ cursor: 'pointer' }}
             />
             <Like postId={post.id} token={token} />
+            <Share
+              onClick={() => {
+                handleOpenRePostModal();
+                setPostId(post.id);
+              }}
+            >
+              <FaShare color='white' />
+            </Share>
           </NavBox>
           <ContentBox>
             <h2>{post.name}</h2>
@@ -231,6 +264,24 @@ export default function Posts({ reloadPostsTrend }) {
               <Button onClick={handleOpenModal}>No, go back</Button>
               <ButtonDelete onClick={() => confirmDelete(postId)}>
                 {isLoading ? 'Loading...' : 'Yes, delete it'}
+              </ButtonDelete>
+            </div>
+          </ReactModal>
+
+          <ReactModal
+            isOpen={rePostModalIsOpen}
+            onRequestClose={handleOpenRePostModal}
+            style={customStyles}
+          >
+            <h2>
+              Do you want to re-post
+              <br />
+              this link?
+            </h2>
+            <div>
+              <Button onClick={handleOpenRePostModal}>No, cancel</Button>
+              <ButtonDelete onClick={() => confirmRePost(postId)}>
+                {isLoading ? 'Loading...' : 'Yes, share!'}
               </ButtonDelete>
             </div>
           </ReactModal>
@@ -415,3 +466,9 @@ const StyledHashtag = styled.span`
     cursor: pointer;
   }
 `;
+
+const Share = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`

@@ -44,7 +44,7 @@ export default function Posts({ reloadPostsTrend }) {
       .catch(() => {
         handleOpenModal();
         setIsLoading(false);
-        alert("Could not delete this post.");
+        alert("Could not delete this  post.");
       });
   }
 

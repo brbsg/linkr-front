@@ -44,15 +44,11 @@ export default function Posts({ reloadPostsTrend }) {
       .catch(() => {
         handleOpenModal();
         setIsLoading(false);
-        alert("Could not delete this  post.");
+        alert("Could not delete this post.");
       });
   }
 
-  function handleOpenEdit(postText, id) {
-    setIsEditing(!isEditing);
-    setNewText(postText);
-    setPostId(id);
-  }
+  function handleOpenEdit(postText, id) {}
 
   function handlerKey(e) {
     if (e.keyCode === 13) {

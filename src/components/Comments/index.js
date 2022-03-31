@@ -11,9 +11,9 @@ export default function Comments({commentsOpen, post}) {
     const { token } = useAuth();
     const [comments, setComments] = useState(null)
 
-    useEffect(() => getComments, [commentsOpen])
+    useEffect(() => getComments, [])
     function getComments() {
-        const promise = api.getComments(post.id, token);
+        const promise = api.getComments(post.post.id, token);
         promise.then(( {data} ) => setComments(data))
     }
     getComments()

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
-import Posts from "./Posts";
+import Posts from "../../components/Posts";
 import Trendings from "./Trendings";
 import useUser from "../../hooks/useUser";
 

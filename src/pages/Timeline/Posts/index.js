@@ -48,7 +48,11 @@ export default function Posts({ reloadPostsTrend }) {
       });
   }
 
-  function handleOpenEdit(postText, id) {}
+  function handleOpenEdit(postText, id) {
+    setIsEditing(!isEditing);
+    setNewText(postText);
+    setPostId(id);
+  }
 
   function handlerKey(e) {
     if (e.keyCode === 13) {

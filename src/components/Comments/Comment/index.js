@@ -1,10 +1,11 @@
-export default function Comment(props) {
+export default function Comment({comment}) {
+    console.log(comment)
     return(
         <div>
-            <img src=''/>
+            <img src={comment.image}/>
             <div>
-                <b>autor</b>
-                <p>comentario</p>
+                <b>{comment.name}</b>
+                <p>{comment.text}</p>
             </div>
         </div>
     )

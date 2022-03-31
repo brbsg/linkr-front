@@ -117,8 +117,14 @@ function toggleFollow(id, token){
 
 function postComment(body, token) {
   const config = createConfig(token);
-  const promise = axios.post(`${BASE_URL}/comments`, body, config)
-  return promise
+  const promise = axios.post(`${BASE_URL}/comments`, body, config);
+  return promise;
+}
+
+function getComments(id, token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/post/${id}/comments`, config);
+  return promise;
 }
 
 const api = {
@@ -140,7 +146,8 @@ const api = {
   getPostsByHashtag,
   verifyFollower,
   toggleFollow,
-  postComment
+  postComment,
+  getComments
 };
 
 export default api;

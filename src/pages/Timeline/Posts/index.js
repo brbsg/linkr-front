@@ -10,7 +10,7 @@ import ReactHashtag from '@mdnm/react-hashtag';
 import { useNavigate } from 'react-router-dom';
 
 import InteractBar from '../../../components/InteractBar';
-import Comments from '../../../components/Comments'
+import Comments from '../../../components/Comments';
 
 ReactModal.setAppElement('#root');
 
@@ -26,7 +26,7 @@ export default function Posts({ reloadPostsTrend }) {
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
   const navigate = useNavigate();
-  const [commentsOpen, setCommentsOpen] = useState(false)
+  const [commentsOpen, setCommentsOpen] = useState(false);
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -47,39 +47,6 @@ export default function Posts({ reloadPostsTrend }) {
         alert('Could not delete this post.');
       });
   }
-
-  const customStyles = {
-    overlay: {
-      // position: 'fixed',
-      // top: 0,
-      // left: 0,
-      // right: 0,
-      // bottom: 0,
-      // backgroundColor: 'rgba(255, 255, 255, 0.75)',
-      backgroundColor: 'white',
-      opacity: '0.75',
-    },
-    content: {
-      width: '597px',
-      height: '262px',
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: '#333333',
-      color: '#FFF',
-      border: 'none',
-      borderRadius: '50px',
-      textAlign: 'center',
-      padding: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      gap: '30px',
-    },
-  };
 
   function handleOpenEdit(postText, id) {
     setIsEditing(!isEditing);
@@ -119,6 +86,7 @@ export default function Posts({ reloadPostsTrend }) {
 
   async function loadPosts() {
     const { data } = await api.getPosts(token);
+    // console.log(data);
     try {
       setPosts(data);
     } catch {
@@ -134,7 +102,7 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit]);
-
+  // console.log(posts);
   if (!posts) {
     return (
       <PostsContainer>
@@ -142,10 +110,17 @@ export default function Posts({ reloadPostsTrend }) {
       </PostsContainer>
     );
   }
+  if (posts === 'No friends') {
+    return (
+      <PostsContainer>
+        <h1>You don't follow anyone yet. Search for new friends!</h1>
+      </PostsContainer>
+    );
+  }
   if (posts.length === 0) {
     return (
       <PostsContainer>
-        <h1>There are no posts yet</h1>
+        <h1>No posts found from your friends</h1>
       </PostsContainer>
     );
   }
@@ -156,101 +131,104 @@ export default function Posts({ reloadPostsTrend }) {
 
   return (
     <>
-    <PostsContainer>
-      {posts.map((post) => (
-        <CommentsAndPostBox>
-        <PostBox key={post.id}>
-          {post.delEditOption === true && (
-            <>
-              <EditIcon onClick={() => handleOpenEdit(post.description, post.id)}>
-                <TiPencil color='white' />
-              </EditIcon>
-              <TrashCan
-                onClick={() => {
-                  handleOpenModal();
-                  setPostId(post.id);
-                }}
+      <PostsContainer>
+        {posts.map((post) => (
+          <CommentsAndPostBox>
+            <PostBox key={post.id}>
+              {post.delEditOption === true && (
+                <>
+                  <EditIcon
+                    onClick={() => handleOpenEdit(post.description, post.id)}
+                  >
+                    <TiPencil color='white' />
+                  </EditIcon>
+                  <TrashCan
+                    onClick={() => {
+                      handleOpenModal();
+                      setPostId(post.id);
+                    }}
+                  >
+                    <IoTrash color='white' />
+                  </TrashCan>
+                </>
+              )}
+
+              <NavBox>
+                <img
+                  src={post.image}
+                  alt='perfil-user'
+                  onClick={() => goToUserPage(post.userId)}
+                  style={{ cursor: 'pointer' }}
+                />
+                <InteractBar
+                  post={post}
+                  token={token}
+                  commentsOpen={commentsOpen}
+                  setCommentsOpen={setCommentsOpen}
+                />
+              </NavBox>
+
+              <ContentBox>
+                <h2>{post.name}</h2>
+                {isEditing && postId === post.id ? (
+                  <input
+                    autoFocus
+                    onFocus={(e) => e.currentTarget.select()}
+                    disabled={disabled}
+                    ativo={isAtivo}
+                    value={newText}
+                    onChange={(e) => setNewText(e.target.value)}
+                    onKeyDown={(e) => handlerKey(e)}
+                  />
+                ) : (
+                  <h3>
+                    <ReactHashtag
+                      renderHashtag={(hashtagValue) => (
+                        <StyledHashtag href={`/search/${hashtagValue}`}>
+                          {hashtagValue}
+                        </StyledHashtag>
+                      )}
+                      onHashtagClick={(hashtag) =>
+                        navigate(`/hashtag/${hashtag.substring(1)}`)
+                      }
+                    >
+                      {post.description}
+                    </ReactHashtag>
+                  </h3>
+                )}
+                <MetaLink
+                  url={post.link}
+                  description={post.linkDescription}
+                  image={post.linkImage}
+                  title={post.linkTitle}
+                />
+              </ContentBox>
+              <ReactModal
+                isOpen={modalIsOpen}
+                onRequestClose={handleOpenModal}
+                style={customStyles}
               >
-                <IoTrash color='white' />
-              </TrashCan>
-            </>
-          )}
-
-          <NavBox>
-            <img
-              src={post.image}
-              alt='perfil-user'
-              onClick={() => goToUserPage(post.userId)}
-              style={{ cursor: 'pointer' }}
+                <h2>
+                  Are you sure you want
+                  <br />
+                  to delete this post?
+                </h2>
+                <div>
+                  <Button onClick={handleOpenModal}>No, go back</Button>
+                  <ButtonDelete onClick={() => confirmDelete(postId)}>
+                    {isLoading ? 'Loading...' : 'Yes, delete it'}
+                  </ButtonDelete>
+                </div>
+              </ReactModal>
+            </PostBox>
+            <Comments
+              commentsOpen={commentsOpen}
+              setCommentsOpen={setCommentsOpen}
+              post={post}
             />
-            <InteractBar 
-              post={post} 
-              token={token} 
-              commentsOpen={commentsOpen} 
-              setCommentsOpen={setCommentsOpen}/>
-          </NavBox>
-
-          <ContentBox>
-            <h2>{post.name}</h2>
-            {isEditing && postId === post.id ? (
-              <input
-                autoFocus
-                onFocus={(e) => e.currentTarget.select()}
-                disabled={disabled}
-                ativo={isAtivo}
-                value={newText}
-                onChange={(e) => setNewText(e.target.value)}
-                onKeyDown={(e) => handlerKey(e)}
-              />
-            ) : (
-              <h3>
-                <ReactHashtag
-                  renderHashtag={(hashtagValue) => (
-                    <StyledHashtag href={`/search/${hashtagValue}`}>
-                      {hashtagValue}
-                    </StyledHashtag>
-                  )}
-                  onHashtagClick={(hashtag) =>
-                    navigate(`/hashtag/${hashtag.substring(1)}`)
-                  }
-                >
-                  {post.description}
-                </ReactHashtag>
-              </h3>
-            )}
-            <MetaLink
-              url={post.link}
-              description={post.linkDescription}
-              image={post.linkImage}
-              title={post.linkTitle}
-            />
-          </ContentBox>
-          <ReactModal
-            isOpen={modalIsOpen}
-            onRequestClose={handleOpenModal}
-            style={customStyles}
-          >
-            <h2>
-              Are you sure you want
-              <br />
-              to delete this post?
-            </h2>
-            <div>
-              <Button onClick={handleOpenModal}>No, go back</Button>
-              <ButtonDelete onClick={() => confirmDelete(postId)}>
-                {isLoading ? 'Loading...' : 'Yes, delete it'}
-              </ButtonDelete>
-            </div>
-          </ReactModal>
-        </PostBox>
-        <Comments 
-          commentsOpen={commentsOpen} 
-          setCommentsOpen={setCommentsOpen}
-          post={post}
-          />
-        </CommentsAndPostBox >
-      ))}
-    </PostsContainer>
+          </CommentsAndPostBox>
+        ))}
+      </PostsContainer>
     </>
   );
 }
@@ -434,5 +412,5 @@ const StyledHashtag = styled.span`
 const CommentsAndPostBox = styled.div`
   width: 100%;
   border-radius: 16px;
-  background: #1E1E1E;
-`
+  background: #1e1e1e;
+`;

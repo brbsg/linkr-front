@@ -121,6 +121,12 @@ function toggleFollow(id, token){
   return promise;
 };
 
+function postComment(body, token) {
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/comments`, body, config)
+  return promise
+}
+
 const api = {
   loginUser,
   createUser,
@@ -140,7 +146,8 @@ const api = {
   editPost,
   getPostsByHashtag,
   verifyFollower,
-  toggleFollow
+  toggleFollow,
+  postComment
 };
 
 export default api;

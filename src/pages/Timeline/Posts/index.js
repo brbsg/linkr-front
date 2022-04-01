@@ -3,13 +3,16 @@ import api from '../../../services/api';
 import useAuth from '../../../hooks/useAuth';
 import styled from 'styled-components';
 import MetaLink from './MetaLink';
-import Like from '../../../components/Like';
 import ReactModal from 'react-modal';
 import { IoTrash } from 'react-icons/io5';
 import { TiPencil } from 'react-icons/ti';
 import { FaShare } from 'react-icons/fa';
 import ReactHashtag from '@mdnm/react-hashtag';
 import { useNavigate } from 'react-router-dom';
+
+import InteractBar from '../../../components/InteractBar';
+import Comments from '../../../components/Comments';
+import useUser from '../../../hooks/useUser';
 
 ReactModal.setAppElement('#root');
 
@@ -25,7 +28,11 @@ export default function Posts({ reloadPostsTrend }) {
   const [newText, setNewText] = useState('');
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
+  const { user } = useUser();
   const navigate = useNavigate();
+  const [commentsOpen, setCommentsOpen] = useState(false);
+
+  console.log(posts);
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -35,7 +42,6 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   function confirmDelete(id) {
-    console.log(id);
     setIsLoading(true);
     const promise = api.deletePost(id);
     promise
@@ -71,40 +77,6 @@ export default function Posts({ reloadPostsTrend }) {
       alert('Could not share this post. Try later...');
     });
   }
-
-  const customStyles = {
-    overlay: {
-      // position: 'fixed',
-      // top: 0,
-      // left: 0,
-      // right: 0,
-      // bottom: 0,
-      // backgroundColor: 'rgba(255, 255, 255, 0.75)',
-      backgroundColor: 'white',
-      opacity: '0.75',
-    },
-    content: {
-      width: '597px',
-      height: '262px',
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: '#333333',
-      color: '#FFF',
-      border: 'none',
-      borderRadius: '50px',
-      textAlign: 'center',
-      padding: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      gap: '30px',
-    },
-  };
-  console.log(newText);
 
   function handleOpenEdit(postText, id) {
     setIsEditing(!isEditing);
@@ -143,7 +115,7 @@ export default function Posts({ reloadPostsTrend }) {
 
   async function loadPosts() {
     const { data } = await api.getPosts(token);
-    console.log(data);
+    // console.log(data);
     try {
       setPosts(data);
     } catch {
@@ -159,7 +131,7 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit]);
-
+  // console.log(posts);
   if (!posts) {
     return (
       <PostsContainer>
@@ -167,10 +139,17 @@ export default function Posts({ reloadPostsTrend }) {
       </PostsContainer>
     );
   }
+  if (posts === 'No friends') {
+    return (
+      <PostsContainer>
+        <h1>You don't follow anyone yet. Search for new friends!</h1>
+      </PostsContainer>
+    );
+  }
   if (posts.length === 0) {
     return (
       <PostsContainer>
-        <h1>There are no posts yet</h1>
+        <h1>No posts found from your friends</h1>
       </PostsContainer>
     );
   }
@@ -180,114 +159,149 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   return (
-    <PostsContainer>
-      {posts.map((post) => (
-        <PostBox key={post.id}>
-          {post.delEditOption === true && (
-            <>
-              <EditIcon onClick={() => handleOpenEdit(post.description, post.id)}>
-                <TiPencil color='white' />
-              </EditIcon>
-              <TrashCan
-                onClick={() => {
-                  handleOpenModal();
-                  setPostId(post.id);
-                }}
-              >
-                <IoTrash color='white' />
-              </TrashCan>
-            </>
-          )}
-          <NavBox>
-            <img
-              src={post.image}
-              alt='perfil-user'
-              onClick={() => goToUserPage(post.userId)}
-              style={{ cursor: 'pointer' }}
-            />
-            <Like postId={post.id} token={token} />
-            <Share
-              onClick={() => {
-                handleOpenRePostModal();
-                setPostId(post.id);
-              }}
-            >
+    <>
+      <PostsContainer>
+        {posts.map((post) => (
+          <ReposterBox key={post.id}>
+            {post.reposterId?
+            <Reposter>
               <FaShare color='white' />
-            </Share>
-          </NavBox>
-          <ContentBox>
-            <h2>{post.name}</h2>
-            {isEditing && postId === post.id ? (
-              <input
-                autoFocus
-                onFocus={(e) => e.currentTarget.select()}
-                disabled={disabled}
-                ativo={isAtivo}
-                value={newText}
-                onChange={(e) => setNewText(e.target.value)}
-                onKeyDown={(e) => handlerKey(e)}
-              />
-            ) : (
-              <h3>
-                <ReactHashtag
-                  renderHashtag={(hashtagValue) => (
-                    <StyledHashtag href={`/search/${hashtagValue}`}>
-                      {hashtagValue}
-                    </StyledHashtag>
-                  )}
-                  onHashtagClick={(hashtag) =>
-                    navigate(`/hashtag/${hashtag.substring(1)}`)
-                  }
-                >
-                  {post.description}
-                </ReactHashtag>
-              </h3>
-            )}
-            <MetaLink
-              url={post.link}
-              description={post.linkDescription}
-              image={post.linkImage}
-              title={post.linkTitle}
-            />
-          </ContentBox>
-          <ReactModal
-            isOpen={modalIsOpen}
-            onRequestClose={handleOpenModal}
-            style={customStyles}
-          >
-            <h2>
-              Are you sure you want
-              <br />
-              to delete this post?
-            </h2>
-            <div>
-              <Button onClick={handleOpenModal}>No, go back</Button>
-              <ButtonDelete onClick={() => confirmDelete(postId)}>
-                {isLoading ? 'Loading...' : 'Yes, delete it'}
-              </ButtonDelete>
-            </div>
-          </ReactModal>
+              <h6>Re-posted by {
+              post.reposterName == user.name? "you" : post.reposterName
+              }</h6>
+              
+              <h6>Likes: {post.likesNumber}</h6>
+              <h6>Comments: {post.comentsNumber}</h6>
+              <h6>Shares: {post.sharesNumber}</h6>
+            </Reposter>
+            :
+            <></>
+            }
 
-          <ReactModal
-            isOpen={rePostModalIsOpen}
-            onRequestClose={handleOpenRePostModal}
-            style={customStyles}
-          >
-            <h2>
-              Do you want to re-post
-              <br />
-              this link?
-            </h2>
-            <div>
-              <Button onClick={handleOpenRePostModal}>No, cancel</Button>
-              <ButtonDelete onClick={() => confirmRePost(postId)}>
-                {isLoading ? 'Loading...' : 'Yes, share!'}
-              </ButtonDelete>
-            </div>
-          </ReactModal>
-        </PostBox>
-      ))}
-    </PostsContainer>
+            <CommentsAndPostBox>
+              <PostBox>
+                {post.delEditOption === true && (
+                  <>
+                    <EditIcon
+                      onClick={() => handleOpenEdit(post.description, post.id)}
+                    >
+                      <TiPencil color='white' />
+                    </EditIcon>
+                    <TrashCan
+                      onClick={() => {
+                        handleOpenModal();
+                        setPostId(post.id);
+                      }}
+                    >
+                      <IoTrash color='white' />
+                  </TrashCan>
+                  </>
+                )}
+
+                <NavBox>
+                  <img
+                    src={post.image}
+                    alt='perfil-user'
+                    onClick={() => goToUserPage(post.userId)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <InteractBar
+                    post={post}
+                    token={token}
+                    commentsOpen={commentsOpen}
+                    setCommentsOpen={setCommentsOpen}
+                  />
+                  <Share
+                    onClick={() => {
+                      handleOpenRePostModal();
+                      setPostId(post.id);
+                    }}
+                  >
+                    <FaShare color='white' />
+                  </Share>
+                </NavBox>
+              
+                <ContentBox>
+                  <h2>{post.name}</h2>
+                  {isEditing && postId === post.id ? (
+                    <input
+                      autoFocus
+                      onFocus={(e) => e.currentTarget.select()}
+                      disabled={disabled}
+                      ativo={isAtivo}
+                      value={newText}
+                      onChange={(e) => setNewText(e.target.value)}
+                      onKeyDown={(e) => handlerKey(e)}
+                    />
+                  ) : (
+                    <h3>
+                      <ReactHashtag
+                        renderHashtag={(hashtagValue) => (
+                          <StyledHashtag href={`/search/${hashtagValue}`}>
+                            {hashtagValue}
+                          </StyledHashtag>
+                        )}
+                        onHashtagClick={(hashtag) =>
+                          navigate(`/hashtag/${hashtag.substring(1)}`)
+                        }
+                      >
+                        {post.description}
+                      </ReactHashtag>
+                    </h3>
+                  )}
+                  <MetaLink
+                    url={post.link}
+                    description={post.linkDescription}
+                    image={post.linkImage}
+                    title={post.linkTitle}
+                  />
+                </ContentBox>
+                <ReactModal
+                  isOpen={modalIsOpen}
+                  onRequestClose={handleOpenModal}
+                  style={customStyles}
+                >
+                  <h2>
+                    Are you sure you want
+                    <br />
+                    to delete this post?
+                  </h2>
+                  <div>
+                    <Button onClick={handleOpenModal}>No, go back</Button>
+                    <ButtonDelete onClick={() => confirmDelete(postId)}>
+                      {isLoading ? 'Loading...' : 'Yes, delete it'}
+                    </ButtonDelete>
+                  </div>
+                </ReactModal>
+
+                <ReactModal
+                  isOpen={rePostModalIsOpen}
+                  onRequestClose={handleOpenRePostModal}
+                  style={customStyles}
+                >
+                  <h2>
+                    Do you want to re-post
+                    <br />
+                    this link?
+                  </h2>
+                  <div>
+                    <Button onClick={handleOpenRePostModal}>No, cancel</Button>
+                    <ButtonDelete onClick={() => confirmRePost(postId)}>
+                      {isLoading ? 'Loading...' : 'Yes, share!'}
+                    </ButtonDelete>
+                  </div>
+                </ReactModal>
+              </PostBox>
+              <Comments
+                commentsOpen={commentsOpen}
+                setCommentsOpen={setCommentsOpen}
+                post={post}
+              />
+            </CommentsAndPostBox>
+          </ReposterBox>
+        ))}
+      </PostsContainer>
+    </>
   );
 }
 
@@ -472,3 +486,45 @@ const Share = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+const CommentsAndPostBox = styled.div`
+  width: 100%;
+  border-radius: 16px;
+  background: #1e1e1e;
+`;
+
+const ReposterBox = styled.div`
+  width: 100%;
+  border-radius: 16px;
+  background: #1e1e1e;
+`;
+
+const Reposter = styled.div`
+  padding: 13px 10px;
+
+  display: flex;
+  gap: 6px;
+
+  h6{
+    display: flex;
+    margin: 0;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+
+    color: #FFFFFF;
+  }
+  span{
+    margin: 0;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 11px;
+    line-height: 13px;
+
+    color: #FFFFFF;
+  }
+
+`;

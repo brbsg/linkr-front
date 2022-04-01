@@ -3,7 +3,6 @@ import api from '../../../services/api';
 import useAuth from '../../../hooks/useAuth';
 import styled from 'styled-components';
 import MetaLink from './MetaLink';
-import Like from '../../../components/Like';
 import ReactModal from 'react-modal';
 import { IoTrash } from 'react-icons/io5';
 
@@ -22,7 +21,6 @@ export default function Posts({ reloadPosts, hashtag}) {
   }
 
   function confirmDelete(id) {
-    console.log(id);
     setIsLoading(true);
     const promise = api.deletePost(id);
     promise
@@ -73,7 +71,6 @@ export default function Posts({ reloadPosts, hashtag}) {
 
   async function loadPosts() {
     const { data } = await api.getPostsByHashtag(token, hashtag);
-    console.log(data);
     try {
       setPosts(data);
     } catch {
@@ -88,7 +85,7 @@ export default function Posts({ reloadPosts, hashtag}) {
     }
   }
 
-  useEffect(loadPosts, [reloadPosts, reloadByDelete]);
+  useEffect(loadPosts, [reloadPosts, reloadByDelete, hashtag]);
 
   if (!posts) {
     return (
@@ -121,7 +118,6 @@ export default function Posts({ reloadPosts, hashtag}) {
           )}
           <NavBox>
             <img src={post.image} alt='perfil-user' />
-            <Like postId={post.id} token={token} />
           </NavBox>
           <ContentBox>
             <h2>{post.name}</h2>

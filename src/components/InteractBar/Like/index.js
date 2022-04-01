@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import { IoHeartOutline } from 'react-icons/io5';
 import { IoHeart } from 'react-icons/io5';
 
-import api from '../../services/api';
+import api from '../../../services/api'
 
 export default function Like(props) {
   const [liked, setLiked] = useState(false);
@@ -20,7 +20,6 @@ export default function Like(props) {
   function getLikedByUser() {
     const promise = api.getUserLikes(props.token);
     promise.then(({ data }) => {
-      console.log(data)
       setUserLikes(data);
     });
   }
@@ -30,12 +29,10 @@ export default function Like(props) {
     promise.then(({ data }) => {
       setLikers(data.users);
       setLikes(data.count);
-      console.log(userLikes)
     });
   }
 
   function setLikedByUser() {
-    console.log(userLikes);
     if(userLikes.find((userLike) => userLike.postId === props.postId)) {
       setLiked(true)
     }
@@ -71,7 +68,7 @@ export default function Like(props) {
         }
         onClick={() => setLiked(!liked)}
       >
-        {liked ? <IoHeart color='red' /> : <IoHeartOutline />}
+        {liked ? <IoHeart color='red' size={30} /> : <IoHeartOutline size={30} />}
         <p>{liked ? likes + 1 : likes} likes</p>
       </a>
       <ReactTooltip place='bottom' type='light' effect='solid' />

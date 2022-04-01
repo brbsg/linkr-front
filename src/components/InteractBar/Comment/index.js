@@ -30,8 +30,10 @@ export default function Comment({
         if (clickedPost !== postId) {
           setCommentsOpen(true);
           setClickedPost(postId);
+        } else if (clickedPost === postId && commentsOpen === false) {
+          setCommentsOpen(true);
         } else {
-          setCommentsOpen(false);
+          setCommentsOpen(false)
         }
       }}
     >

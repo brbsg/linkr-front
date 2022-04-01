@@ -127,6 +127,12 @@ function getComments(id, token) {
   return promise;
 }
 
+function getFollowing(token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/following`, config);
+  return promise;
+}
+
 const api = {
   loginUser,
   createUser,
@@ -147,7 +153,8 @@ const api = {
   verifyFollower,
   toggleFollow,
   postComment,
-  getComments
+  getComments,
+  getFollowing
 };
 
 export default api;

@@ -27,7 +27,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [commentsOpen, setCommentsOpen] = useState(false);
-  const [clickedPost, setClickedPost] = useState(null)
+  const [clickedPost, setClickedPost] = useState(null);
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -49,7 +49,11 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
       });
   }
 
-  function handleOpenEdit(postText, id) {} //função vazia?
+  function handleOpenEdit(postText, id) {
+    setIsEditing(!isEditing);
+    setNewText(postText);
+    setPostId(id);
+  }
 
   function handlerKey(e) {
     if (e.keyCode === 13) {

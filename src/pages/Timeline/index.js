@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import api from '../../services/api';
-import useAuth from '../../hooks/useAuth';
-import styled from 'styled-components';
-import Posts from './Posts';
-import Trendings from './Trendings';
-import useUser from '../../hooks/useUser';
-import NewPostsAlertButton from '../../components/NewPostsAlertButton';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import api from "../../services/api";
+import useAuth from "../../hooks/useAuth";
+import styled from "styled-components";
+import Posts from "./Posts";
+import Trendings from "./Trendings";
+import useUser from "../../hooks/useUser";
+import NewPostsAlertButton from "../../components/NewPostsAlertButton";
+import { useNavigate } from "react-router-dom";
 
 export default function Timeline() {
   const navigate = useNavigate();
 
   const [postForm, setPostForm] = useState({
-    link: '',
-    description: '',
+    link: "",
+    description: "",
     hashtags: [],
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +25,7 @@ export default function Timeline() {
   // console.log(user, token);
   useEffect(() => {
     if (!user || !token) {
-      navigate('/');
+      navigate("/");
     }
   }, []);
 
@@ -44,10 +44,10 @@ export default function Timeline() {
         setReloadPostsTrend(!reloadPostsTrend);
       })
       .catch(() => {
-        alert('Houve um erro ao publicar seu link');
+        alert("Houve um erro ao publicar seu link");
         setIsLoading(false);
       });
-    setPostForm({ link: '', description: '', hashtags: [] });
+    setPostForm({ link: "", description: "", hashtags: [] });
   }
 
   function macthHashtags() {
@@ -57,12 +57,12 @@ export default function Timeline() {
     console.log(hashArr);
 
     if (!hashArr) {
-      setPostForm({ link: '', description: '', hashtags: [] });
+      setPostForm({ link: "", description: "", hashtags: [] });
       return;
     }
 
     hashArr.forEach((element) => {
-      const nameHashtag = element.replace('#', '');
+      const nameHashtag = element.replace("#", "");
       setPostForm({
         ...postForm,
         hashtags: postForm.hashtags.push(nameHashtag),
@@ -80,30 +80,35 @@ export default function Timeline() {
         <ContainerPublications>
           <PublishBlock>
             <UserBlock>
-              <img src={user.image} alt='user-perfil' />
+              <img
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/users/${user.id}`)}
+                src={user.image}
+                alt="user-perfil"
+              />
             </UserBlock>
 
             <FormBlock onSubmit={handlePost}>
               <h2>What are you going to share today?</h2>
               <LinkInput
-                placeholder='http://'
-                type='text'
+                placeholder="http://"
+                type="text"
                 onChange={handleChange}
-                name='link'
+                name="link"
                 value={postForm.link}
                 required
               />
 
               <DescriptionInput
-                placeholder='Awesome article about #javascript'
-                type='text-area'
+                placeholder="Awesome article about #javascript"
+                type="text-area"
                 onChange={handleChange}
-                name='description'
+                name="description"
                 value={postForm.description}
               />
 
-              <button type='submit' disabled={isLoading}>
-                {isLoading ? 'Publishing...' : 'Publish'}
+              <button type="submit" disabled={isLoading}>
+                {isLoading ? "Publishing..." : "Publish"}
               </button>
             </FormBlock>
           </PublishBlock>
@@ -128,7 +133,7 @@ const TitlePage = styled.h1`
   padding-top: 125px;
   padding-bottom: 43px;
 
-  font-family: 'Oswald';
+  font-family: "Oswald";
   font-style: normal;
   font-weight: 700;
   font-size: 43px;
@@ -217,7 +222,7 @@ const FormBlock = styled.form`
     width: 100%;
     height: 40px;
 
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 300;
     font-size: 20px;
@@ -229,7 +234,7 @@ const FormBlock = styled.form`
     width: 112px;
     height: 31px;
 
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
@@ -268,7 +273,7 @@ const LinkInput = styled.input`
   height: 30px;
   padding: 8px 12px;
 
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 500;
   font-size: 15px;
@@ -277,7 +282,7 @@ const LinkInput = styled.input`
   color: #000000;
 
   ::placeholder {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 300;
     font-size: 15px;
@@ -299,7 +304,7 @@ const DescriptionInput = styled.input`
 
   line-height: 1px;
 
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 500;
   font-size: 15px;
@@ -308,7 +313,7 @@ const DescriptionInput = styled.input`
   color: #000000;
 
   ::placeholder {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 300;
     font-size: 15px;

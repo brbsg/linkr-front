@@ -16,7 +16,7 @@ import useUser from '../../../hooks/useUser';
 
 ReactModal.setAppElement('#root');
 
-export default function Posts({ reloadPostsTrend }) {
+export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [rePostModalIsOpen, setRePostModalIsOpen] = useState(false);
@@ -25,12 +25,13 @@ export default function Posts({ reloadPostsTrend }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [newText, setNewText] = useState('');
+  const [newText, setNewText] = useState("");
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
   const { user } = useUser();
   const navigate = useNavigate();
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [clickedPost, setClickedPost] = useState(null)
 
   console.log(posts);
 
@@ -53,7 +54,7 @@ export default function Posts({ reloadPostsTrend }) {
       .catch(() => {
         handleOpenModal();
         setIsLoading(false);
-        alert('Could not delete this post.');
+        alert("Could not delete this post.");
       });
   }
 
@@ -109,14 +110,16 @@ export default function Posts({ reloadPostsTrend }) {
     promise.catch((error) => {
       console.log(error);
       setDisabled(false);
-      alert('Erro ao editar. Tente novamente mais tarde.');
+      alert("Erro ao editar. Tente novamente mais tarde.");
     });
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   async function loadPosts() {
-    const { data } = await api.getPosts(token);
     // console.log(data);
     try {
+      const { data } = await api.getPosts(token);
+      console.log(data);
       setPosts(data);
     } catch {
       return (
@@ -130,7 +133,10 @@ export default function Posts({ reloadPostsTrend }) {
     }
   }
 
-  useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit]);
+  console.log(reloadByNewPosts);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit, reloadByNewPosts]);
   // console.log(posts);
   if (!posts) {
     return (
@@ -139,7 +145,7 @@ export default function Posts({ reloadPostsTrend }) {
       </PostsContainer>
     );
   }
-  if (posts === 'No friends') {
+  if (posts === "No friends") {
     return (
       <PostsContainer>
         <h1>You don't follow anyone yet. Search for new friends!</h1>
@@ -293,6 +299,7 @@ export default function Posts({ reloadPostsTrend }) {
                 commentsOpen={commentsOpen}
                 setCommentsOpen={setCommentsOpen}
                 post={post}
+                clickedPost={clickedPost}
               />
             </CommentsAndPostBox>
           </ReposterBox>
@@ -358,7 +365,7 @@ const ContentBox = styled.div`
   flex-direction: column;
   gap: 7px;
   h2 {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
@@ -367,7 +374,7 @@ const ContentBox = styled.div`
     color: #ffffff;
   }
   h3 {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
@@ -426,7 +433,7 @@ const Button = styled.button`
   background-color: #fff;
   color: #1877f2;
 
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 21.8px;
@@ -441,7 +448,7 @@ const ButtonDelete = styled.button`
   background-color: #1877f2;
   color: #fff;
 
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 21.8px;
@@ -449,32 +456,32 @@ const ButtonDelete = styled.button`
 
 const customStyles = {
   overlay: {
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#ffffff15',
+    backgroundColor: "#ffffff15",
   },
   content: {
-    width: '597px',
-    height: '262px',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#333333',
-    color: '#FFF',
-    border: 'none',
-    borderRadius: '50px',
-    textAlign: 'center',
-    padding: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '30px',
+    width: "597px",
+    height: "262px",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#333333",
+    color: "#FFF",
+    border: "none",
+    borderRadius: "50px",
+    textAlign: "center",
+    padding: "auto",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: "30px",
   },
 };
 

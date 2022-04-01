@@ -29,4 +29,11 @@ export const CommentsBox = styled.div`
 
         }
     }
+    span {
+        display: flex;
+        gap: 5px;
+        p {
+            color: #565656;
+        }
+    }
 `

@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 // const BASE_URL = 'https://git.heroku.com/linkr-back-csgg.git';
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
 
 function createConfig(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
@@ -109,22 +109,39 @@ function getPostsByHashtag(token, hashtag) {
   return promise;
 }
 
-function verifyFollower(id, token){
+function verifyFollower(id, token) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/following/${id}`, config);
   return promise;
 }
 
-function toggleFollow(id, token){
+function toggleFollow(id, token) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/follow/${id}`, config);
   return promise;
-};
+}
 
 function postComment(body, token) {
   const config = createConfig(token);
-  const promise = axios.post(`${BASE_URL}/comments`, body, config)
+  const promise = axios.post(`${BASE_URL}/comments`, body, config);
+  return promise;
+}
+
+function getComments(id, token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/post/${id}/comments`, config);
+  return promise;
+}
+
+function getFollowing(token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/following`, config);
   return promise
+}
+function newPostsAlert(token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/timeline/newPosts`, config);
+  return promise;
 }
 
 const api = {
@@ -147,7 +164,10 @@ const api = {
   getPostsByHashtag,
   verifyFollower,
   toggleFollow,
-  postComment
+  postComment,
+  getComments,
+  getFollowing,
+  newPostsAlert
 };
 
 export default api;

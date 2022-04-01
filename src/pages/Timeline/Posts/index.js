@@ -14,7 +14,7 @@ import Comments from "../../../components/Comments";
 
 ReactModal.setAppElement("#root");
 
-export default function Posts({ reloadPostsTrend }) {
+export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   const [posts, setPosts] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState(null);
@@ -27,6 +27,7 @@ export default function Posts({ reloadPostsTrend }) {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [clickedPost, setClickedPost] = useState(null);
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -84,10 +85,12 @@ export default function Posts({ reloadPostsTrend }) {
     });
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   async function loadPosts() {
-    const { data } = await api.getPosts(token);
     // console.log(data);
     try {
+      const { data } = await api.getPosts(token);
+      console.log(data);
       setPosts(data);
     } catch {
       return (
@@ -101,7 +104,10 @@ export default function Posts({ reloadPostsTrend }) {
     }
   }
 
-  useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit]);
+  console.log(reloadByNewPosts);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit, reloadByNewPosts]);
   // console.log(posts);
   if (!posts) {
     return (
@@ -165,6 +171,8 @@ export default function Posts({ reloadPostsTrend }) {
                   token={token}
                   commentsOpen={commentsOpen}
                   setCommentsOpen={setCommentsOpen}
+                  clickedPost={clickedPost}
+                  setClickedPost={setClickedPost}
                 />
               </NavBox>
 
@@ -228,6 +236,7 @@ export default function Posts({ reloadPostsTrend }) {
               commentsOpen={commentsOpen}
               setCommentsOpen={setCommentsOpen}
               post={post}
+              clickedPost={clickedPost}
             />
           </CommentsAndPostBox>
         ))}

@@ -8,7 +8,7 @@ export const StyledDiv = styled.div`
     gap: 15px;
 
     p {
-        font-size: 11px;
+        font-size: 9px;
     }
     div {
         display: flex;

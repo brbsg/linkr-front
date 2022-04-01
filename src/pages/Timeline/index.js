@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Posts from "./Posts";
 import Trendings from "./Trendings";
 import useUser from "../../hooks/useUser";
+import NewPostsAlertButton from "../../components/NewPostsAlertButton";
 import { useNavigate } from "react-router-dom";
 
 export default function Timeline() {
@@ -19,8 +20,9 @@ export default function Timeline() {
   const [reloadPostsTrend, setReloadPostsTrend] = useState(false);
   const { token } = useAuth();
   const { user } = useUser();
+  const [reloadByNewPosts, setReloadByNewPosts] = useState(false);
 
-  console.log(user, token);
+  // console.log(user, token);
   useEffect(() => {
     if (!user || !token) {
       navigate("/");
@@ -110,8 +112,15 @@ export default function Timeline() {
               </button>
             </FormBlock>
           </PublishBlock>
-
-          <Posts reloadPostsTrend={reloadPostsTrend} />
+          <NewPostsAlertButton
+            onClick={() => {
+              setReloadByNewPosts(!reloadByNewPosts);
+            }}
+          />
+          <Posts
+            reloadPostsTrend={reloadPostsTrend}
+            reloadByNewPosts={reloadByNewPosts}
+          />
         </ContainerPublications>
         <Trendings reloadPostsTrend={reloadPostsTrend} />
       </Container>

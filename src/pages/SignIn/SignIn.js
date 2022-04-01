@@ -14,7 +14,7 @@ export default function Signin() {
 
   useEffect(async () => {
     try {
-      if (token ) {
+      if (JSON.parse(localStorage.getItem("auth-token-linkr"))) {
         await api.validateToken(token);
 
         navigate("/timeline");

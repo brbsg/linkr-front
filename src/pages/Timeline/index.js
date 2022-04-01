@@ -20,7 +20,7 @@ export default function Timeline() {
   const { token } = useAuth();
   const { user } = useUser();
 
-  console.log(user, token);
+  // console.log(user, token);
   useEffect(() => {
     if (!user || !token) {
       navigate("/");

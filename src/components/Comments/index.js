@@ -11,22 +11,25 @@ export default function Comments({commentsOpen, post, clickedPost}) {
     const { token } = useAuth();
     const [comments, setComments] = useState(null)
 
-    useEffect(() => getComments, [commentsOpen])
+    useEffect(() => getComments(), [])
     function getComments() {
         const promise = api.getComments(post.id, token);
-        promise.then(( {data} ) => setComments(data))
+        promise.then(( {data} ) => setComments(data));
     }
-    getComments()
     
-    console.log(comments)
     if(commentsOpen) return(
+        <>
+        {post.id == clickedPost ? 
         <CommentsBox>
-            {comments && clickedPost === post.id?
+            {comments ?
             comments.map((comment, i) => <Comment comment={comment} key={i}/>) 
             :
             ''}
             <Input post={post}/>
-        </CommentsBox>
+        </CommentsBox> 
+        : 
+        ''}
+        </>
     )
     
     return('')

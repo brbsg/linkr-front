@@ -78,7 +78,12 @@ export default function Timeline() {
         <ContainerPublications>
           <PublishBlock>
             <UserBlock>
-              <img src={user.image} alt="user-perfil" />
+              <img
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/users/${user.id}`)}
+                src={user.image}
+                alt="user-perfil"
+              />
             </UserBlock>
 
             <FormBlock onSubmit={handlePost}>

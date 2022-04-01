@@ -15,21 +15,19 @@ export default function UserPosts() {
   const [disable, setDisable] = useState(false);
   const { token } = useAuth();
   const { user } = useUser();
-  console.log(user);
 
   const params = useParams();
 
-  function isFollower(){
-    const promise = api.verifyFollower(
-      params.id,
-      token
-    );
-    promise.then( ({ data })=>{
-      setFollower(data);
-    }).catch((error)=>{
-      console.log(error);
-      alert("Could not validate if user is Followed. Try later...");
-    })
+  function isFollower() {
+    const promise = api.verifyFollower(params.id, token);
+    promise
+      .then(({ data }) => {
+        setFollower(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Could not validate if user is Followed. Try later...");
+      });
   }
 
   useEffect(async () => {
@@ -48,18 +46,15 @@ export default function UserPosts() {
   //   promise.then(({ data }) => setUserPicture(data));
   // }
 
-  async function handleFollow(){
+  async function handleFollow() {
     setDisable(!disable);
     try {
-      const promise = await api.toggleFollow(
-        params.id,
-         token
-      );
+      const promise = await api.toggleFollow(params.id, token);
       setFollower(promise.data);
       setDisable(!disable);
     } catch (error) {
       console.log(error);
-      alert("Could not Follow user. Try later...")
+      alert("Could not Follow user. Try later...");
       setDisable(!disable);
     }
   }
@@ -68,21 +63,24 @@ export default function UserPosts() {
     <>
       <TitlePage>
         <UserTitleContent>
-        <img src={userPicture} />
-        {userName}'s posts
+          <img src={userPicture} />
+          {userName}'s posts
         </UserTitleContent>
 
-        {(user.id != params.id)?
-          <ButtonFriendly 
-          disable={disable} 
-          onClick={()=>{handleFollow()}} 
-          follower={follower}
+        {user.id != params.id ? (
+          <ButtonFriendly
+            disable={disable}
+            onClick={() => {
+              handleFollow();
+            }}
+            style={{ cursor: "pointer" }}
+            follower={follower}
           >
-            {follower? "Unfollow": "Follow"}
+            {follower ? "Unfollow" : "Follow"}
           </ButtonFriendly>
-        :
+        ) : (
           <></>
-        }
+        )}
       </TitlePage>
 
       <Container>
@@ -100,7 +98,7 @@ const TitlePage = styled.div`
   width: 936px;
   padding-top: 78px;
   padding-bottom: 43px;
-  
+
   display: flex;
   justify-content: space-between;
 `;
@@ -111,7 +109,7 @@ const UserTitleContent = styled.h1`
 
   font-family: "Oswald";
   color: #ffffff;
-  
+
   img {
     width: 60px;
     height: 60px;
@@ -127,15 +125,15 @@ const ButtonFriendly = styled.div`
   justify-content: center;
   align-items: center;
 
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
 
-  color: ${ (props) => props.follower? "#1877F2": "#FFFFFF"};
+  color: ${(props) => (props.follower ? "#1877F2" : "#FFFFFF")};
 
-  background: ${ (props) => props.follower? "#FFFFFF": "#1877F2"};
+  background: ${(props) => (props.follower ? "#FFFFFF" : "#1877F2")};
   border-radius: 5px;
 `;
 

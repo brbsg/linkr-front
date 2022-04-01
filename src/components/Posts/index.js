@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import api from "../../../services/api";
-import useAuth from "../../../hooks/useAuth";
+import api from "../../services/api";
+import useAuth from "../../hooks/useAuth";
 import styled from "styled-components";
 import MetaLink from "./MetaLink";
 import ReactModal from "react-modal";
 import { IoTrash } from "react-icons/io5";
 import { TiPencil } from "react-icons/ti";
 import ReactHashtag from "@mdnm/react-hashtag";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import InteractBar from "../../../components/InteractBar";
-import Comments from "../../../components/Comments";
+import InteractBar from "../InteractBar";
+import Comments from "../Comments";
 
 ReactModal.setAppElement("#root");
 
@@ -27,8 +27,6 @@ export default function Posts({ reloadPostsTrend }) {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [commentsOpen, setCommentsOpen] = useState(false);
-
-  const params = useParams();
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -87,8 +85,8 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   async function loadPosts() {
-    const { data } = await api.getUserPosts(token, params.id);
-    console.log(data);
+    const { data } = await api.getPosts(token);
+    // console.log(data);
     try {
       setPosts(data);
     } catch {
@@ -135,8 +133,8 @@ export default function Posts({ reloadPostsTrend }) {
     <>
       <PostsContainer>
         {posts.map((post) => (
-          <CommentsAndPostBox>
-            <PostBox key={post.id}>
+          <CommentsAndPostBox key={post.id}>
+            <PostBox>
               {post.delEditOption === true && (
                 <>
                   <EditIcon

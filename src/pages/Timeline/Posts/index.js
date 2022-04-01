@@ -27,6 +27,7 @@ export default function Posts({ reloadPostsTrend }) {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [clickedPost, setClickedPost] = useState(null)
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -48,7 +49,7 @@ export default function Posts({ reloadPostsTrend }) {
       });
   }
 
-  function handleOpenEdit(postText, id) {}
+  function handleOpenEdit(postText, id) {} //função vazia?
 
   function handlerKey(e) {
     if (e.keyCode === 13) {
@@ -81,9 +82,10 @@ export default function Posts({ reloadPostsTrend }) {
   }
 
   async function loadPosts() {
-    const { data } = await api.getPosts(token);
+    
     // console.log(data);
     try {
+      const { data } = await api.getPosts(token);
       setPosts(data);
     } catch {
       return (
@@ -97,8 +99,8 @@ export default function Posts({ reloadPostsTrend }) {
     }
   }
 
-  useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit]);
-  // console.log(posts);
+  //useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit]);
+  useEffect(loadPosts, [reloadPostsTrend, reloadByDelEdit])
   if (!posts) {
     return (
       <PostsContainer>
@@ -161,6 +163,8 @@ export default function Posts({ reloadPostsTrend }) {
                   token={token}
                   commentsOpen={commentsOpen}
                   setCommentsOpen={setCommentsOpen}
+                  clickedPost={clickedPost}
+                  setClickedPost={setClickedPost}
                 />
               </NavBox>
 
@@ -224,6 +228,7 @@ export default function Posts({ reloadPostsTrend }) {
               commentsOpen={commentsOpen}
               setCommentsOpen={setCommentsOpen}
               post={post}
+              clickedPost={clickedPost}
             />
           </CommentsAndPostBox>
         ))}

@@ -4,7 +4,7 @@ import { AiOutlineComment } from 'react-icons/ai'
 import useAuth from '../../../hooks/useAuth';
 import api from '../../../services/api'
 
-export default function Comment({commentsOpen, setCommentsOpen, postId}) {
+export default function Comment({ commentsOpen, setCommentsOpen, postId }) {
     const { token } = useAuth()
     const [commentData, setCommentData] = useState(null)
 
@@ -19,7 +19,9 @@ export default function Comment({commentsOpen, setCommentsOpen, postId}) {
     getComments()
 
     return(
-        <div onClick={() => setCommentsOpen(!commentsOpen)}>
+        <div onClick={() => {
+            setCommentsOpen(!commentsOpen)
+            }}>
         <AiOutlineComment size={30} />
         <p> {
         commentData ?

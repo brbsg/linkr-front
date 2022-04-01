@@ -14,7 +14,7 @@ export default function Signin() {
 
   useEffect(async () => {
     try {
-      if (token) {
+      if (token ) {
         await api.validateToken(token);
 
         navigate("/timeline");

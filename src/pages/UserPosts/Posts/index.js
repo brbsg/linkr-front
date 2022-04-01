@@ -8,7 +8,7 @@ import { IoTrash } from 'react-icons/io5';
 import { TiPencil } from 'react-icons/ti';
 import { FaShare } from 'react-icons/fa';
 import ReactHashtag from '@mdnm/react-hashtag';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import InteractBar from '../../../components/InteractBar';
 import Comments from '../../../components/Comments';
@@ -32,6 +32,8 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   const [clickedPost, setClickedPost] = useState(null);
   const [rePostModalIsOpen, setRePostModalIsOpen] = useState(false);
   const { user } = useUser();
+
+  const params = useParams();
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -114,7 +116,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   async function loadPosts() {
     // console.log(data);
     try {
-      const { data } = await api.getUserPosts(token);
+      const { data } = await api.getUserPosts(token, params.id);
       console.log(data);
       setPosts(data);
     } catch {

@@ -40,9 +40,10 @@ export default function Logout() {
   }
 
   function handleLogout() {
-      localStorage.removeItem("auth-token-linkr");
-      localStorage.removeItem("user-linkr");
-      navigate('/');
+    localStorage.removeItem("auth-token-linkr");
+    localStorage.removeItem("user-linkr");
+    navigate('/')
+      
   }
 
 

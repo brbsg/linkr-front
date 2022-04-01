@@ -15,7 +15,6 @@ export default function UserPosts() {
   const [disable, setDisable] = useState(false);
   const { token } = useAuth();
   const { user } = useUser();
-  console.log(user);
 
   const params = useParams();
 
@@ -27,7 +26,7 @@ export default function UserPosts() {
       })
       .catch((error) => {
         console.log(error);
-        alert('Could not validate if user is Followed. Try later...');
+        alert("Could not validate if user is Followed. Try later...");
       });
   }
 
@@ -42,11 +41,6 @@ export default function UserPosts() {
     }
   }, []);
 
-  // function getUserPicture() {
-  //   const promise = api.getUser(token);
-  //   promise.then(({ data }) => setUserPicture(data));
-  // }
-
   async function handleFollow() {
     setDisable(!disable);
     try {
@@ -55,7 +49,7 @@ export default function UserPosts() {
       setDisable(!disable);
     } catch (error) {
       console.log(error);
-      alert('Could not Follow user. Try later...');
+      alert("Could not Follow user. Try later...");
       setDisable(!disable);
     }
   }
@@ -74,9 +68,10 @@ export default function UserPosts() {
             onClick={() => {
               handleFollow();
             }}
+            style={{ cursor: "pointer" }}
             follower={follower}
           >
-            {follower ? 'Unfollow' : 'Follow'}
+            {follower ? "Unfollow" : "Follow"}
           </ButtonFriendly>
         ) : (
           <></>
@@ -125,7 +120,7 @@ const ButtonFriendly = styled.div`
   justify-content: center;
   align-items: center;
 
-  font-family: 'Lato';
+  font-family: "Lato";
   font-style: normal;
   font-weight: 700;
   font-size: 14px;

@@ -78,7 +78,11 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
     });
   }
 
-  function handleOpenEdit(postText, id) {} //função vazia?
+  function handleOpenEdit(postText, id) {
+    setIsEditing(!isEditing);
+    setNewText(postText);
+    setPostId(id);
+  }
 
   function handlerKey(e) {
     if (e.keyCode === 13) {

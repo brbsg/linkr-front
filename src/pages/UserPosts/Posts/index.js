@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import api from '../../../services/api';
-import useAuth from '../../../hooks/useAuth';
-import styled from 'styled-components';
-import MetaLink from './MetaLink';
-import ReactModal from 'react-modal';
-import { IoTrash } from 'react-icons/io5';
-import { TiPencil } from 'react-icons/ti';
-import { FaShare } from 'react-icons/fa';
-import ReactHashtag from '@mdnm/react-hashtag';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import api from "../../../services/api";
+import useAuth from "../../../hooks/useAuth";
+import styled from "styled-components";
+import MetaLink from "./MetaLink";
+import ReactModal from "react-modal";
+import { IoTrash } from "react-icons/io5";
+import { TiPencil } from "react-icons/ti";
+import { FaShare } from "react-icons/fa";
+import ReactHashtag from "@mdnm/react-hashtag";
+import { useNavigate, useParams } from "react-router-dom";
 
 import InteractBar from '../../../components/InteractBar';
 import Comments from '../../../components/Comments';
@@ -24,7 +24,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [newText, setNewText] = useState('');
+  const [newText, setNewText] = useState("");
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -80,7 +80,11 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
     });
   }
 
-  function handleOpenEdit(postText, id) {} //função vazia?
+  function handleOpenEdit(postText, id) {
+    setIsEditing(!isEditing);
+    setNewText(postText);
+    setPostId(id);
+  }
 
   function handlerKey(e) {
     if (e.keyCode === 13) {
@@ -108,16 +112,14 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
     promise.catch((error) => {
       console.log(error);
       setDisabled(false);
-      alert('Erro ao editar. Tente novamente mais tarde.');
+      alert("Erro ao editar. Tente novamente mais tarde.");
     });
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   async function loadPosts() {
-    // console.log(data);
+    const { data } = await api.getUserPosts(token, params.id);
+    console.log(data);
     try {
-      const { data } = await api.getUserPosts(token, params.id);
-      console.log(data);
       setPosts(data);
     } catch {
       return (
@@ -143,7 +145,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
       </PostsContainer>
     );
   }
-  if (posts === 'No friends') {
+  if (posts === "No friends") {
     return (
       <PostsContainer>
         <h1>You don't follow anyone yet. Search for new friends!</h1>
@@ -427,7 +429,7 @@ const Button = styled.button`
   background-color: #fff;
   color: #1877f2;
 
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 21.8px;
@@ -442,7 +444,7 @@ const ButtonDelete = styled.button`
   background-color: #1877f2;
   color: #fff;
 
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 21.8px;
@@ -450,7 +452,7 @@ const ButtonDelete = styled.button`
 
 const customStyles = {
   overlay: {
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
     right: 0,

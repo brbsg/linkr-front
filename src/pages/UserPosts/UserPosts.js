@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import api from "../../services/api";
-import useAuth from "../../hooks/useAuth";
-import styled from "styled-components";
-import Posts from "./Posts";
-import Trendings from "./Trendings";
-import { useParams } from "react-router-dom";
-import useUser from "../../hooks/useUser";
+import { useEffect, useState } from 'react';
+import api from '../../services/api';
+import useAuth from '../../hooks/useAuth';
+import styled from 'styled-components';
+import Posts from './Posts';
+import Trendings from '../Timeline/Trendings';
+import { useParams } from 'react-router-dom';
+import useUser from '../../hooks/useUser';
 
 export default function UserPosts() {
   const [reloadPosts, setReloadPosts] = useState(false);
-  const [userPicture, setUserPicture] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userPicture, setUserPicture] = useState('');
+  const [userName, setUserName] = useState('');
   const [follower, setFollower] = useState(false);
   const [disable, setDisable] = useState(false);
   const { token } = useAuth();
@@ -19,17 +19,16 @@ export default function UserPosts() {
 
   const params = useParams();
 
-  function isFollower(){
-    const promise = api.verifyFollower(
-      params.id,
-      token
-    );
-    promise.then( ({ data })=>{
-      setFollower(data);
-    }).catch((error)=>{
-      console.log(error);
-      alert("Could not validate if user is Followed. Try later...");
-    })
+  function isFollower() {
+    const promise = api.verifyFollower(params.id, token);
+    promise
+      .then(({ data }) => {
+        setFollower(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert('Could not validate if user is Followed. Try later...');
+      });
   }
 
   useEffect(async () => {
@@ -48,18 +47,15 @@ export default function UserPosts() {
   //   promise.then(({ data }) => setUserPicture(data));
   // }
 
-  async function handleFollow(){
+  async function handleFollow() {
     setDisable(!disable);
     try {
-      const promise = await api.toggleFollow(
-        params.id,
-         token
-      );
+      const promise = await api.toggleFollow(params.id, token);
       setFollower(promise.data);
       setDisable(!disable);
     } catch (error) {
       console.log(error);
-      alert("Could not Follow user. Try later...")
+      alert('Could not Follow user. Try later...');
       setDisable(!disable);
     }
   }
@@ -68,21 +64,23 @@ export default function UserPosts() {
     <>
       <TitlePage>
         <UserTitleContent>
-        <img src={userPicture} />
-        {userName}'s posts
+          <img src={userPicture} />
+          {userName}'s posts
         </UserTitleContent>
 
-        {(user.id != params.id)?
-          <ButtonFriendly 
-          disable={disable} 
-          onClick={()=>{handleFollow()}} 
-          follower={follower}
+        {user.id != params.id ? (
+          <ButtonFriendly
+            disable={disable}
+            onClick={() => {
+              handleFollow();
+            }}
+            follower={follower}
           >
-            {follower? "Unfollow": "Follow"}
+            {follower ? 'Unfollow' : 'Follow'}
           </ButtonFriendly>
-        :
+        ) : (
           <></>
-        }
+        )}
       </TitlePage>
 
       <Container>
@@ -100,7 +98,7 @@ const TitlePage = styled.div`
   width: 936px;
   padding-top: 78px;
   padding-bottom: 43px;
-  
+
   display: flex;
   justify-content: space-between;
 `;
@@ -109,9 +107,9 @@ const UserTitleContent = styled.h1`
   display: flex;
   align-self: left;
 
-  font-family: "Oswald";
+  font-family: 'Oswald';
   color: #ffffff;
-  
+
   img {
     width: 60px;
     height: 60px;
@@ -133,9 +131,9 @@ const ButtonFriendly = styled.div`
   font-size: 14px;
   line-height: 17px;
 
-  color: ${ (props) => props.follower? "#1877F2": "#FFFFFF"};
+  color: ${(props) => (props.follower ? '#1877F2' : '#FFFFFF')};
 
-  background: ${ (props) => props.follower? "#FFFFFF": "#1877F2"};
+  background: ${(props) => (props.follower ? '#FFFFFF' : '#1877F2')};
   border-radius: 5px;
 `;
 

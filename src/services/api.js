@@ -23,6 +23,12 @@ function sendPost(body, token) {
   return promise;
 }
 
+function rePost(id, token) {
+  const config = createConfig(token);
+  const promise = axios.post(`${BASE_URL}/timeline/${id}`, {}, config);
+  return promise;
+}
+
 function getPosts(token) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/timeline`, config);
@@ -130,7 +136,7 @@ function getComments(id, token) {
 function getFollowing(token) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/following`, config);
-  return promise
+  return promise;
 }
 function newPostsAlert(token) {
   const config = createConfig(token);
@@ -160,7 +166,8 @@ const api = {
   postComment,
   getComments,
   getFollowing,
-  newPostsAlert
+  newPostsAlert,
+  rePost,
 };
 
 export default api;

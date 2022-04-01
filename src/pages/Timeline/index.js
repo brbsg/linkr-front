@@ -22,7 +22,7 @@ export default function Timeline() {
   const { user } = useUser();
   const [reloadByNewPosts, setReloadByNewPosts] = useState(false);
 
-  console.log(user, token);
+  // console.log(user, token);
   useEffect(() => {
     if (!user || !token) {
       navigate('/');

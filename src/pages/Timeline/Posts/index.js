@@ -27,6 +27,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [clickedPost, setClickedPost] = useState(null)
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen);
@@ -48,7 +49,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
       });
   }
 
-  function handleOpenEdit(postText, id) {}
+  function handleOpenEdit(postText, id) {} //função vazia?
 
   function handlerKey(e) {
     if (e.keyCode === 13) {
@@ -166,6 +167,8 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
                   token={token}
                   commentsOpen={commentsOpen}
                   setCommentsOpen={setCommentsOpen}
+                  clickedPost={clickedPost}
+                  setClickedPost={setClickedPost}
                 />
               </NavBox>
 
@@ -229,6 +232,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
               commentsOpen={commentsOpen}
               setCommentsOpen={setCommentsOpen}
               post={post}
+              clickedPost={clickedPost}
             />
           </CommentsAndPostBox>
         ))}

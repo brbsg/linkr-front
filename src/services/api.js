@@ -121,6 +121,17 @@ function postComment(body, token) {
   return promise;
 }
 
+function getComments(id, token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/post/${id}/comments`, config);
+  return promise;
+}
+
+function getFollowing(token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/following`, config);
+  return promise
+}
 function newPostsAlert(token) {
   const config = createConfig(token);
   const promise = axios.get(`${BASE_URL}/timeline/newPosts`, config);
@@ -147,7 +158,9 @@ const api = {
   verifyFollower,
   toggleFollow,
   postComment,
-  newPostsAlert,
+  getComments,
+  getFollowing,
+  newPostsAlert
 };
 
 export default api;

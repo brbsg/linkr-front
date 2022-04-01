@@ -163,16 +163,13 @@ export default function Posts({ reloadPostsTrend }) {
       <PostsContainer>
         {posts.map((post) => (
           <ReposterBox key={post.id}>
+            
             {post.reposterId?
             <Reposter>
               <FaShare color='white' />
               <h6>Re-posted by {
               post.reposterName == user.name? "you" : post.reposterName
               }</h6>
-              
-              <h6>Likes: {post.likesNumber}</h6>
-              <h6>Comments: {post.comentsNumber}</h6>
-              <h6>Shares: {post.sharesNumber}</h6>
             </Reposter>
             :
             <></>
@@ -345,6 +342,14 @@ const NavBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 19px;
+  @media (max-width: 550px) {
+    width: 40px;
+    img {
+    width: 40px;
+    height: 40px;
+  }
+    gap: 17px;
+  }
 `;
 
 const ContentBox = styled.div`

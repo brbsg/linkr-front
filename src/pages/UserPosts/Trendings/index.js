@@ -7,12 +7,7 @@ import api from "../../../services/api";
 export default function Trendings() {
   const navigate = useNavigate();
   const [hashtags, setHashtags] = useState(null);
-  const [reload, setReload] = useState(false);
   const { token } = useAuth();
-
-  //   setInterval(()=>{
-  //       setReload(!reload);
-  //   }, 10000);
 
   useEffect(() => {
     const promise = api.getHashtags(token);

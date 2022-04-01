@@ -18,6 +18,7 @@ export default function Comments({commentsOpen, post, clickedPost}) {
     }
     getComments()
     
+    console.log(comments)
     if(commentsOpen) return(
         <CommentsBox>
             {comments && clickedPost === post.id?

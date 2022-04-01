@@ -25,9 +25,9 @@ export default function Hashtag() {
       <TitlePage>#{hashtag}</TitlePage>
       <Container>
         <ContainerPublications>
-          <Posts reloadPosts={reloadPosts} hashtag={hashtag} />
+          <Posts reloadPosts={reloadPosts} />
         </ContainerPublications>
-        <Trendings />
+        <Trendings setReloadPosts={setReloadPosts} reloadPosts={reloadPosts}/>
       </Container>
     </>
   );

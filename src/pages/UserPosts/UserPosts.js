@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import api from "../../services/api";
-import useAuth from "../../hooks/useAuth";
-import styled from "styled-components";
-import Posts from "./Posts";
-import Trendings from "./Trendings";
-import { useParams } from "react-router-dom";
-import useUser from "../../hooks/useUser";
+import { useEffect, useState } from 'react';
+import api from '../../services/api';
+import useAuth from '../../hooks/useAuth';
+import styled from 'styled-components';
+import Posts from './Posts';
+import Trendings from '../Timeline/Trendings';
+import { useParams } from 'react-router-dom';
+import useUser from '../../hooks/useUser';
 
 export default function UserPosts() {
   const [reloadPosts, setReloadPosts] = useState(false);
-  const [userPicture, setUserPicture] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userPicture, setUserPicture] = useState('');
+  const [userName, setUserName] = useState('');
   const [follower, setFollower] = useState(false);
   const [disable, setDisable] = useState(false);
   const { token } = useAuth();
@@ -40,11 +40,6 @@ export default function UserPosts() {
       console.log(error);
     }
   }, []);
-
-  // function getUserPicture() {
-  //   const promise = api.getUser(token);
-  //   promise.then(({ data }) => setUserPicture(data));
-  // }
 
   async function handleFollow() {
     setDisable(!disable);
@@ -107,7 +102,7 @@ const UserTitleContent = styled.h1`
   display: flex;
   align-self: left;
 
-  font-family: "Oswald";
+  font-family: 'Oswald';
   color: #ffffff;
 
   img {
@@ -131,9 +126,9 @@ const ButtonFriendly = styled.div`
   font-size: 14px;
   line-height: 17px;
 
-  color: ${(props) => (props.follower ? "#1877F2" : "#FFFFFF")};
+  color: ${(props) => (props.follower ? '#1877F2' : '#FFFFFF')};
 
-  background: ${(props) => (props.follower ? "#FFFFFF" : "#1877F2")};
+  background: ${(props) => (props.follower ? '#FFFFFF' : '#1877F2')};
   border-radius: 5px;
 `;
 

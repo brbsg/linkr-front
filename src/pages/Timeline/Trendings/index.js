@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../services/api";
 
-export default function Trendings({ reloadPostsTrend }) {
+export default function Trendings({ reloadPostsTrend, reloadPosts, setReloadPosts }) {
   const navigate = useNavigate();
   const [hashtags, setHashtags] = useState(null);
   const { token } = useAuth();
@@ -65,7 +65,7 @@ export default function Trendings({ reloadPostsTrend }) {
       <Trends>
           {
             hashtags.map((hashtag)=>
-              <Trend onClick={()=>{navigate(`/hashtag/${hashtag.name}`)}} key={hashtag.id}>
+              <Trend onClick={()=>{navigate(`/hashtag/${hashtag.name}`); setReloadPosts(!reloadPosts)}} key={hashtag.id}>
                 {`# ${hashtag.name}`}
               </Trend>
             )

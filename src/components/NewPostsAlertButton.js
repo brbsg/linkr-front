@@ -7,6 +7,7 @@ import useAuth from '../hooks/useAuth';
 
 export default function NewPostsAlertButton({ onClick }) {
   const [numberOfPosts, setNumberOfPosts] = useState();
+  const [newPosts, setNewPosts] = useState();
   const [postsVariation, setPostsVariation] = useState(0);
   const { token } = useAuth();
 
@@ -27,6 +28,7 @@ export default function NewPostsAlertButton({ onClick }) {
       const promise = api.newPostsAlert(token);
       promise.then(({ data }) => {
         setPostsVariation(data.count - numberOfPosts);
+        setNewPosts(data.count);
         console.log(postsVariation);
       });
     } catch (error) {
@@ -40,6 +42,7 @@ export default function NewPostsAlertButton({ onClick }) {
         onClick={() => {
           onClick();
           setPostsVariation(0);
+          setNumberOfPosts(newPosts);
         }}
       >
         {`${postsVariation} new posts, load more!`} <HiRefresh color='white' />

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import FormSignIn from "../../components/FormSignIn";
 import Logo from "../../components/Logo";
 import useAuth from "../../hooks/useAuth";
+import useUser from "../../hooks/useUser";
 import api from "../../services/api";
 
 export default function Signin() {
@@ -14,7 +15,7 @@ export default function Signin() {
   useEffect(async () => {
     try {
       if (token) {
-        const response = await api.validateToken(token);
+        await api.validateToken(token);
 
         navigate("/timeline");
       }

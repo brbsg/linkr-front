@@ -6,8 +6,11 @@ import Posts from './Posts';
 import Trendings from './Trendings';
 import useUser from '../../hooks/useUser';
 import NewPostsAlertButton from '../../components/NewPostsAlertButton';
+import { useNavigate } from 'react-router-dom';
 
 export default function Timeline() {
+  const navigate = useNavigate();
+
   const [postForm, setPostForm] = useState({
     link: '',
     description: '',
@@ -18,6 +21,13 @@ export default function Timeline() {
   const { token } = useAuth();
   const { user } = useUser();
   const [reloadByNewPosts, setReloadByNewPosts] = useState(false);
+
+  console.log(user, token);
+  useEffect(() => {
+    if (!user || !token) {
+      navigate('/');
+    }
+  }, []);
 
   function handleChange(e) {
     setPostForm({ ...postForm, [e.target.name]: e.target.value });
@@ -59,6 +69,8 @@ export default function Timeline() {
       });
     });
   }
+
+  if (!token || !user) return <></>;
 
   return (
     <>

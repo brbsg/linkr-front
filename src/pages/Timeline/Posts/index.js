@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import api from '../../../services/api';
-import useAuth from '../../../hooks/useAuth';
-import styled from 'styled-components';
-import MetaLink from './MetaLink';
-import ReactModal from 'react-modal';
-import { IoTrash } from 'react-icons/io5';
-import { TiPencil } from 'react-icons/ti';
-import ReactHashtag from '@mdnm/react-hashtag';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import api from "../../../services/api";
+import useAuth from "../../../hooks/useAuth";
+import styled from "styled-components";
+import MetaLink from "./MetaLink";
+import ReactModal from "react-modal";
+import { IoTrash } from "react-icons/io5";
+import { TiPencil } from "react-icons/ti";
+import ReactHashtag from "@mdnm/react-hashtag";
+import { useNavigate } from "react-router-dom";
 
-import InteractBar from '../../../components/InteractBar';
-import Comments from '../../../components/Comments';
+import InteractBar from "../../../components/InteractBar";
+import Comments from "../../../components/Comments";
 
-ReactModal.setAppElement('#root');
+ReactModal.setAppElement("#root");
 
 export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   const [posts, setPosts] = useState(null);
@@ -22,7 +22,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [newText, setNewText] = useState('');
+  const [newText, setNewText] = useState("");
   const [isAtivo, setIsAtivo] = useState(true);
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -44,15 +44,11 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
       .catch(() => {
         handleOpenModal();
         setIsLoading(false);
-        alert('Could not delete this post.');
+        alert("Could not delete this post.");
       });
   }
 
-  function handleOpenEdit(postText, id) {
-    setIsEditing(!isEditing);
-    setNewText(postText);
-    setPostId(id);
-  }
+  function handleOpenEdit(postText, id) {}
 
   function handlerKey(e) {
     if (e.keyCode === 13) {
@@ -80,7 +76,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
     promise.catch((error) => {
       console.log(error);
       setDisabled(false);
-      alert('Erro ao editar. Tente novamente mais tarde.');
+      alert("Erro ao editar. Tente novamente mais tarde.");
     });
   }
 
@@ -115,7 +111,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
       </PostsContainer>
     );
   }
-  if (posts === 'No friends') {
+  if (posts === "No friends") {
     return (
       <PostsContainer>
         <h1>You don't follow anyone yet. Search for new friends!</h1>
@@ -145,7 +141,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
                   <EditIcon
                     onClick={() => handleOpenEdit(post.description, post.id)}
                   >
-                    <TiPencil color='white' />
+                    <TiPencil color="white" />
                   </EditIcon>
                   <TrashCan
                     onClick={() => {
@@ -153,7 +149,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
                       setPostId(post.id);
                     }}
                   >
-                    <IoTrash color='white' />
+                    <IoTrash color="white" />
                   </TrashCan>
                 </>
               )}
@@ -161,9 +157,9 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
               <NavBox>
                 <img
                   src={post.image}
-                  alt='perfil-user'
+                  alt="perfil-user"
                   onClick={() => goToUserPage(post.userId)}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: "pointer" }}
                 />
                 <InteractBar
                   post={post}
@@ -189,7 +185,10 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
                   <h3>
                     <ReactHashtag
                       renderHashtag={(hashtagValue) => (
-                        <StyledHashtag href={`/search/${hashtagValue}`}>
+                        <StyledHashtag
+                          key={hashtagValue}
+                          href={`/search/${hashtagValue}`}
+                        >
                           {hashtagValue}
                         </StyledHashtag>
                       )}
@@ -221,7 +220,7 @@ export default function Posts({ reloadPostsTrend, reloadByNewPosts }) {
                 <div>
                   <Button onClick={handleOpenModal}>No, go back</Button>
                   <ButtonDelete onClick={() => confirmDelete(postId)}>
-                    {isLoading ? 'Loading...' : 'Yes, delete it'}
+                    {isLoading ? "Loading..." : "Yes, delete it"}
                   </ButtonDelete>
                 </div>
               </ReactModal>
@@ -286,7 +285,7 @@ const ContentBox = styled.div`
   flex-direction: column;
   gap: 7px;
   h2 {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
@@ -295,7 +294,7 @@ const ContentBox = styled.div`
     color: #ffffff;
   }
   h3 {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
@@ -354,7 +353,7 @@ const Button = styled.button`
   background-color: #fff;
   color: #1877f2;
 
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 21.8px;
@@ -369,7 +368,7 @@ const ButtonDelete = styled.button`
   background-color: #1877f2;
   color: #fff;
 
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 21.8px;
@@ -377,32 +376,32 @@ const ButtonDelete = styled.button`
 
 const customStyles = {
   overlay: {
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#ffffff15',
+    backgroundColor: "#ffffff15",
   },
   content: {
-    width: '597px',
-    height: '262px',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#333333',
-    color: '#FFF',
-    border: 'none',
-    borderRadius: '50px',
-    textAlign: 'center',
-    padding: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '30px',
+    width: "597px",
+    height: "262px",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#333333",
+    color: "#FFF",
+    border: "none",
+    borderRadius: "50px",
+    textAlign: "center",
+    padding: "auto",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: "30px",
   },
 };
 
